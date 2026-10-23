@@ -96,3 +96,29 @@ def test_committed_market_tables_name_ring_wallets_by_pseudonym_only():
     ring = df[df["ring_wallet"]]
     assert len(ring) == 62 and ring["payee"].str.fullmatch(r"(ring48|group14)-\d\d").all()
     assert df.loc[~df["ring_wallet"], "payee"].str.fullmatch(r"0x[0-9a-f]{40}").all()
+
+
+def test_bsc_market_run_reproduces_the_committed_bsc_cases():
+    p = ROOT / "results" / "market_bsc_features.csv"
+    if not p.exists():
+        pytest.skip("market run not committed yet")
+    m = pd.read_csv(p)
+    c = pd.read_csv(ROOT / "results" / "case_features.csv")
+    c = c[c["chain"] == "bsc"]
+    j = c.merge(m, on="payee", suffixes=("_case", "_market"))
+    assert len(j) == len(c) == 64
+    for f in ("n_payments", "n_payers", "volume", "loop_share", "loop_share_1hop", "outside_funding_share",
+              "shared_funder_share", "shared_funder_share_nonhub", "payer_hhi"):
+        assert np.allclose(j[f + "_case"].astype(float), j[f + "_market"].astype(float), rtol=0, atol=1e-9), f
+
+
+def test_verdict_redaction_withholds_ens_and_basenames():
+    import re as _re
+
+    from spotcheck import NAME_RE
+
+    text = "paid by example-one.base.eth and example-two.eth, not by 0xabc or Aerodrome"
+    assert _re.sub(NAME_RE, "[name withheld]", text) == "paid by [name withheld] and [name withheld], not by 0xabc or Aerodrome"
+    p = ROOT / "results" / "spotcheck_verdicts.csv"
+    if p.exists():
+        assert not _re.search(NAME_RE, p.read_text())

@@ -203,3 +203,114 @@ Features recomputed under each setting with 20 timing-null draws (200 in the mai
 
 *Timing features with real and shuffled payment times.*
 
+
+## Added after the freeze (Oct 23 to 24, 2026)
+
+Everything in this section was planned in `cases/market_plan.md` (committed with its one amendment before any market value was computed) and run after the freeze and after the test-half results. The frozen rule, its thresholds and its code are unchanged; nothing here feeds back into them.
+
+### Whole-market run of the frozen rule
+
+- **Base, x402.** Every payee with at least $10 of x402 payments in a window (a payment whose transaction a facilitator on x402scan's public list sent): 750 payee-weeks, 431 distinct payees, $674,944 of x402 volume over W1 to W4. The rule flags 258 payee-weeks (34.4%), 135 of the 431 payees in at least one week, and 29.5% of the volume. 3 payee-weeks hit the reach cap, 0 of them before hop 4.
+- **Checks and composition.** The population's x402 volume against the decodes' published weekly totals (same method): W1 98.7%, W2 99.1%, W3 101.0%. The largest payee of W4 took $140,000 in 2 payments, 67.5% of the week (`0xfa02300b1a598daba1b27b2bf79f9775355dac82`, the round-trip payTo of family F19, label L); the rule does not flag it, and without it 39.1% of W4's volume is flagged.
+- **Leaderboards.** On Agent402's published top ten of Oct 13, 01:19 UTC (7 days, close to W4), the rule flags ranks 1, 5, 8, 10 in W4: $3,512 of the board's $8,838 (39.7%). Ranked by x402 volume in each window, as x402scan and Agent402 rank, the top 10 payees' volume is 25.3% flagged and the top 50's 29.4%.
+- **BNB Chain, Set and Earn.** Every owner of an agent hired on TermiX in the SE window, no floor: 9,131 payees, $495,424 of order budgets. The rule flags 1,276 payees (14.0%) and 14.6% of the volume: all 62 ring wallets and 1,214 of the other 9,069 payees. The BNB Chain evidence is the hire graph only.
+
+Base market by window and by weekly volume band. The decodes' columns are ChainWard's own published weekly x402 totals and loop tiers (x402-on-base-two-weeks-later, same method), given as context: they are the labeller's numbers, not an independent check.
+
+| window | payee-weeks | x402 volume | flagged | volume flagged | outside-funding rule | decode's weekly total | decode's loops (at least) |
+|---|---|---|---|---|---|---|---|
+| W1 | 216 | $126,527 | 89 (41%) | 49.4% | 49.1% | $128,252 | 46.8% |
+| W2 | 190 | $230,801 | 56 (29%) | 26.8% | 27.6% | $232,810 | 25.7% |
+| W3 | 179 | $110,254 | 71 (40%) | 44.2% | 44.9% | $109,151 | 40.6% |
+| W4 | 165 | $207,363 | 42 (25%) | 12.7% | 12.9% |  |  |
+| band $10-100 | 548 | $16,147 | 179 (33%) | 35.9% | 32.3% |  |  |
+| band $100-1k | 135 | $40,006 | 46 (34%) | 32.1% | 40.6% |  |  |
+| band >=$1k | 67 | $618,791 | 33 (49%) | 29.2% | 29.2% |  |  |
+
+### Blinded spot-check
+
+- **Sample.** 40 Base payees the published decodes did not examine (not printed in any decode, not a case, never in a window's top 30), drawn with seed 20261024: 25 the rule flags and 15 it does not, shuffled into one list. Two separate AI agent sessions judged each from on-chain evidence alone, with read-only tools over the same transfers, and never saw a feature value, flag, the rule or the stratum (`cases/spotcheck_judge_protocol.md`, `cases/spotcheck_judge_prompt.md`). Both verdict files were committed before the key was joined.
+- **Judge A.** Of the 25 flagged payees, 22 coordinated, 3 independent, 0 unclear (share coordinated 88%, 95% interval 69% to 97%); of the 15 unflagged, 4 coordinated, 10 independent, 1 unclear (misses 27%, 8% to 55%). Agrees with the rule on 32 of 40.
+- **Judge B.** Of the 25 flagged payees, 20 coordinated, 3 independent, 2 unclear (share coordinated 80%, 95% interval 59% to 93%); of the 15 unflagged, 4 coordinated, 10 independent, 1 unclear (misses 27%, 8% to 55%). Agrees with the rule on 30 of 40.
+- **Between judges.** Same verdict on 38 of 40. Where both gave the same verdict and it was not unclear (37 payees), the rule agrees on 30: 20 of 23 flagged and 4 of 14 unflagged are coordinated.
+- **Where both judges disagree with the rule.** Flagged but independent: S02, S03, S37. In each, by the judges' reasoning, the payee sent its payers small refunds or change (in one, hours after the payment), and the reach walk counts a payer the payee paid whatever the amount or the order. Their outside funding share is 0.95, 0.55, 0.86, against the frozen outside-funding cut-off of 0.75. Unflagged but coordinated: S07, S17, S35, S39: two payers whose only USDC came from the payee in May, months before the data starts, and two wallets of BotPay's ring at five hops (next bullet).
+- **The other frozen plus-factor rule (post hoc).** On the same 37 consensus verdicts, the frozen `outside_funding_share <= 0.7537` agrees on 29, with 1 false positive(s) and 7 misses, against 30, 3 and 4 for the primary rule.
+- **One ring, many payees (post hoc, after unblinding; `scripts/diag_botpay_ring.py`).** 48 of the 135 flagged payees are mostly paid by wallets that BotPay's root wallet [D4], or a wallet it paid, funded (107 payee-weeks, $3,878). The rule flags 86 of their 86 payee-weeks in W1 to W3 and 0 of 21 in W4; rerun at K = 6, the main payer of every W4 one sits at hop 5, one beyond the limit. Counts of flagged payees therefore overstate the number of operators.
+
+Every sample, after unblinding (full reasoning in `results/spotcheck_unblinded.csv`):
+
+| sample_id | payee | window | flag_primary | loop_share | outside_funding_share | n_payers | volume | verdict_A | est_coordinated_share_A | verdict_B | est_coordinated_share_B |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| S01 | 0x4ad9fcc1 | W2 | False | 0.00 | 1.00 | 1 | 10.30 | independent | 0.00 | independent | 0.00 |
+| S02 | 0x6bab1d63 | W3 | True | 1.00 | 0.95 | 3 | 12.76 | independent | 0.00 | independent | 0.00 |
+| S03 | 0x0bd02144 | W2 | True | 1.00 | 0.55 | 1 | 85.00 | independent | 0.00 | independent | 0.00 |
+| S04 | 0x7f629403 | W2 | False | 0.00 | 1.00 | 2 | 20.00 | independent | 0.00 | independent | 0.00 |
+| S05 | 0x1c656644 | W2 | True | 1.00 | 0.76 | 1 | 23.74 | coordinated | 1.00 | coordinated | 1.00 |
+| S06 | 0x836be278 | W4 | False | 0.00 | 1.00 | 5 | 14.31 | unclear |  | unclear |  |
+| S07 | 0xbc5bafda | W3 | False | 0.00 | 1.00 | 1 | 11.00 | coordinated | 1.00 | coordinated | 1.00 |
+| S08 | 0x837c40e2 | W3 | True | 0.90 | 0.54 | 4 | 97.21 | coordinated | 0.70 | coordinated | 0.70 |
+| S09 | 0xd593832c | W3 | True | 0.96 | 0.91 | 14 | 34.95 | coordinated | 0.95 | coordinated | 0.95 |
+| S10 | 0x85af15f3 | W1 | True | 1.00 | 0.00 | 1 | 22.70 | coordinated | 1.00 | coordinated | 1.00 |
+| S11 | 0x768d3897 | W1 | True | 1.00 | 0.00 | 1 | 70.70 | coordinated | 1.00 | coordinated | 1.00 |
+| S12 | 0xb7c76e6a | W1 | False | 0.00 | 1.00 | 1 | 12.00 | independent | 0.00 | independent | 0.00 |
+| S13 | 0xe6dab093 | W1 | True | 1.00 | 0.00 | 1 | 22.70 | coordinated | 1.00 | coordinated | 1.00 |
+| S14 | 0xd8ba61a0 | W4 | True | 1.00 | 0.27 | 3 | 37.68 | coordinated | 1.00 | coordinated | 1.00 |
+| S15 | 0xce668a6e | W1 | True | 1.00 | 0.00 | 9 | 10.00 | coordinated | 1.00 | coordinated | 1.00 |
+| S16 | 0x17d38086 | W1 | True | 1.00 | 0.00 | 1 | 22.50 | coordinated | 1.00 | coordinated | 1.00 |
+| S17 | 0xaf6ee95c | W4 | False | 0.00 | 0.00 | 1 | 17.50 | coordinated | 1.00 | coordinated | 1.00 |
+| S18 | 0x0a84297d | W3 | True | 1.00 | 0.00 | 1 | 25.20 | coordinated | 1.00 | coordinated | 1.00 |
+| S19 | 0x33e59490 | W1 | False | 0.00 | 1.00 | 1 | 35.00 | independent | 0.00 | independent | 0.00 |
+| S20 | 0x788b4ca1 | W1 | True | 1.00 | 0.90 | 5 | 43.05 | coordinated | 0.97 | coordinated | 0.98 |
+| S21 | 0x4df66b6c | W2 | False | 0.00 | 1.00 | 13 | 25.24 | independent | 0.00 | independent | 0.00 |
+| S22 | 0x4cd50150 | W1 | False | 0.00 | 1.00 | 1 | 24.10 | independent | 0.00 | independent | 0.00 |
+| S23 | 0xc34f3d05 | W1 | False | 0.00 | 1.00 | 1 | 60.47 | independent | 0.00 | independent | 0.00 |
+| S24 | 0x07e079b1 | W1 | False | 0.00 | 1.00 | 1 | 100.20 | independent | 0.00 | independent | 0.00 |
+| S25 | 0x430a232c | W3 | True | 1.00 | 0.00 | 1 | 16.60 | coordinated | 1.00 | coordinated | 1.00 |
+| S26 | 0xf1cbc619 | W1 | False | 0.00 | 1.00 | 1 | 10.20 | independent | 0.00 | independent | 0.00 |
+| S27 | 0x8060f6e3 | W3 | True | 1.00 | 0.00 | 1 | 24.50 | coordinated | 1.00 | coordinated | 1.00 |
+| S28 | 0x434ca49f | W1 | True | 1.00 | 0.00 | 1 | 22.70 | coordinated | 1.00 | coordinated | 1.00 |
+| S29 | 0x3a876a77 | W3 | True | 1.00 | 0.00 | 1 | 16.60 | coordinated | 1.00 | coordinated | 1.00 |
+| S30 | 0x91410228 | W1 | True | 0.69 | 0.48 | 2 | 16.00 | coordinated | 0.69 | coordinated | 0.69 |
+| S31 | 0x96368628 | W4 | True | 0.92 | 0.23 | 7 | 105.80 | coordinated | 0.90 | coordinated | 0.92 |
+| S32 | 0x8aab9a6d | W3 | True | 0.94 | 0.84 | 6 | 12.60 | coordinated | 0.94 | coordinated | 0.94 |
+| S33 | 0x6454a645 | W4 | True | 1.00 | 0.12 | 1 | 11.04 | coordinated | 0.95 | coordinated | 0.94 |
+| S34 | 0xf3ecfe1d | W3 | True | 1.00 | 0.99 | 1 | 15.30 | coordinated | 1.00 | unclear |  |
+| S35 | 0x0748cc42 | W3 | False | 0.00 | 1.00 | 1 | 10.20 | coordinated | 1.00 | coordinated | 1.00 |
+| S36 | 0xeb931657 | W2 | False | 0.00 | 1.00 | 1 | 29.76 | independent | 0.00 | independent | 0.00 |
+| S37 | 0x4f180b77 | W1 | True | 1.00 | 0.86 | 6 | 61.95 | independent | 0.00 | independent | 0.00 |
+| S38 | 0x5976376b | W3 | True | 0.88 | 0.99 | 23 | 15.52 | coordinated | 0.88 | unclear |  |
+| S39 | 0xb13b783a | W4 | False | 0.00 | 0.00 | 1 | 30.90 | coordinated | 1.00 | coordinated | 1.00 |
+| S40 | 0x0440383b | W3 | True | 0.91 | 0.86 | 9 | 67.00 | coordinated | 0.50 | coordinated | 0.50 |
+
+### A public label source ChainWard did not write
+
+Agent402's public index (read 2026-10-23 16:04 UTC) gives 58 payees of the Base market a settlement verdict. Its `settlement_self_funded` verdict nets USDC the seller sent a payer against that payer's later payments (one hop, first in first out, the seller's history up to the read) and marks a seller whose remaining history is below the router's floor. Rule flag in any week against that verdict: flagged and self-funded 7, flagged and not 19, not flagged and self-funded 2, neither 30 (`results/market_agent402_comparison.csv`). A seller with enough independent history is not marked whatever its loops, so the verdict is a floor gate, not a loop measurement, and the periods differ; this is agreement, not accuracy. BNB Chain: no public label source we know of.
+
+### End-to-end positive control
+
+A seller-funded ring of 5 payers was written as USDC transfers and EIP-3009 authorisations into the data the extraction reads, for 3 markets the rule does not flag (F10-clashofcoins, F12-stableenrich, F16-cheaptokens), 6 routes and 5 ring shares each (90 runs); `src/extract_base.py` and `src/features.py` ran unchanged. Expected loop share: phi + (1 - phi) b when the route reaches the ring within 4 transfers, (1 - phi) b otherwise, with b the market's own loop share. Largest difference between measured and expected: 1.1e-16. Flag as predicted in 90 of 90 runs, ring payers at the designed distance in 90 of 90, every synthetic payment extracted: True. The synthetic rows lived in a scratch database that read `data/base.duckdb` read-only: its row counts were 157,753,459 transfers before and 157,753,459 after, the file was unchanged (True) and the scratch database was deleted (True).
+
+| route | runs | designed_hop | hops_measured | max_abs_error | flags_as_predicted |
+|---|---|---|---|---|---|
+| direct | 15 | 1 | 1 | 1.1e-16 | 15 |
+| relay3 | 15 | 3 | 3 | 1.1e-16 | 15 |
+| relay4 | 15 | 4 | 4 | 1.1e-16 | 15 |
+| relay5 | 15 | 5 | 5 | 5.6e-17 | 15 |
+| via_hub | 15 | not reached | none | 2.8e-17 | 15 |
+| via_forwarder | 15 | 1 | 1 | 5.6e-17 | 15 |
+
+Baselines measured by the same pipeline with no ring, against the committed case features: F10-clashofcoins W1 b = 0.000000 (0.000000); F12-stableenrich W1 b = 0.000000 (0.000000); F16-cheaptokens W4 b = 0.158133 (0.158133).
+
+### Deviations and notes (after the freeze)
+
+- The plan read every transaction sender from ChainWard's node; at about 250 a second (its disk is the bottleneck) that was 2.7 hours, so an amendment committed before any population count reads senders for candidate payees only, exactly for those with at most 1,000 payment transactions in a week and from 1,000 value-weighted draws for the others (133 of the 750 payee-weeks in the population).
+- The first run of the end-to-end control scored the four-relay route (hop 5) against the within-K expectation, a bug in its summary code, not in the pipeline: the measured loop shares were already (1 - phi) b. The expectation was fixed and the control re-run before any of it was reported.
+- One BNB Chain decode prints four of the 62 ring wallets as hiring examples. Their tokens are dropped from `data/decode_printed_hex.txt`, which lists what the decodes print, so that no committed file names a ring wallet; no ring wallet is a Base payee in the population, so the exclusions do not change.
+- The market features and the spot-check key stayed outside the repository until both verdict files were committed. The judges are AI agent sessions, not human investigators, and both read the same tools.
+
+### Reach walk
+
+![The reach walk with three worked examples from the case tables.](fig_reach_walk.png)
+
+*The reach walk, with worked examples from the committed case tables: X Pay's payers one transfer from its payTo, ClusterProtocol's three, BotPay's five (one beyond K = 4). A ledger cannot tell one operator with many wallets from colluding agents: both leave the same money paths.*
+

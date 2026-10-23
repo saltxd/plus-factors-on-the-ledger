@@ -294,6 +294,11 @@ def main() -> None:
     if (RES / "negative_control_timing_shuffle.csv").exists():
         fig_timing_shuffle(t, pd.read_csv(RES / "negative_control_timing_shuffle.csv"))
     write_results_md(frozen)
+    after = after_freeze_md()
+    if after:
+        with open(RES / "results.md", "a") as f:
+            f.write("\n" + after)
+        (RES / "after_freeze_tables.md").write_text(after_freeze_tables())
     print("figures, case table and results.md written")
 
 
@@ -464,6 +469,225 @@ def write_results_md(frozen: dict) -> None:
         if (RES / f).exists():
             w(f"![{cap}]({f})\n\n*{cap}*\n")
     (RES / "results.md").write_text("\n".join(lines) + "\n")
+
+
+
+# ---------------------------------------------------------------------------------------
+# Added Oct 23 to 24, 2026, after the freeze: whole market, spot-check, end-to-end control
+
+
+def after_freeze_md() -> str:
+    """The section on work added after the freeze; every number is read from result files."""
+    if not (RES / "market_summary.json").exists():
+        return ""
+    ms = json.loads((RES / "market_summary.json").read_text())
+    pop = pd.read_csv(RES / "market_base_population.csv")
+    b = ms["base"]
+    out = []
+    w = out.append
+    w("## Added after the freeze (Oct 23 to 24, 2026)\n")
+    w("Everything in this section was planned in `cases/market_plan.md` (committed with its one amendment before any market value was "
+      "computed) and run after the freeze and after the test-half results. The frozen rule, its thresholds and its code are unchanged; "
+      "nothing here feeds back into them.\n")
+    p = b["pooled"]["flag_primary"]
+    w("### Whole-market run of the frozen rule\n")
+    w(f"- **Base, x402.** Every payee with at least ${b['floor_usd']:.0f} of x402 payments in a window (a payment whose transaction a facilitator on "
+      f"x402scan's public list sent): {b['payee_weeks_in_population']} payee-weeks, {b['distinct_payees']} distinct payees, "
+      f"${b['pooled']['volume']:,.0f} of x402 volume over W1 to W4. The rule flags {p['count']} payee-weeks ({p['share']:.1%}), "
+      f"{b['distinct_payees_flagged_any_week']} of the {b['distinct_payees']} payees in at least one week, and {p['volume_share']:.1%} of the volume. "
+      f"{b['reach_capped']} payee-weeks hit the reach cap, {b['reach_capped_before_hop4']} of them before hop 4.")
+    ratios = [f"{wk} {d['volume'] / d['decode_reference']['x402_usd']:.1%}" for wk, d in b["by_window"].items() if d.get("decode_reference")]
+    w4 = b["by_window"]["W4"]["largest_payee"]
+    w(f"- **Checks and composition.** The population's x402 volume against the decodes' published weekly totals (same method): {', '.join(ratios)}. "
+      f"The largest payee of W4 took ${w4['x402_volume']:,.0f} in {w4['n_payments']} payments, {w4['share_of_window']:.1%} of the week "
+      f"(`{w4['payee']}`, the round-trip payTo of family F19, label L); the rule {'flags' if w4['flag_primary'] else 'does not flag'} it, "
+      f"and without it {w4['volume_share_flagged_without_it']:.1%} of W4's volume is flagged.")
+    bd = ms["agent402_board_2026_10_13"]
+    w(f"- **Leaderboards.** On Agent402's published top ten of Oct 13, 01:19 UTC (7 days, close to W4), the rule flags ranks "
+      f"{', '.join(str(r) for r in bd['flagged_ranks'])} in W4: ${bd['flagged_board_usdc']:,.0f} of the board's ${bd['board_usdc']:,.0f} "
+      f"({bd['flagged_share_of_board_usdc']:.1%}). Ranked by x402 volume in each window, as x402scan and Agent402 rank, the top 10 payees' volume is "
+      f"{b['top']['top10']['pooled']['flag_primary']['volume_share']:.1%} flagged and the top 50's {b['top']['top50']['pooled']['flag_primary']['volume_share']:.1%}.")
+    bs = ms["bsc"]
+    w(f"- **BNB Chain, Set and Earn.** Every owner of an agent hired on TermiX in the SE window, no floor: {bs['pooled']['payee_weeks']:,} payees, "
+      f"${bs['pooled']['volume']:,.0f} of order budgets. The rule flags {bs['pooled']['flag_primary']['count']:,} payees "
+      f"({bs['pooled']['flag_primary']['share']:.1%}) and {bs['pooled']['flag_primary']['volume_share']:.1%} of the volume: all "
+      f"{bs['ring_wallets']['payee_weeks']} ring wallets and {bs['other_payees']['flag_primary']['count']:,} of the other "
+      f"{bs['other_payees']['payee_weeks']:,} payees. The BNB Chain evidence is the hire graph only.\n")
+    rows = []
+    for win, d in b["by_window"].items():
+        ref = d.get("decode_reference") or {}
+        rows.append({"window": win, "payee-weeks": d["payee_weeks"], "x402 volume": f"${d['volume']:,.0f}",
+                     "flagged": f"{d['flag_primary']['count']} ({d['flag_primary']['share']:.0%})",
+                     "volume flagged": f"{d['flag_primary']['volume_share']:.1%}",
+                     "outside-funding rule": f"{d['flag_outside_funding']['volume_share']:.1%}",
+                     "decode's weekly total": f"${ref['x402_usd']:,.0f}" if ref else "",
+                     "decode's loops (at least)": f"{ref['verified_loops_share_min']:.1%}" if ref else ""})
+    for band, d in b["by_band"].items():
+        rows.append({"window": f"band {band}", "payee-weeks": d["payee_weeks"], "x402 volume": f"${d['volume']:,.0f}",
+                     "flagged": f"{d['flag_primary']['count']} ({d['flag_primary']['share']:.0%})", "volume flagged": f"{d['flag_primary']['volume_share']:.1%}",
+                     "outside-funding rule": f"{d['flag_outside_funding']['volume_share']:.1%}", "decode's weekly total": "", "decode's loops (at least)": ""})
+    w("Base market by window and by weekly volume band. The decodes' columns are ChainWard's own published weekly x402 totals and loop tiers "
+      "(x402-on-base-two-weeks-later, same method), given as context: they are the labeller's numbers, not an independent check.\n")
+    w(md_table(pd.DataFrame(rows)) + "\n")
+    # spot-check
+    if (RES / "spotcheck_summary.json").exists():
+        sc = json.loads((RES / "spotcheck_summary.json").read_text())
+        un = pd.read_csv(RES / "spotcheck_unblinded.csv")
+        w("### Blinded spot-check\n")
+        w(f"- **Sample.** {sc['n']} Base payees the published decodes did not examine (not printed in any decode, not a case, never in a window's top 30), "
+          f"drawn with seed 20261024: {sc['flagged']} the rule flags and {sc['unflagged']} it does not, shuffled into one list. Two separate AI agent "
+          "sessions judged each from on-chain evidence alone, with read-only tools over the same transfers, and never saw a feature value, flag, the rule or "
+          "the stratum (`cases/spotcheck_judge_protocol.md`, `cases/spotcheck_judge_prompt.md`). Both verdict files were committed before the key was joined.")
+        for j in sc["judges"]:
+            fl, uf = sc[f"{j}_flagged"], sc[f"{j}_unflagged"]
+            w(f"- **Judge {j}.** Of the {fl['n']} flagged payees, {fl['coordinated']} coordinated, {fl['independent']} independent, {fl['unclear']} unclear "
+              f"(share coordinated {fl['share_coordinated']:.0%}, 95% interval {fl['ci95'][0]:.0%} to {fl['ci95'][1]:.0%}); of the {uf['n']} unflagged, "
+              f"{uf['coordinated']} coordinated, {uf['independent']} independent, {uf['unclear']} unclear (misses {uf['share_coordinated']:.0%}, "
+              f"{uf['ci95'][0]:.0%} to {uf['ci95'][1]:.0%}). Agrees with the rule on {sc[f'{j}_agrees_with_rule']} of {sc['n']}.")
+        if "judges_agree" in sc:
+            cf, cu = sc["consensus_flagged"], sc["consensus_unflagged"]
+            w(f"- **Between judges.** Same verdict on {sc['judges_agree']} of {sc['n']}. Where both gave the same verdict and it was not unclear "
+              f"({sc['consensus_n']} payees), the rule agrees on {sc['consensus_agrees_with_rule']}: {cf['coordinated']} of {cf['n']} flagged and "
+              f"{cu['coordinated']} of {cu['n']} unflagged are coordinated.")
+            both = [c for c in un.columns if c.startswith("verdict_")]
+            fp = un[un["flag_primary"] & (un[both] == "independent").all(axis=1)]
+            fn = un[~un["flag_primary"] & (un[both] == "coordinated").all(axis=1)]
+            w(f"- **Where both judges disagree with the rule.** Flagged but independent: {', '.join(fp['sample_id'])}. In each, by the judges' reasoning, the "
+              "payee sent its payers small refunds or change (in one, hours after the payment), and the reach walk counts a payer the payee paid whatever the "
+              f"amount or the order. Their outside funding share is {', '.join(f'{x:.2f}' for x in fp['outside_funding_share'])}, against the frozen outside-funding "
+              f"cut-off of 0.75. Unflagged but coordinated: {', '.join(fn['sample_id'])}: two payers whose only USDC came from the payee in May, months before the "
+              "data starts, and two wallets of BotPay's ring at five hops (next bullet).")
+            fr = json.loads((RES / "frozen_rule.json").read_text())
+            cons = un[(un[both[0]] == un[both[1]]) & (un[both[0]] != "unclear")]
+            ofs = cons["outside_funding_share"] <= fr["best_single_feature_rules"]["outside_funding_share"]["rule"]["threshold"]
+            co = cons[both[0]] == "coordinated"
+            w(f"- **The other frozen plus-factor rule (post hoc).** On the same {len(cons)} consensus verdicts, the frozen `outside_funding_share <= 0.7537` "
+              f"agrees on {int(((ofs & co) | (~ofs & ~co)).sum())}, with {int((ofs & ~co).sum())} false positive(s) and {int((~ofs & co).sum())} misses, "
+              f"against {int(((cons['flag_primary'] & co) | (~cons['flag_primary'] & ~co)).sum())}, {int((cons['flag_primary'] & ~co).sum())} and "
+              f"{int((~cons['flag_primary'] & co).sum())} for the primary rule.")
+        if (RES / "market_botpay_ring_posthoc.json").exists():
+            rg = json.loads((RES / "market_botpay_ring_posthoc.json").read_text())
+            bw = rg["by_window"]
+            early = sum(bw[x]["payee_weeks"] for x in ("W1", "W2", "W3") if x in bw)
+            early_f = sum(bw[x]["flagged"] for x in ("W1", "W2", "W3") if x in bw)
+            w(f"- **One ring, many payees (post hoc, after unblinding; `scripts/diag_botpay_ring.py`).** {rg['ring_payees']} of the {rg['flagged_payees_all']} "
+              f"flagged payees are mostly paid by wallets that BotPay's root wallet [D4], or a wallet it paid, funded ({rg['ring_payee_weeks']} payee-weeks, ${rg['ring_volume']:,.0f}). "
+              f"The rule flags {early_f} of their {early} payee-weeks in W1 to W3 and {bw.get('W4', {}).get('flagged', 0)} of {bw.get('W4', {}).get('payee_weeks', 0)} in W4; "
+              f"rerun at K = 6, the main payer of every W4 one sits at hop {', '.join(rg.get('w4_main_payer_hop_at_k6', {}).keys())}, one beyond the limit. Counts of "
+              "flagged payees therefore overstate the number of operators.\n")
+        cols = ["sample_id", "payee", "window", "flag_primary", "loop_share", "outside_funding_share", "n_payers", "volume"] + \
+               [c for c in un.columns if c.startswith("verdict_") or c.startswith("est_")]
+        t = un[cols].copy()
+        t["payee"] = t["payee"].str.slice(0, 10)
+        w("Every sample, after unblinding (full reasoning in `results/spotcheck_unblinded.csv`):\n")
+        w(md_table(t, "{:.2f}") + "\n")
+    # Agent402
+    ai = ms["agent402_index"]
+    ct = ai["crosstab_rule_by_agent402"]
+    w("### A public label source ChainWard did not write\n")
+    w(f"Agent402's public index (read {ai['index_as_of'][0][:16].replace('T', ' ')} UTC) gives {ai['market_payees_with_a_settlement_verdict']} payees of the Base market "
+      "a settlement verdict. Its `settlement_self_funded` verdict nets USDC the seller sent a payer against that payer's later payments (one hop, first in first out, "
+      "the seller's history up to the read) and marks a seller whose remaining history is below the router's floor. Rule flag in any week against that verdict: "
+      f"flagged and self-funded {ct['rule_True']['agent402_self_funded_True']}, flagged and not {ct['rule_True']['agent402_self_funded_False']}, "
+      f"not flagged and self-funded {ct['rule_False']['agent402_self_funded_True']}, neither {ct['rule_False']['agent402_self_funded_False']} "
+      "(`results/market_agent402_comparison.csv`). A seller with enough independent history is not marked whatever its loops, so the verdict is a floor gate, not a "
+      "loop measurement, and the periods differ; this is agreement, not accuracy. BNB Chain: no public label source we know of.\n")
+    # end-to-end positive control
+    if (RES / "positive_control_e2e_summary.json").exists():
+        es = json.loads((RES / "positive_control_e2e_summary.json").read_text())
+        ed = pd.read_csv(RES / "positive_control_e2e.csv")
+        runs = ed[ed["route"] != "none"]
+        w("### End-to-end positive control\n")
+        w(f"A seller-funded ring of 5 payers was written as USDC transfers and EIP-3009 authorisations into the data the extraction reads, for "
+          f"{len(es['markets'])} markets the rule does not flag ({', '.join(es['markets'])}), 6 routes and 5 ring shares each ({es['runs']} runs); "
+          "`src/extract_base.py` and `src/features.py` ran unchanged. Expected loop share: phi + (1 - phi) b when the route reaches the ring within 4 transfers, "
+          f"(1 - phi) b otherwise, with b the market's own loop share. Largest difference between measured and expected: {es['max_abs_error']:.1e}. "
+          f"Flag as predicted in {es['flag_matches_expected']} of {es['runs']} runs, ring payers at the designed distance in {es['hops_as_designed']} of {es['runs']}, "
+          f"every synthetic payment extracted: {es['ring_payments_all_extracted']}. The synthetic rows lived in a scratch database that read `data/base.duckdb` "
+          f"read-only: its row counts were {es['base_row_counts_before']['tr']:,} transfers before and {es['base_row_counts_after']['tr']:,} after, the file was "
+          f"unchanged ({es['base_file_unchanged']}) and the scratch database was deleted ({es['scratch_deleted']}).\n")
+        g = runs.groupby("route").agg(runs=("route", "size"), designed_hop=("designed_hop", "first"),
+                                      hops_measured=("ring_hops_measured", lambda s_: ", ".join(sorted(set(";".join(s_).split(";"))))),
+                                      max_abs_error=("abs_error", "max"),
+                                      flags_as_predicted=("measured_flag", lambda s_: int((s_ == ed.loc[s_.index, "expected_flag"]).sum())))
+        g = g.reindex(["direct", "relay3", "relay4", "relay5", "via_hub", "via_forwarder"]).reset_index()
+        g["designed_hop"] = g["designed_hop"].map(lambda x: "not reached" if pd.isna(x) else str(int(x)))
+        g["max_abs_error"] = g["max_abs_error"].map(lambda x: f"{x:.1e}")
+        w(md_table(g) + "\n")
+        base_rows = ed[ed["route"] == "none"][["market", "window", "baseline_b", "committed_b"]]
+        w("Baselines measured by the same pipeline with no ring, against the committed case features: " +
+          "; ".join(f"{r.market} {r.window} b = {r.baseline_b:.6f} ({r.committed_b:.6f})" for r in base_rows.itertuples()) + ".\n")
+    est = int(pop["x402_estimated"].sum())
+    w("### Deviations and notes (after the freeze)\n")
+    w("- The plan read every transaction sender from ChainWard's node; at about 250 a second (its disk is the bottleneck) that was 2.7 hours, so an amendment "
+      "committed before any population count reads senders for candidate payees only, exactly for those with at most 1,000 payment transactions in a week and "
+      f"from 1,000 value-weighted draws for the others ({est} of the {len(pop)} payee-weeks in the population).")
+    w("- The first run of the end-to-end control scored the four-relay route (hop 5) against the within-K expectation, a bug in its summary code, not in the "
+      "pipeline: the measured loop shares were already (1 - phi) b. The expectation was fixed and the control re-run before any of it was reported.")
+    w("- One BNB Chain decode prints four of the 62 ring wallets as hiring examples. Their tokens are dropped from `data/decode_printed_hex.txt`, which lists what "
+      "the decodes print, so that no committed file names a ring wallet; no ring wallet is a Base payee in the population, so the exclusions do not change.")
+    w("- The market features and the spot-check key stayed outside the repository until both verdict files were committed. The judges are AI agent sessions, "
+      "not human investigators, and both read the same tools.\n")
+    if (RES / "fig_reach_walk.png").exists():
+        w("### Reach walk\n")
+        w("![The reach walk with three worked examples from the case tables.](fig_reach_walk.png)\n")
+        w("*The reach walk, with worked examples from the committed case tables: X Pay's payers one transfer from its payTo, ClusterProtocol's three, "
+          "BotPay's five (one beyond K = 4). A ledger cannot tell one operator with many wallets from colluding agents: both leave the same money paths.*\n")
+    return "\n".join(out) + "\n"
+
+
+def after_freeze_tables() -> str:
+    """Appendix E of the report: market by band, end-to-end control by route, spot-check samples."""
+    if not (RES / "market_summary.json").exists():
+        return ""
+    ms = json.loads((RES / "market_summary.json").read_text())
+    b, bs = ms["base"], ms["bsc"]
+    out = []
+
+    def row(name: str, d: dict) -> dict:
+        f = d["flag_primary"]
+        return {"Payees": name, "Payee-weeks": f"{d['payee_weeks']:,}", "Volume": f"${d['volume']:,.0f}",
+                "Flagged": f"{f['count']:,} ({f['share']:.0%})", "Volume flagged": f"{f['volume_share']:.1%}",
+                "Outside-funding rule": f"{d['flag_outside_funding']['volume_share']:.1%}"}
+
+    bands = {"$10-100": "Base, $10 to $100", "$100-1k": "Base, $100 to $1,000", ">=$1k": "Base, $1,000 or more"}
+    rows = [row(bands.get(k, k), v) for k, v in b["by_band"].items()]
+    rows += [row("Base, weekly top 10", b["top"]["top10"]["pooled"]), row("Base, weekly top 50", b["top"]["top50"]["pooled"]),
+             row("Base, all", b["pooled"]), row("BNB Chain, ring wallets", bs["ring_wallets"]),
+             row("BNB Chain, others", bs["other_payees"]), row("BNB Chain, all", bs["pooled"])]
+    out.append("<div class=\"tbl\">\n\nTable E1: The frozen rule on the whole market, by weekly x402 volume, by weekly rank and by kind of BNB Chain payee "
+               "(`results/market_summary.json`); Base bands are by x402 volume in the week. The last column is the share of volume the frozen "
+               "`outside_funding_share <= 0.7537` flags.\n\n"
+               + md_table(pd.DataFrame(rows)) + "\n\n</div>")
+    if (RES / "positive_control_e2e.csv").exists():
+        ed = pd.read_csv(RES / "positive_control_e2e.csv")
+        runs = ed[ed["route"] != "none"]
+        names = {"direct": "seller to payer", "relay3": "two relays", "relay4": "three relays", "relay5": "four relays",
+                 "via_hub": "via a hub, two transactions", "via_forwarder": "forwarded by the hub, one transaction"}
+        g = []
+        for r in ["direct", "relay3", "relay4", "relay5", "via_hub", "via_forwarder"]:
+            x = runs[runs["route"] == r]
+            hops = sorted(set(";".join(x["ring_hops_measured"]).split(";")))
+            dh = x["designed_hop"].iloc[0]
+            g.append({"Route": names[r], "Designed distance": "not reached" if pd.isna(dh) else f"hop {int(dh)}",
+                      "Measured (all ring payers)": ", ".join("not reached" if h == "none" else f"hop {h}" for h in hops),
+                      "Expected loop share": "φ + (1 − φ)·b" if (not pd.isna(dh) and dh <= 4) else "(1 − φ)·b",
+                      "Runs": len(x), "Largest error": f"{x['abs_error'].max():.1e}",
+                      "Flag as predicted": f"{int((x['measured_flag'] == x['expected_flag']).sum())} of {len(x)}"})
+        out.append("<div class=\"tbl\">\n\nTable E2: End-to-end positive control (`results/positive_control_e2e.csv`): three markets, five ring shares "
+                   "per route; b is each market's loop share measured by the same pipeline with no ring.\n\n" + md_table(pd.DataFrame(g)) + "\n\n</div>")
+    if (RES / "spotcheck_unblinded.csv").exists():
+        un = pd.read_csv(RES / "spotcheck_unblinded.csv").sort_values("sample_id")
+        judges = sorted(c.split("verdict_", 1)[1] for c in un.columns if c.startswith("verdict_"))
+        abbr = {"coordinated": "C", "independent": "I", "unclear": "U"}
+        t = pd.DataFrame({"Sample": un["sample_id"], "Payee": un["payee"].str.slice(0, 10), "Week": un["window"],
+                          "Rule": np.where(un["flag_primary"], "flag", "no"), "Loop share": un["loop_share"].map(lambda v: f"{v:.2f}"),
+                          "Outside funding": un["outside_funding_share"].map(lambda v: f"{v:.2f}")})
+        for j in judges:
+            t[f"Judge {j}"] = un[f"verdict_{j}"].map(abbr).fillna("") + un[f"est_coordinated_share_{j}"].map(lambda v: "" if pd.isna(v) else f" {float(v):.2f}")
+        out.append("<div class=\"pagebreak\"></div>\n\n<div class=\"appendix-table\">\n\nTable E3: The 40 spot-check payees after unblinding (`results/spotcheck_unblinded.csv`, which also "
+                   "holds every reasoning). Judge columns: C coordinated, I independent, U unclear, then the judge's estimated coordinated share.\n\n" + md_table(t) + "\n\n</div>")
+    return "\n\n".join(out) + "\n"
 
 
 if __name__ == "__main__":
