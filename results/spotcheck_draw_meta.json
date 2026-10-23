@@ -1,0 +1,9 @@
+{
+  "eligible_payee_weeks": 571,
+  "eligible_payees": 365,
+  "eligible_flagged_payees": 109,
+  "eligible_unflagged_payees": 282,
+  "examined_payees_excluded": 66,
+  "drawn": 40,
+  "seed": 20261024
+}

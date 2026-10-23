@@ -1,0 +1,32 @@
+{
+  "root_wallet_printed_in": "x402-top-ten-self-funded [D4]",
+  "wallets_the_root_paid": 8,
+  "ring_payee_weeks": 107,
+  "ring_payees": 48,
+  "ring_payees_flagged_some_week": 48,
+  "flagged_payees_all": 135,
+  "flagged_payee_weeks_all": 258,
+  "ring_volume": 3878.1,
+  "market_volume": 696074.2192,
+  "by_window": {
+    "W1": {
+      "payee_weeks": 47,
+      "flagged": 47
+    },
+    "W2": {
+      "payee_weeks": 15,
+      "flagged": 15
+    },
+    "W3": {
+      "payee_weeks": 24,
+      "flagged": 24
+    },
+    "W4": {
+      "payee_weeks": 21,
+      "flagged": 0
+    }
+  },
+  "w4_main_payer_hop_at_k6": {
+    "5": 21
+  }
+}

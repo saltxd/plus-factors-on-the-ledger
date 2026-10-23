@@ -49,7 +49,9 @@ def shares(g: pd.DataFrame, vol: str) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--features", default=str(RES / "market_base_features.csv"))
+    ap.add_argument("--out", default=str(RES), help="where market_summary.json and market_agent402_comparison.csv go")
     a = ap.parse_args()
+    out_dir = Path(a.out)
     frozen = json.loads((RES / "frozen_rule.json").read_text())
     pop = pd.read_csv(RES / "market_base_population.csv")
     feats = pd.read_csv(a.features)
@@ -64,6 +66,12 @@ def main() -> None:
     for w, g in base.groupby("window"):
         out["base"]["by_window"][w] = shares(g, "x402_volume")
         out["base"]["by_window"][w]["decode_reference"] = DECODE_WEEKS.get(w)
+        top = g.sort_values("x402_volume", ascending=False).iloc[0]
+        rest = g[g["payee"] != top["payee"]]
+        out["base"]["by_window"][w]["largest_payee"] = {
+            "payee": top["payee"], "x402_volume": float(top["x402_volume"]), "share_of_window": float(top["x402_volume"] / g["x402_volume"].sum()),
+            "n_payments": int(top["n_payments"]), "flag_primary": bool(top["flag_primary"]),
+            "volume_share_flagged_without_it": float(rest.loc[rest["flag_primary"], "x402_volume"].sum() / rest["x402_volume"].sum())}
     for b, g in base.groupby("band"):
         out["base"]["by_band"][b] = shares(g, "x402_volume")
     for n in (10, 50):
@@ -98,7 +106,7 @@ def main() -> None:
         "crosstab_rule_by_agent402": {f"rule_{bool(r)}": {f"agent402_self_funded_{bool(c)}": int(ct.loc[r, c]) if (r in ct.index and c in ct.columns) else 0
                                                         for c in (False, True)} for r in (False, True)},
     }
-    m[["payee", "rule_flag_any_week", "agent402_self_funded", "base_verdicts"]].sort_values("payee").to_csv(RES / "market_agent402_comparison.csv", index=False)
+    m[["payee", "rule_flag_any_week", "agent402_self_funded", "base_verdicts"]].sort_values("payee").to_csv(out_dir / "market_agent402_comparison.csv", index=False)
     # BNB Chain
     bsc = pd.read_csv(RES / "market_bsc_features.csv")
     bsc = flags(bsc, frozen)
@@ -106,7 +114,7 @@ def main() -> None:
                   "other_payees": shares(bsc[~bsc["ring_wallet"]], "volume"),
                   "decode_reference": {"share_of_budgets_from_wallets_classed_cycling_and_linked": 0.901, "source": "set-and-earn-week-one-closed",
                                        "note": "ChainWard's own published class (timing and funding links), not the rule's evidence"}}
-    (RES / "market_summary.json").write_text(json.dumps(out, indent=2, default=float) + "\n")
+    (out_dir / "market_summary.json").write_text(json.dumps(out, indent=2, default=float) + "\n")
     print(json.dumps({k: v for k, v in out.items() if k != "agent402_board_2026_10_13"}, indent=1, default=float)[:6000])
 
 

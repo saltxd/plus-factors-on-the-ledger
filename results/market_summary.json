@@ -1,0 +1,646 @@
+{
+  "base": {
+    "floor_usd": 10.0,
+    "payee_weeks_in_population": 750,
+    "without_features": 0,
+    "distinct_payees": 431,
+    "reach_capped": 3,
+    "reach_capped_before_hop4": 0,
+    "pooled": {
+      "payee_weeks": 750,
+      "volume": 674943.969145,
+      "flag_primary": {
+        "count": 258,
+        "share": 0.344,
+        "volume": 199296.238438,
+        "volume_share": 0.2952781972264496
+      },
+      "flag_non_circular": {
+        "count": 336,
+        "share": 0.448,
+        "volume": 87985.617408,
+        "volume_share": 0.13035988382777566
+      },
+      "flag_outside_funding": {
+        "count": 240,
+        "share": 0.32,
+        "volume": 202121.553395,
+        "volume_share": 0.29946419648884615
+      }
+    },
+    "by_window": {
+      "W1": {
+        "payee_weeks": 216,
+        "volume": 126526.605338,
+        "flag_primary": {
+          "count": 89,
+          "share": 0.41203703703703703,
+          "volume": 62444.925455000004,
+          "volume_share": 0.49353197525679443
+        },
+        "flag_non_circular": {
+          "count": 98,
+          "share": 0.4537037037037037,
+          "volume": 12336.544144,
+          "volume_share": 0.09750158167165289
+        },
+        "flag_outside_funding": {
+          "count": 82,
+          "share": 0.37962962962962965,
+          "volume": 62183.00193500001,
+          "volume_share": 0.49146186897914396
+        },
+        "decode_reference": {
+          "x402_usd": 128252.0,
+          "x402_usd_as_published": 128977.37,
+          "verified_loops_share_min": 0.468,
+          "round_trip_share": 0.234,
+          "source": "x402-on-base-two-weeks-later (same method), x402-on-base"
+        },
+        "largest_payee": {
+          "payee": "0xfa02300b1a598daba1b27b2bf79f9775355dac82",
+          "x402_volume": 30000.0,
+          "share_of_window": 0.23710428269104947,
+          "n_payments": 2,
+          "flag_primary": false,
+          "volume_share_flagged_without_it": 0.6469193155228166
+        }
+      },
+      "W2": {
+        "payee_weeks": 190,
+        "volume": 230800.83332900002,
+        "flag_primary": {
+          "count": 56,
+          "share": 0.29473684210526313,
+          "volume": 61814.363489,
+          "volume_share": 0.26782556456754814
+        },
+        "flag_non_circular": {
+          "count": 81,
+          "share": 0.4263157894736842,
+          "volume": 14547.756862,
+          "volume_share": 0.06303164790251249
+        },
+        "flag_outside_funding": {
+          "count": 48,
+          "share": 0.25263157894736843,
+          "volume": 63719.197543,
+          "volume_share": 0.27607871524523525
+        },
+        "decode_reference": {
+          "x402_usd": 232810.0,
+          "verified_loops_share_min": 0.257,
+          "round_trip_share": 0.232,
+          "source": "x402-on-base-two-weeks-later"
+        },
+        "largest_payee": {
+          "payee": "0xfa02300b1a598daba1b27b2bf79f9775355dac82",
+          "x402_volume": 50000.0,
+          "share_of_window": 0.21663699943720058,
+          "n_payments": 1,
+          "flag_primary": false,
+          "volume_share_flagged_without_it": 0.3418920275467842
+        }
+      },
+      "W3": {
+        "payee_weeks": 179,
+        "volume": 110253.866438,
+        "flag_primary": {
+          "count": 71,
+          "share": 0.39664804469273746,
+          "volume": 48727.396039,
+          "volume_share": 0.4419563468679014
+        },
+        "flag_non_circular": {
+          "count": 80,
+          "share": 0.44692737430167595,
+          "volume": 42557.126703999995,
+          "volume_share": 0.38599214774868246
+        },
+        "flag_outside_funding": {
+          "count": 59,
+          "share": 0.329608938547486,
+          "volume": 49452.910901,
+          "volume_share": 0.44853674976386687
+        },
+        "decode_reference": {
+          "x402_usd": 109151.0,
+          "verified_loops_share_min": 0.406,
+          "round_trip_share": 0.071,
+          "source": "x402-on-base-two-weeks-later"
+        },
+        "largest_payee": {
+          "payee": "0x68396bd35874695ad86cd29410bd80a550991a2b",
+          "x402_volume": 11765.029,
+          "share_of_window": 0.10670853893923013,
+          "n_payments": 11833,
+          "flag_primary": true,
+          "volume_share_flagged_without_it": 0.3752949877418167
+        }
+      },
+      "W4": {
+        "payee_weeks": 165,
+        "volume": 207362.66403999995,
+        "flag_primary": {
+          "count": 42,
+          "share": 0.2545454545454545,
+          "volume": 26309.553454999997,
+          "volume_share": 0.1268770035184585
+        },
+        "flag_non_circular": {
+          "count": 77,
+          "share": 0.4666666666666667,
+          "volume": 18544.189698000002,
+          "volume_share": 0.08942877824150088
+        },
+        "flag_outside_funding": {
+          "count": 51,
+          "share": 0.3090909090909091,
+          "volume": 26766.443016,
+          "volume_share": 0.12908033922074225
+        },
+        "decode_reference": null,
+        "largest_payee": {
+          "payee": "0xfa02300b1a598daba1b27b2bf79f9775355dac82",
+          "x402_volume": 140000.0,
+          "share_of_window": 0.6751456471112572,
+          "n_payments": 2,
+          "flag_primary": false,
+          "volume_share_flagged_without_it": 0.3905658101552718
+        }
+      }
+    },
+    "by_band": {
+      "$10-100": {
+        "payee_weeks": 548,
+        "volume": 16147.194236,
+        "flag_primary": {
+          "count": 179,
+          "share": 0.3266423357664234,
+          "volume": 5789.800175,
+          "volume_share": 0.3585638526656044
+        },
+        "flag_non_circular": {
+          "count": 256,
+          "share": 0.46715328467153283,
+          "volume": 7765.567521000001,
+          "volume_share": 0.48092364577412156
+        },
+        "flag_outside_funding": {
+          "count": 155,
+          "share": 0.28284671532846717,
+          "volume": 5209.701166999999,
+          "volume_share": 0.3226381680220967
+        }
+      },
+      "$100-1k": {
+        "payee_weeks": 135,
+        "volume": 40006.016653,
+        "flag_primary": {
+          "count": 46,
+          "share": 0.34074074074074073,
+          "volume": 12823.265743999998,
+          "volume_share": 0.3205334301393988
+        },
+        "flag_non_circular": {
+          "count": 64,
+          "share": 0.4740740740740741,
+          "volume": 20579.235062,
+          "volume_share": 0.5144035018656823
+        },
+        "flag_outside_funding": {
+          "count": 52,
+          "share": 0.3851851851851852,
+          "volume": 16228.679709,
+          "volume_share": 0.4056559754439594
+        }
+      },
+      ">=$1k": {
+        "payee_weeks": 67,
+        "volume": 618790.758256,
+        "flag_primary": {
+          "count": 33,
+          "share": 0.4925373134328358,
+          "volume": 180683.17251899999,
+          "volume_share": 0.2919939739052301
+        },
+        "flag_non_circular": {
+          "count": 16,
+          "share": 0.23880597014925373,
+          "volume": 59640.814825,
+          "volume_share": 0.09638284675274027
+        },
+        "flag_outside_funding": {
+          "count": 33,
+          "share": 0.4925373134328358,
+          "volume": 180683.17251899999,
+          "volume_share": 0.2919939739052301
+        }
+      }
+    },
+    "top": {
+      "top10": {
+        "pooled": {
+          "payee_weeks": 40,
+          "volume": 545057.918517,
+          "flag_primary": {
+            "count": 21,
+            "share": 0.525,
+            "volume": 137964.24919300003,
+            "volume_share": 0.25311851182416495
+          },
+          "flag_non_circular": {
+            "count": 6,
+            "share": 0.15,
+            "volume": 34436.62349,
+            "volume_share": 0.06317975084867232
+          },
+          "flag_outside_funding": {
+            "count": 21,
+            "share": 0.525,
+            "volume": 137964.24919300003,
+            "volume_share": 0.25311851182416495
+          }
+        },
+        "by_window": {
+          "W1": {
+            "payee_weeks": 10,
+            "volume": 100164.33725400001,
+            "flag_primary": {
+              "count": 7,
+              "share": 0.7,
+              "volume": 50767.84325400001,
+              "volume_share": 0.506845496568916
+            },
+            "flag_non_circular": {
+              "count": 0,
+              "share": 0.0,
+              "volume": 0.0,
+              "volume_share": 0.0
+            },
+            "flag_outside_funding": {
+              "count": 7,
+              "share": 0.7,
+              "volume": 50767.84325400001,
+              "volume_share": 0.506845496568916
+            }
+          },
+          "W2": {
+            "payee_weeks": 10,
+            "volume": 189481.54297700003,
+            "flag_primary": {
+              "count": 5,
+              "share": 0.5,
+              "volume": 44620.918976999994,
+              "volume_share": 0.23548952724338035
+            },
+            "flag_non_circular": {
+              "count": 0,
+              "share": 0.0,
+              "volume": 0.0,
+              "volume_share": 0.0
+            },
+            "flag_outside_funding": {
+              "count": 5,
+              "share": 0.5,
+              "volume": 44620.918976999994,
+              "volume_share": 0.23548952724338035
+            }
+          },
+          "W3": {
+            "payee_weeks": 10,
+            "volume": 71670.604744,
+            "flag_primary": {
+              "count": 4,
+              "share": 0.4,
+              "volume": 26129.584605,
+              "volume_share": 0.3645788213777766
+            },
+            "flag_non_circular": {
+              "count": 4,
+              "share": 0.4,
+              "volume": 26990.016247,
+              "volume_share": 0.37658418459570075
+            },
+            "flag_outside_funding": {
+              "count": 4,
+              "share": 0.4,
+              "volume": 26129.584605,
+              "volume_share": 0.3645788213777766
+            }
+          },
+          "W4": {
+            "payee_weeks": 10,
+            "volume": 183741.433542,
+            "flag_primary": {
+              "count": 5,
+              "share": 0.5,
+              "volume": 16445.902357,
+              "volume_share": 0.08950568219682883
+            },
+            "flag_non_circular": {
+              "count": 2,
+              "share": 0.2,
+              "volume": 7446.607243,
+              "volume_share": 0.04052764310940155
+            },
+            "flag_outside_funding": {
+              "count": 5,
+              "share": 0.5,
+              "volume": 16445.902357,
+              "volume_share": 0.08950568219682883
+            }
+          }
+        }
+      },
+      "top50": {
+        "pooled": {
+          "payee_weeks": 200,
+          "volume": 658402.046394,
+          "flag_primary": {
+            "count": 80,
+            "share": 0.4,
+            "volume": 193588.230748,
+            "volume_share": 0.2940273831289905
+          },
+          "flag_non_circular": {
+            "count": 79,
+            "share": 0.395,
+            "volume": 80080.91788699999,
+            "volume_share": 0.12162920562837694
+          },
+          "flag_outside_funding": {
+            "count": 86,
+            "share": 0.43,
+            "volume": 196983.041713,
+            "volume_share": 0.2991835198445324
+          }
+        },
+        "by_window": {
+          "W1": {
+            "payee_weeks": 50,
+            "volume": 121896.487383,
+            "flag_primary": {
+              "count": 23,
+              "share": 0.46,
+              "volume": 60423.48094999999,
+              "volume_share": 0.4956950134268332
+            },
+            "flag_non_circular": {
+              "count": 19,
+              "share": 0.38,
+              "volume": 10046.971946,
+              "volume_share": 0.0824221613083264
+            },
+            "flag_outside_funding": {
+              "count": 24,
+              "share": 0.48,
+              "volume": 60376.88220000001,
+              "volume_share": 0.49531273210765486
+            }
+          },
+          "W2": {
+            "payee_weeks": 50,
+            "volume": 226153.36403599998,
+            "flag_primary": {
+              "count": 18,
+              "share": 0.36,
+              "volume": 60333.009258000006,
+              "volume_share": 0.26677918108879406
+            },
+            "flag_non_circular": {
+              "count": 17,
+              "share": 0.34,
+              "volume": 12636.252708999999,
+              "volume_share": 0.05587470592296168
+            },
+            "flag_outside_funding": {
+              "count": 21,
+              "share": 0.42,
+              "volume": 62556.726973,
+              "volume_share": 0.27661196745692435
+            }
+          },
+          "W3": {
+            "payee_weeks": 50,
+            "volume": 105761.24543999998,
+            "flag_primary": {
+              "count": 21,
+              "share": 0.42,
+              "volume": 47041.84088000001,
+              "volume_share": 0.4447928036805087
+            },
+            "flag_non_circular": {
+              "count": 25,
+              "share": 0.5,
+              "volume": 40376.128949,
+              "volume_share": 0.3817667689239345
+            },
+            "flag_outside_funding": {
+              "count": 22,
+              "share": 0.44,
+              "volume": 48041.492880000005,
+              "volume_share": 0.45424477255475115
+            }
+          },
+          "W4": {
+            "payee_weeks": 50,
+            "volume": 204590.94953499996,
+            "flag_primary": {
+              "count": 18,
+              "share": 0.36,
+              "volume": 25789.89966,
+              "volume_share": 0.12605591654281875
+            },
+            "flag_non_circular": {
+              "count": 18,
+              "share": 0.36,
+              "volume": 17021.564283,
+              "volume_share": 0.08319803159273217
+            },
+            "flag_outside_funding": {
+              "count": 19,
+              "share": 0.38,
+              "volume": 26007.93966,
+              "volume_share": 0.12712165283514043
+            }
+          }
+        }
+      }
+    },
+    "distinct_payees_flagged_any_week": 135
+  },
+  "agent402_board_2026_10_13": {
+    "rows": [
+      {
+        "rank": 1,
+        "payto": "0x589a2314a2e05f45e40c4823da3ba58d421db3d8",
+        "board_usdc": 2904,
+        "x402_volume_w4": 2862.79,
+        "flag_primary_w4": true
+      },
+      {
+        "rank": 2,
+        "payto": "0x0f99fc0cbd7a114b2da171fda5a0167858f7afc2",
+        "board_usdc": 2487,
+        "x402_volume_w4": 4521.700337,
+        "flag_primary_w4": false
+      },
+      {
+        "rank": 3,
+        "payto": "0x7284d41b5b852f2bd4c99bdf95043d84452d299c",
+        "board_usdc": 1776,
+        "x402_volume_w4": 1762.6,
+        "flag_primary_w4": false
+      },
+      {
+        "rank": 4,
+        "payto": "0xe9030014f5dae217d0a152f02a043567b16c1abf",
+        "board_usdc": 442,
+        "x402_volume_w4": 499.223609,
+        "flag_primary_w4": false
+      },
+      {
+        "rank": 5,
+        "payto": "0x17cd53c04d707ef0dd615ef56c633f02915a7905",
+        "board_usdc": 326,
+        "x402_volume_w4": 326.1,
+        "flag_primary_w4": true
+      },
+      {
+        "rank": 6,
+        "payto": "0x325bdf6f7efab24a2210c48c1b64cab2eae1d430",
+        "board_usdc": 278,
+        "x402_volume_w4": 285.265,
+        "flag_primary_w4": false
+      },
+      {
+        "rank": 7,
+        "payto": "0x159be9e316bc5fac8ce05aec4eaae46e8f8a4908",
+        "board_usdc": 218,
+        "x402_volume_w4": 218.04,
+        "flag_primary_w4": false
+      },
+      {
+        "rank": 8,
+        "payto": "0xd5ba9711a3d052846a3695c70e7fcb8b3168fe7d",
+        "board_usdc": 177,
+        "x402_volume_w4": 163.105,
+        "flag_primary_w4": true
+      },
+      {
+        "rank": 9,
+        "payto": "0x213c8d7434e2ae7aa1c392767c5120778d413215",
+        "board_usdc": 125,
+        "x402_volume_w4": 196.86,
+        "flag_primary_w4": false
+      },
+      {
+        "rank": 10,
+        "payto": "0x44adc7d3199486730d6346f2dc2424de97124700",
+        "board_usdc": 105,
+        "x402_volume_w4": 105.57,
+        "flag_primary_w4": true
+      }
+    ],
+    "board_usdc": 8838.0,
+    "flagged_board_usdc": 3512.0,
+    "flagged_share_of_board_usdc": 0.39737497171305725,
+    "flagged_ranks": [
+      1,
+      5,
+      8,
+      10
+    ]
+  },
+  "agent402_index": {
+    "index_as_of": [
+      "2026-10-23T16:04:23.652Z",
+      "2026-10-23T16:04:34.889Z"
+    ],
+    "market_payees_with_a_settlement_verdict": 58,
+    "crosstab_rule_by_agent402": {
+      "rule_False": {
+        "agent402_self_funded_False": 30,
+        "agent402_self_funded_True": 2
+      },
+      "rule_True": {
+        "agent402_self_funded_False": 19,
+        "agent402_self_funded_True": 7
+      }
+    }
+  },
+  "bsc": {
+    "pooled": {
+      "payee_weeks": 9131,
+      "volume": 495424.065754,
+      "flag_primary": {
+        "count": 1276,
+        "share": 0.13974373015003833,
+        "volume": 72240.27,
+        "volume_share": 0.14581501988615647
+      },
+      "flag_non_circular": {
+        "count": 49,
+        "share": 0.005366334465009309,
+        "volume": 3660.12,
+        "volume_share": 0.007387852655945486
+      },
+      "flag_outside_funding": {
+        "count": 1944,
+        "share": 0.21290110612200197,
+        "volume": 100939.81999999999,
+        "volume_share": 0.20374428086446872
+      }
+    },
+    "ring_wallets": {
+      "payee_weeks": 62,
+      "volume": 5534.0,
+      "flag_primary": {
+        "count": 62,
+        "share": 1.0,
+        "volume": 5534.0,
+        "volume_share": 1.0
+      },
+      "flag_non_circular": {
+        "count": 32,
+        "share": 0.5161290322580645,
+        "volume": 2784.0,
+        "volume_share": 0.5030719190458981
+      },
+      "flag_outside_funding": {
+        "count": 62,
+        "share": 1.0,
+        "volume": 5534.0,
+        "volume_share": 1.0
+      }
+    },
+    "other_payees": {
+      "payee_weeks": 9069,
+      "volume": 489890.065754,
+      "flag_primary": {
+        "count": 1214,
+        "share": 0.1338626088874187,
+        "volume": 66706.27,
+        "volume_share": 0.13616579445702987
+      },
+      "flag_non_circular": {
+        "count": 17,
+        "share": 0.0018745175873855994,
+        "volume": 876.1200000000001,
+        "volume_share": 0.0017884012378400563
+      },
+      "flag_outside_funding": {
+        "count": 1882,
+        "share": 0.2075201234976293,
+        "volume": 95405.81999999999,
+        "volume_share": 0.1947494482321435
+      }
+    },
+    "decode_reference": {
+      "share_of_budgets_from_wallets_classed_cycling_and_linked": 0.901,
+      "source": "set-and-earn-week-one-closed",
+      "note": "ChainWard's own published class (timing and funding links), not the rule's evidence"
+    }
+  }
+}

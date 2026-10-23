@@ -1,0 +1,76 @@
+{
+  "judges": [
+    "A",
+    "B"
+  ],
+  "n": 40,
+  "flagged": 25,
+  "unflagged": 15,
+  "A_flagged": {
+    "coordinated": 22,
+    "independent": 3,
+    "unclear": 0,
+    "n": 25,
+    "share_coordinated": 0.88,
+    "ci95": [
+      0.6878096927137645,
+      0.9745346033522668
+    ]
+  },
+  "A_unflagged": {
+    "coordinated": 4,
+    "independent": 10,
+    "unclear": 1,
+    "n": 15,
+    "share_coordinated": 0.26666666666666666,
+    "ci95": [
+      0.07787154629104359,
+      0.551003241036971
+    ]
+  },
+  "A_agrees_with_rule": 32,
+  "A_unclear": 1,
+  "B_flagged": {
+    "coordinated": 20,
+    "independent": 3,
+    "unclear": 2,
+    "n": 25,
+    "share_coordinated": 0.8,
+    "ci95": [
+      0.5929625677213226,
+      0.931688535987516
+    ]
+  },
+  "B_unflagged": {
+    "coordinated": 4,
+    "independent": 10,
+    "unclear": 1,
+    "n": 15,
+    "share_coordinated": 0.26666666666666666,
+    "ci95": [
+      0.07787154629104359,
+      0.551003241036971
+    ]
+  },
+  "B_agrees_with_rule": 30,
+  "B_unclear": 3,
+  "judges_agree": 38,
+  "consensus_n": 37,
+  "consensus_agrees_with_rule": 30,
+  "consensus_flagged": {
+    "coordinated": 20,
+    "n": 23,
+    "ci95": [
+      0.6641108624628789,
+      0.9722484925772068
+    ]
+  },
+  "consensus_unflagged": {
+    "coordinated": 4,
+    "n": 14,
+    "ci95": [
+      0.08388931830712759,
+      0.5810352571836614
+    ]
+  }
+}
