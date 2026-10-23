@@ -4,7 +4,7 @@ Every number below is read from the files in this folder by `src/report.py`.
 
 ## In plain words
 
-- **The test.** 123 cases (a payee in a 7-day window) from 20 case families on Base x402 and BNB Chain's TermiX escrow, labelled by ChainWard's published decodes. A rule was chosen on 10 development families, frozen in commit `81c736c`, then scored on 10 held-out families (5 coordinated).
+- **The test.** 123 cases (a payee in a 7-day window) from 20 case families on Base x402 and BNB Chain's TermiX escrow, labelled by ChainWard's published decodes. A rule was chosen on 10 development families, frozen in commit `f99f40e`, then scored on 10 held-out families (5 coordinated).
 - **The frozen rule** is `loop_share >= 0.4235`: flag a payee when at least 42% of its payment value comes from payers that its own money reached within 4 transfers (not counting exchanges and other hubs).
 - **On the test half** it caught 38 of 42 coordinated cases and flagged 1 of 6 others: family-weighted true-positive rate 0.84, false-positive rate 0.20, balanced accuracy 0.82 (bootstrap 95% interval 0.56 to 1.00, 10 families).
 - **Misses:** 4 test cases, all F04-botpay's main payTo in its four weeks. Its payers sit five transfers from the payTo, one beyond the reach limit, as written in hypothesis H5 before scoring. At K = 5 their loop share is at least 0.999 in every week.
@@ -18,7 +18,7 @@ Every number below is read from the files in this folder by `src/report.py`.
 
 ## The frozen rule
 
-Chosen by `src/select_rule.py` on the development half only (75 cases, 10 families), frozen in commit `81c736c503c333311cb03b2ef4ef29a7b7149548`. Selection: every single-feature threshold and every two-feature AND / OR rule over the eight pre-registered features, scored by family-weighted balanced accuracy; ties went to fewer features, then the widest margin. On dev the primary rule scored balanced accuracy 1.00; all 40 rules kept on the leaderboard in `frozen_rule.json` also scored 1.00 on dev, so the tie-break (fewest features, widest margin) decided. The margin rule put the threshold midway between the dev cases, which all sat near 0 or near 1; partial rings were not in the development set, which is why the positive control finds the cut-off near 42%.
+Chosen by `src/select_rule.py` on the development half only (75 cases, 10 families), frozen in commit `f99f40eb42b69b7d90dcf76305db08a6b42f92d2`. Selection: every single-feature threshold and every two-feature AND / OR rule over the eight pre-registered features, scored by family-weighted balanced accuracy; ties went to fewer features, then the widest margin. On dev the primary rule scored balanced accuracy 1.00; all 40 rules kept on the leaderboard in `frozen_rule.json` also scored 1.00 on dev, so the tie-break (fewest features, widest margin) decided. The margin rule put the threshold midway between the dev cases, which all sat near 0 or near 1; partial rings were not in the development set, which is why the positive control finds the cut-off near 42%.
 
 ## Errors
 

@@ -1,1 +1,6 @@
-81c736c503c333311cb03b2ef4ef29a7b7149548
+f99f40eb42b69b7d90dcf76305db08a6b42f92d2
+The rules were frozen in this commit (Oct 23, 2026, 11:10 UTC). Its ID was
+81c736c503c333311cb03b2ef4ef29a7b7149548 at first and 4037a540e0e9fb2126d5538e8054b21eba3617f9
+between the two history rewrites of Oct 23, 2026, both made before publication: the first
+replaced 62 BNB Chain wallet addresses with pseudonyms, the second removed the raw BNB Chain
+pull. Commit times did not change.

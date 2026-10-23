@@ -327,7 +327,7 @@ def positive_control_summary(pc: pd.DataFrame, feats: pd.DataFrame, frozen: dict
 
 def write_results_md(frozen: dict) -> None:
     tm = json.loads((RES / "test_metrics.json").read_text())
-    commit = (RES / "frozen_rule_commit.txt").read_text().strip()
+    commit = (RES / "frozen_rule_commit.txt").read_text().split()[0]  # first line: the commit ID; a note follows
     feats = pd.read_csv(RES / "case_features.csv")
     pred = pd.read_csv(RES / "predictions.csv")
     err = pd.read_csv(RES / "errors.csv")
