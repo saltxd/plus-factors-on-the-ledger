@@ -111,20 +111,54 @@ def se_orders(orders: pd.DataFrame) -> pd.DataFrame:
 
 
 def rebuild_ring48(orders: pd.DataFrame, owner: dict[int, str]) -> dict:
-    """The decode's description: agents with ids REDACTED..REDACTED, hired during the window by owners
-    of other agents in that id range."""
-    se = se_orders(orders)
+    """The decode's description: agents with ids REDACTED..REDACTED (registered Sep 4), each hired during
+    the window only by owners of other agents in the set, whose owners hire no agent outside it.
+    Candidates are window hires of in-range agents by owners of in-range agents; the ring is the union
+    of the candidates' connected hire components that are closed (no window hire in or out)."""
+    se = se_orders(orders).copy()
+    se["payee"] = se["agent_id"].map(owner)
     lo, hi = RING_ID_RANGE
-    owners_in_range = {owner[a] for a in owner if lo <= a <= hi and owner[a]}
-    r = se[se["agent_id"].between(lo, hi) & se["buyer"].isin(owners_in_range)]
-    agents = sorted(r["agent_id"].unique().tolist())
-    wallets = sorted({owner[a] for a in agents})
-    out_hires = se[se["buyer"].isin(wallets) & ~se["agent_id"].isin(agents)]
-    in_hires = se[se["agent_id"].isin(agents) & ~se["buyer"].isin(wallets)]
+    in_range = {a for a in owner if lo <= a <= hi and owner[a]}
+    owners_in_range = {owner[a] for a in in_range}
+    cand = se[se["agent_id"].isin(in_range) & se["buyer"].isin(owners_in_range)]
+    wallets = set(cand["buyer"]) | set(cand["payee"])
+    adj: dict[str, set[str]] = defaultdict(set)
+    for b, p in zip(cand["buyer"], cand["payee"]):
+        adj[b].add(p)
+        adj[p].add(b)
+    seen: set[str] = set()
+    comps = []
+    for w in sorted(wallets):
+        if w in seen:
+            continue
+        stack, comp = [w], set()
+        while stack:
+            x = stack.pop()
+            if x in seen:
+                continue
+            seen.add(x)
+            comp.add(x)
+            stack.extend(adj[x] - seen)
+        comps.append(comp)
+    closed, other = [], []
+    for comp in comps:
+        n_out = int((se["buyer"].isin(comp) & ~se["payee"].isin(comp)).sum())
+        n_in = int((~se["buyer"].isin(comp) & se["payee"].isin(comp)).sum())
+        (closed if n_out == 0 and n_in == 0 else other).append((comp, n_in, n_out))
+    ring_wallets = sorted(set().union(*[c for c, _, _ in closed])) if closed else []
+    r = se[se["buyer"].isin(ring_wallets) & se["payee"].isin(ring_wallets)]
     days = pd.to_datetime(r["created_ts"], unit="s", utc=True).dt.strftime("%m-%d").value_counts().sort_index().to_dict()
-    return {"agents": agents, "payees": wallets, "n_agents": len(agents), "n_payees": len(wallets), "orders": int(len(r)),
-            "orders_by_day": days, "hires_by_ring_wallets_outside_ring": int(len(out_hires)),
-            "hires_of_ring_agents_by_outsiders": int(len(in_hires))}
+    return {
+        "payees": ring_wallets,
+        "agents": sorted(r["agent_id"].unique().tolist()),
+        "n_payees": len(ring_wallets),
+        "closed_component_sizes": sorted((len(c) for c, _, _ in closed), reverse=True),
+        "excluded_open_components": [{"size": len(c), "hires_in": i, "hires_out": o_} for c, i, o_ in other],
+        "candidate_wallets": len(wallets),
+        "orders": int(len(r)),
+        "orders_unsettled": int((r["settled_block"] <= 0).sum()),
+        "orders_by_day": days,
+    }
 
 
 def rebuild_group14(orders: pd.DataFrame, owner: dict[int, str]) -> dict:

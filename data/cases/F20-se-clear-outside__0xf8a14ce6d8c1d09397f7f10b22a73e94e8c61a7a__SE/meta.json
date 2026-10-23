@@ -1,0 +1,38 @@
+{
+  "case_id": "F20-se-clear-outside|0xf8a14ce6d8c1d09397f7f10b22a73e94e8c61a7a|SE",
+  "family": "F20-se-clear-outside",
+  "label": "N",
+  "y": 0,
+  "half": "dev",
+  "payee": "0xf8a14ce6d8c1d09397f7f10b22a73e94e8c61a7a",
+  "window": "SE",
+  "chain": "bsc",
+  "market": "termix-bsc",
+  "contested": false,
+  "t0": 1790812800,
+  "t1": 1791417600,
+  "window_blocks": [
+    125000755,
+    126344213
+  ],
+  "data_blocks": [
+    122313771,
+    126344213
+  ],
+  "hub_threshold": 1000,
+  "k": 6,
+  "graph": "termix hire graph only",
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 7,
+  "n_payers": 7,
+  "volume": 7.0,
+  "agents": [
+    355860
+  ]
+}

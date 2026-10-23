@@ -1,7 +1,11 @@
 .venv/
 __pycache__/
 *.pyc
-data/raw/
+data/raw/base/
+data/raw/base_mac/
+data/raw/bsc_sentio/
+*.partial.tsv
+*.part
 *.duckdb
 *.duckdb.wal
 .DS_Store

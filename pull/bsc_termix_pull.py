@@ -278,7 +278,9 @@ def main() -> None:
         with open(partial, "a") as fh:
             for i in range(0, len(todo), 5):
                 group = todo[i : i + 5]
-                res = c.batch([("eth_call", [{"to": REGISTRY, "data": "0x6352211e" + format(a, "064x")}, hex(args.block)]) for a in group])
+                calls = [("eth_call", [{"to": REGISTRY, "data": "0x6352211e" + format(a, "064x")}, hex(args.block)]) for a in group]
+                # some endpoints answer a one-element batch with a bare object
+                res = c.batch(calls) if len(calls) > 1 else [c.call(*calls[0])]
                 for a, r in zip(group, res):
                     owner = ("0x" + r[-40:]) if isinstance(r, str) and len(r) >= 42 else "ERROR"
                     fh.write(f"{a}\t{owner}\n")

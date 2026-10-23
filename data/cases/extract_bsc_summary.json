@@ -1,0 +1,3182 @@
+[
+  {
+    "case_id": "F08-se-ring48|ring48-01|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-01",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 5,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-02|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-02",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 4,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-03|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-03",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-04|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-04",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-05|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-05",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-06|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-06",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 4,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-07|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-07",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-08|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-08",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-09|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-09",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-10|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-10",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 4,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-11|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-11",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 2,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-12|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-12",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 2,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-13|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-13",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-14|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-14",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-15|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-15",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 4,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-16|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-16",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-17|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-17",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 2,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-18|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-18",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-19|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-19",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-20|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-20",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 4,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-21|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-21",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-22|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-22",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 5,
+    "n_payers": 5,
+    "volume": 100.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-23|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-23",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 4,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-24|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-24",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-25|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-25",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 2,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-26|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-26",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 4,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-27|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-27",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 2,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-28|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-28",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 3,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-29|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-29",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 2,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-30|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-30",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 2,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-31|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-31",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 4,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-32|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-32",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 4,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-33|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-33",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-34|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-34",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-35|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-35",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 2,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-36|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-36",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 4,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-37|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-37",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 4,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-38|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-38",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 7,
+    "n_payers": 4,
+    "volume": 154.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-39|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-39",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-40|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-40",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-41|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-41",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 3,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-42|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-42",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 4,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-43|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-43",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 2,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-44|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-44",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 4,
+    "volume": 83.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-45|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-45",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        5
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 2,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-46|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-46",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 4,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-47|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-47",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 3,
+    "volume": 80.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F08-se-ring48|ring48-48|SE",
+    "family": "F08-se-ring48",
+    "label": "C",
+    "y": 1,
+    "half": "dev",
+    "payee": "ring48-48",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 6,
+    "n_payers": 5,
+    "volume": 132.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-01|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-01",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 3,
+    "n_payers": 2,
+    "volume": 90.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-02|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-02",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 1,
+    "n_payers": 1,
+    "volume": 20.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-03|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-03",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 3,
+    "n_payers": 2,
+    "volume": 90.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-04|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-04",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 3,
+    "n_payers": 2,
+    "volume": 90.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-05|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-05",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 3,
+    "n_payers": 3,
+    "volume": 90.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-06|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-06",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 3,
+    "n_payers": 2,
+    "volume": 72.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-07|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-07",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 4,
+    "n_payers": 2,
+    "volume": 110.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-08|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-08",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        3
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 3,
+    "n_payers": 2,
+    "volume": 90.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-09|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-09",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 3,
+    "n_payers": 3,
+    "volume": 68.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-10|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-10",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 3,
+    "n_payers": 1,
+    "volume": 72.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-11|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-11",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        9
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 1,
+    "n_payers": 1,
+    "volume": 20.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-12|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-12",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 3,
+    "n_payers": 3,
+    "volume": 70.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-13|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-13",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 3,
+    "n_payers": 2,
+    "volume": 70.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F09-se-group14|group14-14|SE",
+    "family": "F09-se-group14",
+    "label": "C",
+    "y": 1,
+    "half": "test",
+    "payee": "group14-14",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 2,
+    "n_payers": 2,
+    "volume": 40.0,
+    "agents": [
+      "REDACTED"
+    ]
+  },
+  {
+    "case_id": "F20-se-clear-outside|0xe7ee2a3fcd936fd148ed563144beeeb3e46bd80b|SE",
+    "family": "F20-se-clear-outside",
+    "label": "N",
+    "y": 0,
+    "half": "dev",
+    "payee": "0xe7ee2a3fcd936fd148ed563144beeeb3e46bd80b",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 11,
+    "n_payers": 11,
+    "volume": 11.0,
+    "agents": [
+      352475
+    ]
+  },
+  {
+    "case_id": "F20-se-clear-outside|0xf8a14ce6d8c1d09397f7f10b22a73e94e8c61a7a|SE",
+    "family": "F20-se-clear-outside",
+    "label": "N",
+    "y": 0,
+    "half": "dev",
+    "payee": "0xf8a14ce6d8c1d09397f7f10b22a73e94e8c61a7a",
+    "window": "SE",
+    "chain": "bsc",
+    "market": "termix-bsc",
+    "contested": false,
+    "t0": 1790812800,
+    "t1": 1791417600,
+    "window_blocks": [
+      125000755,
+      126344213
+    ],
+    "data_blocks": [
+      122313771,
+      126344213
+    ],
+    "hub_threshold": 1000,
+    "k": 6,
+    "graph": "termix hire graph only",
+    "reach_by_hop": [
+      [
+        0,
+        1
+      ]
+    ],
+    "reach_capped": false,
+    "n_payments": 7,
+    "n_payers": 7,
+    "volume": 7.0,
+    "agents": [
+      355860
+    ]
+  }
+]

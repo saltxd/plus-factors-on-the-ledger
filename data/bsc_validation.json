@@ -36,5 +36,221 @@
     "2026-09-30": 6725
   },
   "lookback_published_note": "set-and-earn-week-one: 1,938 to 7,249 BSC orders a day from Sep 20 to Sep 28",
-  "double_query_disagreements": []
+  "double_query_disagreements": [],
+  "payee_is_owner_sample": {
+    "sampled": 30,
+    "matched": 30,
+    "rows": [
+      {
+        "settle_tx": "0x0b34f79b1cfd757153b9a3cc6e11d635bd12df4862bedb6dacf6c7ec3f1a053a",
+        "agent_id": 255655,
+        "paid_to": "0xb843d14bef472a5f0b6e2fcc784c16766d97f270",
+        "owner_of": "0xb843d14bef472a5f0b6e2fcc784c16766d97f270",
+        "match": true
+      },
+      {
+        "settle_tx": "0x769e1dd0754efbcd1447c63e6a566d03addbea562858d55f0dd2152b2e5a06bd",
+        "agent_id": 261867,
+        "paid_to": "0x4846ffe8a0f595f999a2e1532a6f9b59e95dc3eb",
+        "owner_of": "0x4846ffe8a0f595f999a2e1532a6f9b59e95dc3eb",
+        "match": true
+      },
+      {
+        "settle_tx": "0xf5343d708088bd6f3f73a708cdad08d10c7a1fbc39a90aacd3f70ea7dd53c044",
+        "agent_id": 325938,
+        "paid_to": "0x11a79cd3d288861dc1a1cbcbe07edb3e1a88d026",
+        "owner_of": "0x11a79cd3d288861dc1a1cbcbe07edb3e1a88d026",
+        "match": true
+      },
+      {
+        "settle_tx": "0x25691fb7614e8c6525871093d14307832afb4a79ad859268ce1e3ec278382d65",
+        "agent_id": 339939,
+        "paid_to": "0xd77b4b31b6d04a091926fdefb17c3e47a744f6b5",
+        "owner_of": "0xd77b4b31b6d04a091926fdefb17c3e47a744f6b5",
+        "match": true
+      },
+      {
+        "settle_tx": "0xdf4234ce5272aeb196579b7789a8d241612136df1ec818031085ec97f4ab1bfe",
+        "agent_id": 253681,
+        "paid_to": "0xa37259943fc84ef7c3a408073377b042562a7c7f",
+        "owner_of": "0xa37259943fc84ef7c3a408073377b042562a7c7f",
+        "match": true
+      },
+      {
+        "settle_tx": "0xff2e550b5ce3e7c52917dd932f72ac0ce74c1b7291a15e037956f28319b1d55c",
+        "agent_id": 256272,
+        "paid_to": "0x0f256616483e81385a788c9f65adaa8319b19fb9",
+        "owner_of": "0x0f256616483e81385a788c9f65adaa8319b19fb9",
+        "match": true
+      },
+      {
+        "settle_tx": "0x952db1d6d9ab40abd68dda2339804417e5fada1b2a9a54977d304fe9c3291eec",
+        "agent_id": 256543,
+        "paid_to": "0x9a92e983fa794b9102bff5a8818ecd990df575d6",
+        "owner_of": "0x9a92e983fa794b9102bff5a8818ecd990df575d6",
+        "match": true
+      },
+      {
+        "settle_tx": "0x9852e9e87ff5fe18108301d2dc956191eb345520590184454ecb3fa492b07459",
+        "agent_id": 264801,
+        "paid_to": "0xc425c6c62d7196d94af45ff85b08b1eb9a7d2ed7",
+        "owner_of": "0xc425c6c62d7196d94af45ff85b08b1eb9a7d2ed7",
+        "match": true
+      },
+      {
+        "settle_tx": "0x0537c23b4fa6654309556e874b9a95c9b07bdeab663c0677708d812f9b1a323e",
+        "agent_id": 300838,
+        "paid_to": "0x42b2df49385a5ccee45b5b67ce09f543580c83ea",
+        "owner_of": "0x42b2df49385a5ccee45b5b67ce09f543580c83ea",
+        "match": true
+      },
+      {
+        "settle_tx": "0x436c8ae966d48224520dec098a1d885d7d3bddb3dc46ea36eea44c1c82d236dc",
+        "agent_id": 261779,
+        "paid_to": "0x540a938cc9f656fe99e3ea1fd74e581b8c4726bc",
+        "owner_of": "0x540a938cc9f656fe99e3ea1fd74e581b8c4726bc",
+        "match": true
+      },
+      {
+        "settle_tx": "0x5c49ff07db9e510360ba0a8ef681bc4c38bceaeb140b2e59238af09ec6cfb4f0",
+        "agent_id": 267692,
+        "paid_to": "0xff4012cb40cb62b8dd806439adc6604549911d4a",
+        "owner_of": "0xff4012cb40cb62b8dd806439adc6604549911d4a",
+        "match": true
+      },
+      {
+        "settle_tx": "REDACTED",
+        "agent_id": "REDACTED",
+        "paid_to": "ring48-16",
+        "owner_of": "ring48-16",
+        "match": true
+      },
+      {
+        "settle_tx": "0x92b871680b7511b16ddfd0caa7d3cbec320dba41a6106c62864c2f904076d201",
+        "agent_id": 261526,
+        "paid_to": "0x314e37a074421bd5d592a6f47a17a327b7104e86",
+        "owner_of": "0x314e37a074421bd5d592a6f47a17a327b7104e86",
+        "match": true
+      },
+      {
+        "settle_tx": "REDACTED",
+        "agent_id": "REDACTED",
+        "paid_to": "ring48-35",
+        "owner_of": "ring48-35",
+        "match": true
+      },
+      {
+        "settle_tx": "0x4cf3c15368a3810accc1e4c3bee8d2083b6df5d3b4ebf2811d3ab2798444a766",
+        "agent_id": 263768,
+        "paid_to": "0x3e48065c7467a7a93bc88a24bae47494536492a5",
+        "owner_of": "0x3e48065c7467a7a93bc88a24bae47494536492a5",
+        "match": true
+      },
+      {
+        "settle_tx": "0x8d5daccfd0058d1a20cb4acb760b27873b7939d55f366ca1c4cdf99f5bfb7dfe",
+        "agent_id": 325620,
+        "paid_to": "0xb20fc25b12b473ab05927ff114698e1e6f5b653e",
+        "owner_of": "0xb20fc25b12b473ab05927ff114698e1e6f5b653e",
+        "match": true
+      },
+      {
+        "settle_tx": "0x9551d54bdb7a677ad94afb82c7b321c33cf185fb833c44fe445e508a031769ca",
+        "agent_id": 260556,
+        "paid_to": "0xba92bf49b96ccdb9df7d80943fcdd2da9cc30589",
+        "owner_of": "0xba92bf49b96ccdb9df7d80943fcdd2da9cc30589",
+        "match": true
+      },
+      {
+        "settle_tx": "0x52c1730f0304dece4d45286034a69c6dd12cd2910fbd1e439bed063c021d6a19",
+        "agent_id": 259744,
+        "paid_to": "0x680d459eefe75b465bd8715cea3e96a206268800",
+        "owner_of": "0x680d459eefe75b465bd8715cea3e96a206268800",
+        "match": true
+      },
+      {
+        "settle_tx": "0x1ec6760ddc58648f15045c8834099ca6c5c49b811708410b032dfce25cca6015",
+        "agent_id": 267000,
+        "paid_to": "0x464cd9ca8f4bf0a5c560930f6133d8e1d296194b",
+        "owner_of": "0x464cd9ca8f4bf0a5c560930f6133d8e1d296194b",
+        "match": true
+      },
+      {
+        "settle_tx": "0xa299ec5b28fdf50f72ad27522dd9c89bef345b36395b261d4c8aa0d6bb2bc78c",
+        "agent_id": 339932,
+        "paid_to": "0x9ef96aeff642343fa1b6d5162636d3b22be653ed",
+        "owner_of": "0x9ef96aeff642343fa1b6d5162636d3b22be653ed",
+        "match": true
+      },
+      {
+        "settle_tx": "0x8ff467225ccacbced8e7c049d32f3fd5b5482d9e664e0cda65bf992625ecc934",
+        "agent_id": 358157,
+        "paid_to": "0xc5c608eefd778f7ce77a26d60574317e7c398917",
+        "owner_of": "0xc5c608eefd778f7ce77a26d60574317e7c398917",
+        "match": true
+      },
+      {
+        "settle_tx": "0xa65c9297843ef92efbda6f0281234a37ea10a384e51c0ef1f60394d1b2cc3dbe",
+        "agent_id": 357719,
+        "paid_to": "0x69395d557d4e426c3f14328a7878746b9a349c35",
+        "owner_of": "0x69395d557d4e426c3f14328a7878746b9a349c35",
+        "match": true
+      },
+      {
+        "settle_tx": "0x51c64683dceb1f18574a85c33777e3be2f68c38b5e4668bf8794b8798bc524e8",
+        "agent_id": 257313,
+        "paid_to": "0x69e20e44ee3ab80584fc80828b7520663436e86c",
+        "owner_of": "0x69e20e44ee3ab80584fc80828b7520663436e86c",
+        "match": true
+      },
+      {
+        "settle_tx": "0xeb41e5aae0601e827ef26d49b4f07141edb578844be2be0688fe445652916f1a",
+        "agent_id": 357959,
+        "paid_to": "0x83720fc64e0eccfa690a54d37a99be9546c098c7",
+        "owner_of": "0x83720fc64e0eccfa690a54d37a99be9546c098c7",
+        "match": true
+      },
+      {
+        "settle_tx": "0x7f31253bce71ee2b6e53e04dcb42f2500e1bb84655de97a9861c7382a31d4116",
+        "agent_id": 255863,
+        "paid_to": "0xd477fffda550846ecc4ec0553fcc409b3f25be75",
+        "owner_of": "0xd477fffda550846ecc4ec0553fcc409b3f25be75",
+        "match": true
+      },
+      {
+        "settle_tx": "0xda5abe9466c4575c9a3750bd98d80b5a01ea67a4220ae54b176e0a94cd72e0e3",
+        "agent_id": 255694,
+        "paid_to": "0x27d1e907a997cc3a52865c3bd20db3e59fb818f4",
+        "owner_of": "0x27d1e907a997cc3a52865c3bd20db3e59fb818f4",
+        "match": true
+      },
+      {
+        "settle_tx": "0x672cbdb2f62aa93286877ad79629cc4085ad774d560d6078ff8da4048362777a",
+        "agent_id": 266536,
+        "paid_to": "0x4c1cc1429363785c9e00741e191a6a0660b87b28",
+        "owner_of": "0x4c1cc1429363785c9e00741e191a6a0660b87b28",
+        "match": true
+      },
+      {
+        "settle_tx": "0x09cafd255feeaf1b697fbe9f68715132ab5b41de79e27abdf5b7b5bdddb3759f",
+        "agent_id": 267364,
+        "paid_to": "0x712962f77411fd41f15ece38c6b1ce383889154a",
+        "owner_of": "0x712962f77411fd41f15ece38c6b1ce383889154a",
+        "match": true
+      },
+      {
+        "settle_tx": "0x61bad2f1a59c2d2c632e20d99481dfcedf6dca8d005982091d9476f7de9d1eab",
+        "agent_id": 261439,
+        "paid_to": "0x35650b4012247ad3dda9fa6f65f4afb12f8b53e9",
+        "owner_of": "0x35650b4012247ad3dda9fa6f65f4afb12f8b53e9",
+        "match": true
+      },
+      {
+        "settle_tx": "0x6b8034eda8c58d7951e07e8c513305c8fddcf5c66e79027c410e08180a7ca6ec",
+        "agent_id": 261107,
+        "paid_to": "0x776ba7e4c0b241ce3fa07e65bf8b2d6bc6d41ba8",
+        "owner_of": "0x776ba7e4c0b241ce3fa07e65bf8b2d6bc6d41ba8",
+        "match": true
+      }
+    ]
+  }
 }
