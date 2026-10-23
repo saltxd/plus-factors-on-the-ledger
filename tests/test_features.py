@@ -79,3 +79,26 @@ def test_compute_features_runs():
     assert f["loop_share"] == pytest.approx(1.0)
     assert f["loop_share_1hop"] == pytest.approx(0.5)
     assert f["outside_funding_share"] == pytest.approx(0.0)
+
+
+def test_injected_ring_moves_loop_share_by_phi():
+    from controls import inject, shuffle_times
+
+    rng = np.random.default_rng(3)
+    pay = [(f"b{i % 20}", float(rng.uniform(0.5, 2.0)), int(T0 + rng.integers(0, T1 - T0))) for i in range(400)]
+    inf = [(f"b{i}", f"ex{i % 3}", 50.0, T0 + 10 * i, i, -1, 0, 1, 0) for i in range(20)]
+    cd = mk(pay, inf, [("owner", 100.0, T0 + 5000)], {f"b{i}": None for i in range(20)})
+    cd.meta = {"payee": "S"}
+    base = compute_features(cd, n_null=10)
+    assert base["loop_share"] == 0.0
+    for route, expect_loop in (("direct", True), ("relay4", True), ("relay5", False), ("via_hub", False), ("common_funder", False)):
+        f = compute_features(inject(cd, 0.2, route, seed=1), n_null=10)
+        if expect_loop:
+            assert f["loop_share"] == pytest.approx(0.2, abs=1e-6), route
+        else:
+            assert f["loop_share"] == pytest.approx(0.0, abs=1e-9), route
+    cf = compute_features(inject(cd, 0.2, "common_funder", seed=1), n_null=10)
+    assert cf["shared_funder_share_nonhub"] >= 0.2 - 1e-9
+    sh = shuffle_times(cd, 5)
+    assert sorted(sh.payments["value"]) == sorted(cd.payments["value"])
+    assert sh.payments["ts"].between(T0, T1 - 1).all()
