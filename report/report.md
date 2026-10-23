@@ -1,9 +1,3 @@
-<!--
-DRAFT NOTE FOR THE USER: the author line "Marley, ChainWard (chainward.ai)" is a placeholder.
-Change the name or affiliation below before submitting. This comment does not appear in the PDF.
-Build the PDF with: bash report/build_pdf.sh
--->
-
 # Plus Factors on the Ledger: Testing Evidence of Coordinated Demand in Live AI-Agent Payment Markets
 
 <p class="authors">Marley, ChainWard (chainward.ai)</p>
@@ -82,11 +76,11 @@ Table 1: The evidence features (code: `src/features.py`). Timing nulls shift eac
 
 ### 3.4 Protocol
 
-1. The case registry and the split were committed first (commit `4387376`, Oct 23 06:01 UTC). Whole families are split, so weekly repeats of a seller and the members of a ring never straddle halves; the split is stratified by coordinated × chain with a seeded shuffle (seed 20261023): 10 development families (4 coordinated, 75 cases) and 10 test families (5 coordinated, 48 cases).
-2. Hypotheses H1 to H5 and the positive-control prediction were committed at 06:50 UTC (`5048466`), before any feature was computed.
+1. The case registry and the split were committed first (commit `dd05819`, Oct 23 06:01 UTC). Whole families are split, so weekly repeats of a seller and the members of a ring never straddle halves; the split is stratified by coordinated × chain with a seeded shuffle (seed 20261023): 10 development families (4 coordinated, 75 cases) and 10 test families (5 coordinated, 48 cases).
+2. Hypotheses H1 to H5 and the positive-control prediction were committed at 06:50 UTC (`d765207`), before any feature was computed.
 3. Features were computed for all cases without printing test-half values.
 4. The rule search read the development half only: every single-feature threshold and every two-feature AND or OR rule over the eight pre-registered features, scored by family-weighted balanced accuracy (each family weighs 1, split equally across its cases). Ties go to fewer features, then the wider margin (distance from the threshold to the nearest development value, as a share of the feature's range), then the name. A second rule was chosen the same way from the features the decodes did not use for labelling (`payer_hhi`, `timing_coupling`, `relay_share`), and the best threshold for each single feature was recorded.
-5. The rules were frozen in commit `81c736c503c333311cb03b2ef4ef29a7b7149548` (11:10 UTC) and then scored on the test half (`2052b45`, 11:43 UTC). Commit times are the repository's own and are not externally timestamped.
+5. The rules were frozen in commit `f99f40eb42b69b7d90dcf76305db08a6b42f92d2` (11:10 UTC) and then scored on the test half (`563d219`, 11:43 UTC). Commit times are the repository's own and are not externally timestamped.
 
 Uncertainty comes from a bootstrap over families, resampled with replacement within each class (B = 5,000), and an exact permutation test over all 252 ways of choosing which 5 of the 10 test families are coordinated. Deviations from the plan, all disclosed in the repository: before the freeze, a smoke test on a one-day slice printed feature values for three development cases and payment counts for test cases, and showed that the payers of BotPay, a test family, sit five transfers from its payTo (no test-half feature value was seen, and K = 4 was kept); the two exploratory features were added after it; the 48-wallet ring was first rebuilt by id range alone (58 wallets, rejected before features were computed); and a fine positive-control grid was added after the pre-set grid ran.
 
@@ -199,6 +193,8 @@ H1 (loop share separates) held. H2 (a shared-funder rule flags the L cases) fail
 
 On two live markets built for AI agents, a rule frozen before it saw the test half reproduced the decodes' split of coordinated from independent demand by asking one question: did the payee's own money come back as its payments? Whether the buyers had outside money did as well; a shared funder, a few large payers and synchronized timing, the ledger's parallel conduct, did not. This suggests a screening standard for markets that rank or reward agents by demand, with known limits: labels from one team that partly share the rule's evidence, ten test families, and blind spots at exchanges, beyond four transfers, and outside USDC on Base and TermiX's hire records. The next step is labels the rule did not inform, from another team or a market's own enforcement.
 
+**Code and Data:** https://github.com/saltxd/onchain-collusion-evidence
+
 <div class="pagebreak"></div>
 
 ## References
@@ -274,21 +270,23 @@ Victor, F., and Weintraud, A. M. (2021). Detecting and quantifying wash trading 
 - *No talk.* Payment ledgers carry no messages, so case type (c) of question 2.3, collusive talk that never changes behaviour, cannot be tested here. The nearest analogue is a visible link without a loop (the 12 L cases, 0 flagged), which is not talk and is in-sample.
 - *Timing noise.* The timing rule's thresholds sit inside the null's sampling noise; its outputs change with the number of null draws.
 
-**Dual use.** Published thresholds can teach rings to stay under them: keep a ring below about a third of a seller's volume, route the seller's money through an exchange or another hub, add a fifth hop, or fund the buyers from wallets the seller never paid. The positive control measures the first three directly (0% detection). We publish anyway, for four reasons. Each evasion has a cost: exchange round trips cost fees and time and, on regulated exchanges, tie wallets to identities; longer chains cost fees; outside funding means bringing capital that cannot simply be recycled; a smaller ring makes less fake demand. A market can require positive evidence that a ring cannot cheaply fake, such as outside funders and buyers who also pay other sellers, instead of the mere absence of a detected loop. Defenders can vary K, the hub threshold and the cut-off privately per market; the protocol, not the number, is the contribution. And cycle detection in transfer graphs is already public in the wash-trading literature. We publish no new wallet lists: every payee in the case set was named in a decode before the sprint.
+**Dual use.** Published thresholds can teach rings to stay under them: keep a ring below about a third of a seller's volume, route the seller's money through an exchange or another hub, add a fifth hop, or fund the buyers from wallets the seller never paid. The positive control measures the first three directly (0% detection). We publish anyway, for four reasons. Each evasion has a cost: exchange round trips cost fees and time and, on regulated exchanges, tie wallets to identities; longer chains cost fees; outside funding means bringing capital that cannot simply be recycled; a smaller ring makes less fake demand. A market can require positive evidence that a ring cannot cheaply fake, such as outside funders and buyers who also pay other sellers, instead of the mere absence of a detected loop. Defenders can vary K, the hub threshold and the cut-off privately per market; the protocol, not the number, is the contribution. And cycle detection in transfer graphs is already public in the wash-trading literature. Every Base payee was named, in full or by prefix, in a decode before the sprint; the per-case tables add only the public payment records of those payees. The 62 BNB Chain ring wallets appear only under pseudonyms: the decodes describe these rings without listing them, and the code can rebuild them from public escrow logs, which the repository does not include. The two other BNB Chain payees, owners of two agents the decode cleared, appear by address.
 
 **Privacy and ethics.** Only public on-chain data and published decodes are used. Cases are wallets and contracts, not people, and we make no claim about who controls them. No private label sets, tip clusters or paid wallet lists are used. A label of "coordinated" can hurt a seller's reputation if it is wrong; we report every error, and the one false positive (Losbeto) is a case where the ledger cannot say why money moved, so we do not claim it is self-funded.
 
-**AI assistance.** The code, the analysis and this report were written with AI coding agents. The team is responsible for every claim, number and reference in it.
+**LLM Usage Statement.** AI coding agents wrote the code and this report under the author's direction; the author chose to enter, approved the approach and decided what to publish. Every number was checked against the result files and every reference against its source in separate review passes before submission. The author is responsible for every claim, number and reference.
+
+**Competing interests.** ChainWard sells on-chain wallet checks built on similar evidence, and its published investigations supplied the case labels.
 
 ## Appendix B: Reproduction
 
-Code, case registry, per-case evidence tables and results: repository `onchain-collusion-evidence` (link to be published). Python 3.12; `pip install -r requirements.txt`. Every number in this report is read from `results/` (generated by `src/report.py`) or from `data/`.
+Code, case registry, per-case evidence tables and results: https://github.com/saltxd/onchain-collusion-evidence. The raw pulls are not included: Base's is about 4.5 GB, and BNB Chain's contains wallet lists our decodes chose not to publish; the scripts in `pull/` re-pull both (below). Python 3.12; `pip install -r requirements.txt`. Every number in this report is read from `results/` (generated by `src/report.py`) or from `data/`.
 
 ```
 # From the committed per-case tables (data/cases*), no chain access needed
 python src/run_features.py --sensitivity   # all features; test-half values not printed
 python src/select_rule.py                   # development half only -> results/frozen_rule.json
-git show 81c736c:results/frozen_rule.json   # the rules as frozen before test scoring
+git show f99f40e:results/frozen_rule.json   # the rules as frozen before test scoring
 python src/evaluate.py                      # test half, bootstrap, AUCs, errors
 python src/controls.py                      # positive control, shuffle, permutation test
 python src/controls.py --which boundary     # fine grid near the threshold
@@ -304,11 +302,13 @@ python src/extract_base.py --db data/base.duckdb --out data/cases --hub 1000 --k
 python src/extract_base.py --db data/base.duckdb --out data/cases_h300 --hub 300 --k 6
 python src/extract_base.py --db data/base.duckdb --out data/cases_h3000 --hub 3000 --k 6
 
-# BNB Chain (raw escrow pull committed in data/raw/bsc; the first two lines re-pull it)
+# BNB Chain (the raw pull is not included; these lines re-pull it and rebuild the tables)
 python pull/bsc_termix_pull.py anchors --start 122313771 --end 126344213 --seg 50000
 python pull/bsc_termix_pull.py escrow --start 122313771 --end 126344213
 python src/extract_bsc.py --stage orders
 python pull/bsc_termix_pull.py owners --ids data/raw/bsc/agents.txt --block 126344213
+tail -n +2 data/bsc_settle_sample.csv | cut -d, -f1 > data/raw/bsc/settle_sample.txt
+python pull/bsc_termix_pull.py receipts --txs data/raw/bsc/settle_sample.txt
 python src/extract_bsc.py --stage cases
 
 # This report (pandoc and Google Chrome)
