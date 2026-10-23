@@ -1,0 +1,23 @@
+{
+  "markets": [
+    "F10-clashofcoins",
+    "F12-stableenrich",
+    "F16-cheaptokens"
+  ],
+  "runs": 90,
+  "max_abs_error": 1.1102230246251565e-16,
+  "flag_matches_expected": 90,
+  "hops_as_designed": 90,
+  "ring_payments_all_extracted": true,
+  "baseline_matches_committed": true,
+  "base_row_counts_before": {
+    "tr": 157753459,
+    "auth": 3795632
+  },
+  "base_row_counts_after": {
+    "tr": 157753459,
+    "auth": 3795632
+  },
+  "base_file_unchanged": true,
+  "scratch_deleted": true
+}
