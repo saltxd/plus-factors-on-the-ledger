@@ -40,9 +40,10 @@ def test_redact_replaces_ring_agents_and_ring_hashes_only():
 
 
 def test_redact_strips_transaction_fields_next_to_a_pseudonym():
-    obj = {"hires_out": [{"buyer": "group14-01", "agent_id": 12345, "budget": 1.0}], "rows": [{"paid_to": "0x" + "1" * 40, "agent_id": 12345}]}
+    # synthetic: group14 has 14 members, so group14-99 names no wallet
+    obj = {"hires_out": [{"buyer": "group14-99", "agent_id": 7, "budget": 1.0}], "rows": [{"paid_to": "0x" + "1" * 40, "agent_id": 7}]}
     out = redact(obj, set(), set())
-    assert out == {"hires_out": [{"buyer": "group14-01", "agent_id": "REDACTED", "budget": "REDACTED"}], "rows": [{"paid_to": "0x" + "1" * 40, "agent_id": 12345}]}
+    assert out == {"hires_out": [{"buyer": "group14-99", "agent_id": "REDACTED", "budget": "REDACTED"}], "rows": [{"paid_to": "0x" + "1" * 40, "agent_id": 7}]}
 
 
 def test_committed_ring_files_use_pseudonyms_only():
