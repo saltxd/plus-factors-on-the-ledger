@@ -11,3 +11,7 @@ data/raw/bsc_sentio/
 *.duckdb.wal
 .DS_Store
 logs/
+data/raw/base_senders/
+data/raw/agent402/
+data/market/
+data/scratch/
