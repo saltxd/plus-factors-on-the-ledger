@@ -44,12 +44,14 @@ CAP_VISITED = 200_000
 
 def load(con: duckdb.DuckDBPyConnection, raw: Path) -> None:
     t = time.time()
+    # files are named by start block, so reading them in glob order keeps the table in block
+    # order, which lets DuckDB skip row groups on block-range filters
+    con.execute("SET preserve_insertion_order=true")
     con.execute(
         f"""
         CREATE OR REPLACE TABLE tr AS
         SELECT * FROM read_csv('{raw}/transfers_*.tsv.gz', delim='\t', header=false,
             columns={{'block':'INTEGER','txi':'INTEGER','li':'INTEGER','src':'VARCHAR','dst':'VARCHAR','val':'HUGEINT'}})
-        ORDER BY block, li
         """
     )
     con.execute(
@@ -57,10 +59,9 @@ def load(con: duckdb.DuckDBPyConnection, raw: Path) -> None:
         CREATE OR REPLACE TABLE auth AS
         SELECT * FROM read_csv('{raw}/auth_*.tsv.gz', delim='\t', header=false,
             columns={{'block':'INTEGER','txi':'INTEGER','li':'INTEGER','authorizer':'VARCHAR','nonce':'VARCHAR'}})
-        ORDER BY block, li
         """
     )
-    n = con.execute("SELECT count(*), min(block), max(block) FROM tr").fetchone()
+    n = con.execute("SELECT count(*), min(block), max(block), count(DISTINCT block) FROM tr").fetchone()
     a = con.execute("SELECT count(*) FROM auth").fetchone()
     log.info("loaded tr=%s auth=%s in %.0fs", n, a, time.time() - t)
 

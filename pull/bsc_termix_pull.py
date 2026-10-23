@@ -218,11 +218,14 @@ def main() -> None:
     ap.add_argument("--seg", type=int, default=100000)
     ap.add_argument("--step", type=int, default=5000)
     ap.add_argument("--batch", type=int, default=100)
+    ap.add_argument("--queries", type=int, default=2, help="times each chunk is queried and merged")
     ap.add_argument("--ids", help="file with one ERC-8004 agent id per line")
     ap.add_argument("--txs", help="file with one transaction hash per line")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     c = Client(args.rpc, args.max_rps)
+    global QUERIES_PER_CHUNK
+    QUERIES_PER_CHUNK = args.queries
     out = Path(args.out)
 
     if args.cmd == "blocks":
