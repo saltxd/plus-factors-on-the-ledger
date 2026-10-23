@@ -1,0 +1,429 @@
+{
+  "frozen_at_utc": "2026-10-23T11:10:20Z",
+  "selection": "family-weighted balanced accuracy on the development half; ties: fewer features, larger margin, name",
+  "settings": {
+    "K_HOPS": 4,
+    "LAG_COUPLING_s": 3600,
+    "LAG_RELAY_s": 600,
+    "N_NULL": 200,
+    "lookback_days": 14,
+    "hub_min_counterparties": 1000
+  },
+  "dev_cases": 75,
+  "dev_families": 10,
+  "rule": {
+    "type": "single",
+    "feature": "loop_share",
+    "direction": 1,
+    "threshold": 0.42352775000000004
+  },
+  "rule_text": "loop_share >= 0.4235",
+  "dev_metrics": {
+    "dev_tpr": 1.0,
+    "dev_fpr": 0.0,
+    "dev_balanced_accuracy": 1.0
+  },
+  "non_circular_rule": {
+    "type": "and",
+    "terms": [
+      {
+        "type": "single",
+        "feature": "timing_coupling",
+        "direction": 1,
+        "threshold": -0.001938785
+      },
+      {
+        "type": "single",
+        "feature": "relay_share",
+        "direction": 1,
+        "threshold": 0.09578695
+      }
+    ]
+  },
+  "non_circular_rule_text": "timing_coupling >= -0.001939 AND relay_share >= 0.09579",
+  "non_circular_dev_metrics": {
+    "dev_tpr": 0.8750000000000001,
+    "dev_fpr": 0.016666666666666666,
+    "dev_balanced_accuracy": 0.9291666666666667
+  },
+  "best_single_feature_rules": {
+    "loop_share": {
+      "rule_text": "loop_share >= 0.4235",
+      "rule": {
+        "type": "single",
+        "feature": "loop_share",
+        "direction": 1,
+        "threshold": 0.42352775000000004
+      },
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    "outside_funding_share": {
+      "rule_text": "outside_funding_share <= 0.7537",
+      "rule": {
+        "type": "single",
+        "feature": "outside_funding_share",
+        "direction": -1,
+        "threshold": 0.7536995
+      },
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    "loop_share_1hop": {
+      "rule_text": "loop_share_1hop >= 0.125",
+      "rule": {
+        "type": "single",
+        "feature": "loop_share_1hop",
+        "direction": 1,
+        "threshold": 0.125
+      },
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    "timing_coupling": {
+      "rule_text": "timing_coupling >= 0.04143",
+      "rule": {
+        "type": "single",
+        "feature": "timing_coupling",
+        "direction": 1,
+        "threshold": 0.04142855
+      },
+      "dev_tpr": 0.6875000000000001,
+      "dev_fpr": 0.016666666666666666,
+      "dev_balanced_accuracy": 0.8354166666666667
+    },
+    "shared_funder_share_nonhub": {
+      "rule_text": "shared_funder_share_nonhub >= 0.6354",
+      "rule": {
+        "type": "single",
+        "feature": "shared_funder_share_nonhub",
+        "direction": 1,
+        "threshold": 0.635367
+      },
+      "dev_tpr": 0.5000000000000002,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 0.7500000000000001
+    },
+    "shared_funder_share": {
+      "rule_text": "shared_funder_share >= 0.8571",
+      "rule": {
+        "type": "single",
+        "feature": "shared_funder_share",
+        "direction": 1,
+        "threshold": 0.8571075
+      },
+      "dev_tpr": 0.5000000000000002,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 0.7500000000000001
+    },
+    "payer_hhi": {
+      "rule_text": "payer_hhi >= 0.01951",
+      "rule": {
+        "type": "single",
+        "feature": "payer_hhi",
+        "direction": 1,
+        "threshold": 0.0195112
+      },
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.5,
+      "dev_balanced_accuracy": 0.75
+    },
+    "relay_share": {
+      "rule_text": "relay_share >= 0.09579",
+      "rule": {
+        "type": "single",
+        "feature": "relay_share",
+        "direction": 1,
+        "threshold": 0.09578695
+      },
+      "dev_tpr": 0.8750000000000001,
+      "dev_fpr": 0.4333333333333334,
+      "dev_balanced_accuracy": 0.7208333333333334
+    }
+  },
+  "leaderboard": [
+    {
+      "rule_text": "loop_share >= 0.4235",
+      "margin": 0.37647225,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "outside_funding_share <= 0.7537",
+      "margin": 0.19107649999999998,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.125",
+      "margin": 0.125,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR shared_funder_share_nonhub >= 0.6354",
+      "margin": 0.3576212218089689,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR timing_coupling >= 0.708",
+      "margin": 0.2118063089293503,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 AND outside_funding_share <= 0.7537",
+      "margin": 0.19107649999999998,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR outside_funding_share <= 0.7537",
+      "margin": 0.19107649999999998,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "outside_funding_share <= 0.7537 OR timing_coupling >= 0.708",
+      "margin": 0.19107649999999998,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "shared_funder_share_nonhub >= 0.6354 OR outside_funding_share <= 0.7537",
+      "margin": 0.19107649999999998,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR shared_funder_share >= 0.8571",
+      "margin": 0.13574471150815448,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "shared_funder_share >= 0.8571 OR outside_funding_share <= 0.7537",
+      "margin": 0.13574471150815448,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 AND loop_share_1hop >= 0.125",
+      "margin": 0.125,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.125 AND outside_funding_share <= 0.7537",
+      "margin": 0.125,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR loop_share_1hop >= 0.125",
+      "margin": 0.125,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.125 OR outside_funding_share <= 0.7537",
+      "margin": 0.125,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.125 OR shared_funder_share >= 0.8571",
+      "margin": 0.125,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.125 OR shared_funder_share_nonhub >= 0.6354",
+      "margin": 0.125,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.125 OR timing_coupling >= 0.708",
+      "margin": 0.125,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR loop_share_1hop >= 0.3765",
+      "margin": 0.12349399999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.3765 OR outside_funding_share <= 0.7537",
+      "margin": 0.12349399999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.3765 OR timing_coupling >= 0.708",
+      "margin": 0.12349399999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR outside_funding_share <= 0.4521",
+      "margin": 0.11051149999999998,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.125 OR outside_funding_share <= 0.4521",
+      "margin": 0.11051149999999998,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.3765 OR outside_funding_share <= 0.4521",
+      "margin": 0.11051149999999998,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "shared_funder_share >= 0.8571 OR outside_funding_share <= 0.4521",
+      "margin": 0.11051149999999998,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "shared_funder_share_nonhub >= 0.6354 OR outside_funding_share <= 0.4521",
+      "margin": 0.11051149999999998,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.8987 OR loop_share_1hop >= 0.125",
+      "margin": 0.0987214999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.8987 OR loop_share_1hop >= 0.3765",
+      "margin": 0.0987214999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.8987 OR outside_funding_share <= 0.4521",
+      "margin": 0.0987214999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.8987 OR outside_funding_share <= 0.7537",
+      "margin": 0.0987214999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR loop_share_1hop >= 0.9154",
+      "margin": 0.08205499999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.9154 OR outside_funding_share <= 0.4521",
+      "margin": 0.08205499999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.9154 OR outside_funding_share <= 0.7537",
+      "margin": 0.08205499999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR loop_share_1hop >= 0.6735",
+      "margin": 0.07349399999999995,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.6735 OR outside_funding_share <= 0.4521",
+      "margin": 0.07349399999999995,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.6735 OR outside_funding_share <= 0.7537",
+      "margin": 0.07349399999999995,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR outside_funding_share <= 0.2343",
+      "margin": 0.05860799999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.125 OR outside_funding_share <= 0.2343",
+      "margin": 0.05860799999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share_1hop >= 0.3765 OR outside_funding_share <= 0.2343",
+      "margin": 0.05860799999999999,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    },
+    {
+      "rule_text": "loop_share >= 0.4235 OR loop_share_1hop >= 0.55",
+      "margin": 0.04999999999999993,
+      "dev_tpr": 1.0,
+      "dev_fpr": 0.0,
+      "dev_balanced_accuracy": 1.0
+    }
+  ]
+}
