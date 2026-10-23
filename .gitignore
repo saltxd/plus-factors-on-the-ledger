@@ -5,3 +5,4 @@ data/raw/
 *.duckdb
 *.duckdb.wal
 .DS_Store
+logs/
