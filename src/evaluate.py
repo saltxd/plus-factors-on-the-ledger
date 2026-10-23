@@ -14,7 +14,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from features import DIRECTION, FEATURES
+from features import DIRECTION, EXPLORATORY_FEATURES, FEATURES
 from rules import apply_rule, family_weights, metrics, weighted_auc
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -94,9 +94,10 @@ def main() -> None:
         part = df if half == "all" else df[df["half"] == half]
         part = part.reset_index(drop=True)
         w = family_weights(part)
-        for f in FEATURES:
+        for f in FEATURES + EXPLORATORY_FEATURES:
             s = DIRECTION[f] * part[f].to_numpy(dtype=float)
-            auc_rows.append({"half": half, "feature": f, "auc_family_weighted": weighted_auc(s, part["y"].to_numpy(), w),
+            auc_rows.append({"half": half, "feature": f, "exploratory": f in EXPLORATORY_FEATURES,
+                             "auc_family_weighted": weighted_auc(s, part["y"].to_numpy(), w),
                              "auc_case_level": weighted_auc(s, part["y"].to_numpy(), np.ones(len(part)))})
     pd.DataFrame(auc_rows).to_csv(ROOT / "results" / "feature_auc.csv", index=False, float_format="%.4f")
     (ROOT / "results" / "test_metrics.json").write_text(json.dumps(results, indent=2) + "\n")

@@ -65,6 +65,12 @@ FEATURES = [
     "relay_share",
 ]
 
+# Added after the one-day debug run (Oct 23, 07:06 UTC), which showed that timing_coupling
+# saturates for payees that send thousands of transfers. Reported separately, never used in
+# the frozen-rule search.
+EXPLORATORY_FEATURES = ["pair_reciprocity_timing", "payer_synchrony"]
+LAG_SYNC = 600
+
 # Direction in which a feature is expected to point to coordination.
 DIRECTION = {
     "loop_share": +1,
@@ -75,6 +81,8 @@ DIRECTION = {
     "outside_funding_share": -1,
     "timing_coupling": +1,
     "relay_share": +1,
+    "pair_reciprocity_timing": +1,
+    "payer_synchrony": +1,
 }
 
 
@@ -212,6 +220,62 @@ def relay_share(cd: CaseData, lag: int = LAG_RELAY, n_null: int = N_NULL, seed: 
     return float(obs - np.mean(null))
 
 
+def pair_reciprocity_timing(cd: CaseData, lag: int = LAG_COUPLING, n_null: int = N_NULL, seed: int = 0) -> float:
+    """Pairwise: share of payments made within `lag` seconds after the payee sent money to that
+    same payer, minus the circular-shift null (each payer's payment times shifted)."""
+    p = cd.payments
+    if p.empty:
+        return float("nan")
+    o = cd.seller_outflows
+    by_dst = {d: g["ts"].to_numpy(dtype=np.int64) for d, g in o.groupby("dst")}
+    payers = p["payer"].to_numpy()
+    groups = {b: np.flatnonzero(payers == b) for b in np.unique(payers)}
+    rng = np.random.default_rng(seed)
+
+    def frac(ts_all: np.ndarray) -> float:
+        hits = 0
+        for b, idx in groups.items():
+            ref = by_dst.get(b)
+            if ref is not None:
+                hits += int(_follows(ts_all[idx], ref, lag, strict=True).sum())
+        return hits / len(ts_all)
+
+    ts = p["ts"].to_numpy(dtype=np.int64)
+    obs = frac(ts)
+    null = [frac(_shifted(ts, payers, cd.t0, cd.t1, rng)) for _ in range(n_null)]
+    return float(obs - np.mean(null))
+
+
+def payer_synchrony(cd: CaseData, lag: int = LAG_SYNC, n_null: int = N_NULL, seed: int = 0) -> float:
+    """Share of payments made within `lag` seconds of a payment by a different payer, minus the
+    circular-shift null (each payer shifted independently). High for payers acting in rounds,
+    and for payers that share a schedule without any agreement."""
+    p = cd.payments
+    if p.empty or p["payer"].nunique() < 2:
+        return float("nan")
+    payers = p["payer"].to_numpy()
+    codes = np.unique(payers, return_inverse=True)[1]
+    rng = np.random.default_rng(seed)
+
+    def frac(ts_all: np.ndarray) -> float:
+        order = np.argsort(ts_all, kind="stable")
+        t, c = ts_all[order], codes[order]
+        hit = np.zeros(len(t), dtype=bool)
+        # nearest earlier and later payment by a different payer, scanning a few neighbours
+        for shift in range(1, 6):
+            prev_ok = np.zeros(len(t), dtype=bool)
+            prev_ok[shift:] = (c[shift:] != c[:-shift]) & (t[shift:] - t[:-shift] <= lag)
+            next_ok = np.zeros(len(t), dtype=bool)
+            next_ok[:-shift] = (c[:-shift] != c[shift:]) & (t[shift:] - t[:-shift] <= lag)
+            hit |= prev_ok | next_ok
+        return float(hit.mean())
+
+    ts = p["ts"].to_numpy(dtype=np.int64)
+    obs = frac(ts)
+    null = [frac(_shifted(ts, payers, cd.t0, cd.t1, rng)) for _ in range(n_null)]
+    return float(obs - np.mean(null))
+
+
 def compute_features(cd: CaseData, k: int = K_HOPS, n_null: int = N_NULL) -> dict[str, float]:
     v = _payer_values(cd.payments)
     return {
@@ -226,4 +290,6 @@ def compute_features(cd: CaseData, k: int = K_HOPS, n_null: int = N_NULL) -> dic
         "outside_funding_share": outside_funding_share(cd, k),
         "timing_coupling": timing_coupling(cd, n_null=n_null),
         "relay_share": relay_share(cd, n_null=n_null),
+        "pair_reciprocity_timing": pair_reciprocity_timing(cd, n_null=n_null),
+        "payer_synchrony": payer_synchrony(cd, n_null=n_null),
     }

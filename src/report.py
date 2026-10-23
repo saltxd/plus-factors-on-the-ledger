@@ -36,6 +36,8 @@ FEATURE_NAMES = {
     "outside_funding_share": "Outside funding share",
     "timing_coupling": "Timing coupling",
     "relay_share": "Relay share",
+    "pair_reciprocity_timing": "Pair reciprocity timing*",
+    "payer_synchrony": "Payer synchrony*",
 }
 
 
@@ -131,7 +133,7 @@ def fig_auc(auc: pd.DataFrame) -> None:
     ax.axvline(0.5, color=AXIS, linewidth=0.9)
     ax.set_yticks(y, [FEATURE_NAMES[f] for f in order], fontsize=8)
     ax.set_xlim(0, 1.02)
-    ax.set_xlabel("AUC, family-weighted (0.5 = no better than chance)", fontsize=8, color=INK2)
+    ax.set_xlabel("AUC, family-weighted (0.5 = no better than chance; * exploratory)", fontsize=8, color=INK2)
     ax.legend(frameon=False, fontsize=7.5, labelcolor=INK2, loc="lower right")
     fig.tight_layout()
     fig.savefig(RES / "fig3_feature_auc.png", facecolor=SURFACE)
