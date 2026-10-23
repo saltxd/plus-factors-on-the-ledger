@@ -208,7 +208,7 @@ def circularity_table() -> pd.DataFrame:
     reg = yaml.safe_load((ROOT / "cases" / "cases.yaml").read_text())
     rows = []
     for f in reg["families"]:
-        used = sorted({BASIS_TO_FEATURE.get(b, "(none)") for b in f["label_basis"]})
+        used = sorted({BASIS_TO_FEATURE.get(b, "no matching feature") for b in f["label_basis"]})
         rows.append({"family": f["family"], "label": f["label"], "decode_evidence": ", ".join(f["label_basis"]), "closest_feature": ", ".join(used)})
     t = pd.DataFrame(rows)
     t.to_csv(RES / "circularity.csv", index=False)
@@ -431,6 +431,29 @@ def write_results_md(frozen: dict) -> None:
         prim = sens[sens["rule"] == "rule"].set_index("setting")
         parts = [f"{s}: test TPR {r['test_tpr']:.2f}, FPR {r['test_fpr']:.2f}" for s, r in prim.iterrows()]
         w("Primary rule, frozen threshold, features recomputed under each setting. " + "; ".join(parts) + ".\n")
+    w("## Circularity\n")
+    circ = pd.read_csv(RES / "circularity.csv")
+    w("The labels come from ChainWard's own earlier decodes, and most of them were reached by tracing where buyers' money came from. "
+      "Loop share and outside funding share are close to that evidence for most coordinated families; the timing features, payer concentration "
+      f"and the shared-funder features are not. The rule restricted to features the decodes did not use scored balanced accuracy {n['balanced_accuracy']:.2f} on the test half"
+      + (f" (exact permutation p = {perm['non_circular']['p_value']:.2f})" if perm else "") +
+      ", which is the honest estimate of what the payment ledger shows without re-deriving the labels.\n")
+    w(md_table(circ[["family", "label", "decode_evidence", "closest_feature"]], "{:.2f}") + "\n")
+    w("## Deviations from the plan\n")
+    w("- Two exploratory timing features (`pair_reciprocity_timing`, `payer_synchrony`) were added after a one-day debug run showed that `timing_coupling` saturates for payees that send thousands of transfers. They were added before the full data existed, are reported, and never entered the rule search.")
+    w("- The fine-grid positive control near the threshold was added after the pre-set grid ran, because that grid jumps from 30% to 50%.")
+    w("- BNB Chain evidence is TermiX's hire graph only: keyless endpoints cap topic-filtered token queries below 1,000 blocks, so plain USDC/USDT transfers of BNB Chain wallets were not pulled.")
+    w("- The 48-wallet ring was first rebuilt by id range alone (58 wallets, 10 of them in the 14-wallet group), then as the closed hire components the decode describes, which reproduces its published counts. This was done before any feature was computed.")
+    w("- Three Base segments from one public endpoint came back incomplete (some ranges answered with no logs) and were discarded and re-pulled; every public-endpoint answer was then required to cover every block, and a sample was re-read from the node.")
+    w("- A market-level check on TermiX's Base escrow (`src/extract_termix_base.py`, `src/market_check.py`) is written but was not run in this pass.")
+    w("- F07 (a seller paying 91% of its takings back to its buyers) carries a contested label: the decodes count it as a loop, and it may be a game working as designed. It is in the development half; the primary rule flags it.\n")
+    w("## What this does not show\n")
+    w(f"- **Few independent cases.** {n_test_fam} test families, {n_test_pos_fam} of them coordinated; the bootstrap interval for balanced accuracy runs from {ci[0]:.2f} to {ci[1]:.2f}.")
+    w("- **One labeller.** Every label is a published ChainWard decode, and decodes publish striking cases; partial rings and borderline sellers are under-represented, which is why the dev-chosen threshold sits near 42% and smaller rings pass it.")
+    w("- **Money, not control.** The ledger shows where money went, not who controls a wallet or what a payment was for. A seller paying a customer back for a game, a refund or a contractor's work makes the same loop as self-funding (Losbeto against F07).")
+    w("- **Blind spots.** Loops longer than K hops and loops through exchanges, custodial accounts or bridges are invisible to the reach walk, by construction (positive control: 0% at every size). USDC on Base only: other tokens, ETH and other chains are not followed.")
+    lcases = pred[pred["label"] == "L"]
+    w(f"- **No talk.** Payment ledgers carry no messages, so collusive talk that never changes behaviour (case type (c) of question 2.3) cannot be tested here; the nearest analogue is a visible link without a loop (the {len(lcases)} L cases), of which the primary rule flagged {int(lcases['flag_primary'].sum())}.\n")
     w((RES / "tables.md").read_text())
     w("## Figures\n")
     for f, cap in (("fig1_features_by_label.png", "Every feature by label, both halves; the line is the frozen threshold."),

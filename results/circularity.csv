@@ -1,6 +1,6 @@
 family,label,decode_evidence,closest_feature
-F01-clusterprotocol,C,"seller_to_buyer_funding_path, seller_outflows_to_one_hub","(none), loop_share"
-F02-meridian-six,C,"closure_of_payment_set, pair_matrix, no_outside_payments","(none), outside_funding_share"
+F01-clusterprotocol,C,"seller_to_buyer_funding_path, seller_outflows_to_one_hub","loop_share, no matching feature"
+F02-meridian-six,C,"closure_of_payment_set, pair_matrix, no_outside_payments","no matching feature, outside_funding_share"
 F03-meridian-seventh,C,seller_to_buyer_funding_path,loop_share
 F04-botpay,C,"seller_to_buyer_funding_path, payment_tree",loop_share
 F05-keyring-pingpong,C,"direct_reciprocity, seller_funds_buyers","loop_share, loop_share_1hop"
@@ -9,8 +9,8 @@ F07-payback-ed9fcd0d,C,direct_reciprocity,loop_share_1hop
 F08-se-ring48,C,"closure_of_hiring_set, shared_funder","loop_share, shared_funder_share"
 F09-se-group14,C,"closure_of_hiring_set, shared_funder","loop_share, shared_funder_share"
 F10-clashofcoins,I,many_distinct_funders,shared_funder_share
-F11-blockrun,I,"buyers_pay_other_sellers, amount_diversity, no_seller_funding","(none), loop_share"
-F12-stableenrich,I,buyers_pay_other_sellers,(none)
+F11-blockrun,I,"buyers_pay_other_sellers, amount_diversity, no_seller_funding","loop_share, no matching feature"
+F12-stableenrich,I,buyers_pay_other_sellers,no matching feature
 F13-claw402,I,many_distinct_funders,shared_funder_share
 F14-surplusintelligence,N,no_loop_in_seller_outflow_trace,loop_share
 F15-losbeto,N,no_loop_in_seller_outflow_trace,loop_share

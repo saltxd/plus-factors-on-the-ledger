@@ -12,7 +12,13 @@ injected into a real market) and negative controls.
 Entry to the Apart AI Collusion Research Sprint (Oct 23 to 25, 2026), research
 question 2.3 ("What should count as convincing evidence of collusion?").
 
-Results: `results/results.md`.
+Results: `results/results.md` (generated from the result files by `src/report.py`).
+In short: on 10 held-out case families the frozen rule `loop_share >= 0.4235`
+(chosen on 10 development families, commit `81c736c`) had a family-weighted
+true-positive rate of 0.84 and false-positive rate of 0.20 (balanced accuracy 0.82,
+bootstrap 95% interval 0.56 to 1.00, exact permutation p = 0.024). Closed loops and
+the absence of outside money separated coordinated from independent demand; a shared
+funder, payer concentration and timing did not.
 
 ## Layout
 
@@ -87,6 +93,8 @@ Features, per case (code: `src/features.py`):
 | `outside_funding_share` | share of the value flowing into payers that comes from outside {payee, payers, reach set}; 1 when payers received nothing |
 | `timing_coupling` | share of payments made within 1 hour after any transfer out of the payee, minus the same share when each payer's payment times are circularly shifted inside the window (mean of 200 shifts) |
 | `relay_share` | share of payments made within 10 minutes after the payer received money, minus the circular-shift null |
+| `pair_reciprocity_timing` (exploratory) | share of payments made within 1 hour after the payee sent money to that same payer, minus the null; added after the debug run, never in the rule search |
+| `payer_synchrony` (exploratory) | share of payments within 10 minutes of a payment by a different payer, minus the null; same status |
 
 ### Protocol
 
@@ -99,7 +107,11 @@ Features, per case (code: `src/features.py`):
    chosen the same way, and so is the best threshold for every single feature.
 4. `results/frozen_rule.json` committed; the commit hash is in `results/results.md`.
 5. Test-half scoring (`src/evaluate.py`), bootstrap over families, exact permutation test.
-6. Controls (`src/controls.py`): ring injection into real benign markets, timing shuffle.
+6. Controls (`src/controls.py`): ring injection into real benign markets (pre-set grid, plus a
+   fine grid near the threshold added afterwards), timing shuffle, exact permutation test.
+
+Deviations from this plan are listed in `results/results.md`. Hypotheses written before
+any feature was computed: `cases/hypotheses.md`.
 
 ## Reproduce
 
@@ -122,6 +134,8 @@ python src/run_features.py --sensitivity
 python src/select_rule.py      # development half only
 python src/evaluate.py
 python src/controls.py
+python src/controls.py --which boundary
+python src/sensitivity.py      # after extract_base.py --hub 300 / --hub 3000 into data/cases_h300, data/cases_h3000
 python src/report.py
 pytest tests/
 ```

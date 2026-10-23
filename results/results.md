@@ -38,6 +38,51 @@ Chosen by `src/select_rule.py` on the development half only (75 cases, 10 famili
 
 Primary rule, frozen threshold, features recomputed under each setting. K=1: test TPR 0.59, FPR 0.20; K=2: test TPR 0.59, FPR 0.20; K=3: test TPR 0.80, FPR 0.20; K=4: test TPR 0.84, FPR 0.20; K=5: test TPR 1.00, FPR 0.20; K=6: test TPR 1.00, FPR 0.40; hub>=300: test TPR 0.84, FPR 0.20; hub>=3000: test TPR 0.84, FPR 0.20.
 
+## Circularity
+
+The labels come from ChainWard's own earlier decodes, and most of them were reached by tracing where buyers' money came from. Loop share and outside funding share are close to that evidence for most coordinated families; the timing features, payer concentration and the shared-funder features are not. The rule restricted to features the decodes did not use scored balanced accuracy 0.67 on the test half (exact permutation p = 0.14), which is the honest estimate of what the payment ledger shows without re-deriving the labels.
+
+| family | label | decode_evidence | closest_feature |
+|---|---|---|---|
+| F01-clusterprotocol | C | seller_to_buyer_funding_path, seller_outflows_to_one_hub | loop_share, no matching feature |
+| F02-meridian-six | C | closure_of_payment_set, pair_matrix, no_outside_payments | no matching feature, outside_funding_share |
+| F03-meridian-seventh | C | seller_to_buyer_funding_path | loop_share |
+| F04-botpay | C | seller_to_buyer_funding_path, payment_tree | loop_share |
+| F05-keyring-pingpong | C | direct_reciprocity, seller_funds_buyers | loop_share, loop_share_1hop |
+| F06-xpay | C | seller_funds_buyers, first_funder_is_seller | loop_share, shared_funder_share |
+| F07-payback-ed9fcd0d | C | direct_reciprocity | loop_share_1hop |
+| F08-se-ring48 | C | closure_of_hiring_set, shared_funder | loop_share, shared_funder_share |
+| F09-se-group14 | C | closure_of_hiring_set, shared_funder | loop_share, shared_funder_share |
+| F10-clashofcoins | I | many_distinct_funders | shared_funder_share |
+| F11-blockrun | I | buyers_pay_other_sellers, amount_diversity, no_seller_funding | loop_share, no matching feature |
+| F12-stableenrich | I | buyers_pay_other_sellers | no matching feature |
+| F13-claw402 | I | many_distinct_funders | shared_funder_share |
+| F14-surplusintelligence | N | no_loop_in_seller_outflow_trace | loop_share |
+| F15-losbeto | N | no_loop_in_seller_outflow_trace | loop_share |
+| F16-cheaptokens | N | no_loop_in_seller_outflow_trace | loop_share |
+| F17-ax1 | L | shared_funder_without_seller_path | shared_funder_share |
+| F18-korus | L | shared_high_throughput_funder | shared_funder_share |
+| F19-roundtrip-ee7ae85f | L | money_returns_through_high_throughput_account | loop_share |
+| F20-se-clear-outside | N | no_funding_link_pairwise | loop_share |
+
+## Deviations from the plan
+
+- Two exploratory timing features (`pair_reciprocity_timing`, `payer_synchrony`) were added after a one-day debug run showed that `timing_coupling` saturates for payees that send thousands of transfers. They were added before the full data existed, are reported, and never entered the rule search.
+- The fine-grid positive control near the threshold was added after the pre-set grid ran, because that grid jumps from 30% to 50%.
+- BNB Chain evidence is TermiX's hire graph only: keyless endpoints cap topic-filtered token queries below 1,000 blocks, so plain USDC/USDT transfers of BNB Chain wallets were not pulled.
+- The 48-wallet ring was first rebuilt by id range alone (58 wallets, 10 of them in the 14-wallet group), then as the closed hire components the decode describes, which reproduces its published counts. This was done before any feature was computed.
+- Three Base segments from one public endpoint came back incomplete (some ranges answered with no logs) and were discarded and re-pulled; every public-endpoint answer was then required to cover every block, and a sample was re-read from the node.
+- A market-level check on TermiX's Base escrow (`src/extract_termix_base.py`, `src/market_check.py`) is written but was not run in this pass.
+- F07 (a seller paying 91% of its takings back to its buyers) carries a contested label: the decodes count it as a loop, and it may be a game working as designed. It is in the development half; the primary rule flags it.
+
+## What this does not show
+
+- **Few independent cases.** 10 test families, 5 of them coordinated; the bootstrap interval for balanced accuracy runs from 0.56 to 1.00.
+- **One labeller.** Every label is a published ChainWard decode, and decodes publish striking cases; partial rings and borderline sellers are under-represented, which is why the dev-chosen threshold sits near 42% and smaller rings pass it.
+- **Money, not control.** The ledger shows where money went, not who controls a wallet or what a payment was for. A seller paying a customer back for a game, a refund or a contractor's work makes the same loop as self-funding (Losbeto against F07).
+- **Blind spots.** Loops longer than K hops and loops through exchanges, custodial accounts or bridges are invisible to the reach walk, by construction (positive control: 0% at every size). USDC on Base only: other tokens, ETH and other chains are not followed.
+- **No talk.** Payment ledgers carry no messages, so collusive talk that never changes behaviour (case type (c) of question 2.3) cannot be tested here; the nearest analogue is a visible link without a loop (the 12 L cases), of which the primary rule flagged 0.
+
 ### Frozen rules on the test half
 
 | rule | text | dev BA (fw) | test TPR (fw) | test FPR (fw) | test BA (fw) | test BA 95% CI | test TP/FN/FP/TN (cases) |
