@@ -429,7 +429,14 @@ def write_results_md(frozen: dict) -> None:
     same = sum(1 for d in pub if ours.get(d) == pub[d])
     w(f"- BNB Chain pull: {bval['se_total_ours']:,} TermiX hires in the Set and Earn window against {bval['se_total_published']:,} published; {same} of {len(pub)} daily counts equal. Each chunk was queried twice: {len(bval['double_query_disagreements'])} disagreements. On {bval['payee_is_owner_sample']['sampled']} sampled settlements the escrow paid the agent's ERC-8004 owner {bval['payee_is_owner_sample']['matched']} times.")
     r48, g14 = rings["ring48"], rings["group14"]
+    wh = pd.read_csv(ROOT / "data" / "withheld" / "case_features.csv") if (ROOT / "data" / "withheld" / "case_features.csv").exists() else None
     w(f"- Rings rebuilt from the decode's published description: {r48['n_payees']} wallets in closed groups of {', '.join(str(x) for x in r48['closed_component_sizes'])}, {r48['orders']} orders of which {r48['orders'] - r48['orders_unsettled']} settled (published: 48 wallets, 218 orders, 216 settled); the second group has {g14['n_wallets']} wallets, {g14['orders_inside']} hires inside on {', '.join(g14['orders_by_day'])}, {g14['hires_in']} hires in and {len(g14['hires_out'])} out (published: 14 wallets, no hire in, one $1 hire out).")
+    if wh is not None:
+        n_ring = int(wh["family"].isin(["F08-se-ring48", "F09-se-group14"]).sum())
+        w(f"- Withheld tables: the per-transaction tables of {len(wh)} cases that contain a ring wallet ({n_ring} ring cases and {len(wh) - n_ring} other) are not committed, "
+          "because their agent ids, order ids, blocks and times would let anyone find the ring wallets on the public registry or an explorer. Their case-level features "
+          "and control rows are committed in `data/withheld/`, and a run without the tables uses them; the committed JSON files write the ring wallets' agent ids, "
+          "order ids and transaction hashes as REDACTED.")
     w("")
     if sens is not None:
         w("## Sensitivity\n")
@@ -624,8 +631,9 @@ def after_freeze_md() -> str:
       f"from 1,000 value-weighted draws for the others ({est} of the {len(pop)} payee-weeks in the population).")
     w("- The first run of the end-to-end control scored the four-relay route (hop 5) against the within-K expectation, a bug in its summary code, not in the "
       "pipeline: the measured loop shares were already (1 - phi) b. The expectation was fixed and the control re-run before any of it was reported.")
-    w("- One BNB Chain decode prints four of the 62 ring wallets as hiring examples. Their tokens are dropped from `data/decode_printed_hex.txt`, which lists what "
-      "the decodes print, so that no committed file names a ring wallet; no ring wallet is a Base payee in the population, so the exclusions do not change.")
+    w("- One BNB Chain decode prints four of the 62 ring wallets as hiring examples, and the BNB Chain decodes print prefixes of some ring transactions. These tokens "
+      "are dropped from `data/decode_printed_hex.txt`, which lists what the decodes print, so that no committed file names a ring wallet or its transactions; no ring "
+      "wallet is a Base payee in the population and no Base payee starts with a dropped prefix, so the exclusions do not change.")
     w("- The market features and the spot-check key stayed outside the repository until both verdict files were committed. The judges are AI agent sessions, "
       "not human investigators, and both read the same tools.\n")
     if (RES / "fig_reach_walk.png").exists():

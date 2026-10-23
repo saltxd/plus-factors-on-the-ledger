@@ -38,15 +38,26 @@ came out of the real extraction exactly as designed in 90 of 90 runs
 
 ## History note
 
-On Oct 23, 2026, before publication, the history of this repository was rewritten
-twice: to replace 62 BNB Chain wallet addresses, the members of the two rebuilt rings,
-with the pseudonyms `ring48-01` to `ring48-48` and `group14-01` to `group14-14` (and
-one local home directory path with `$HOME`), and to remove from every commit the raw
-BNB Chain pull (`data/raw/bsc/`) and a draft of the submission form. The published
-decodes describe these rings without listing them (one names four members as hiring
-examples), and the raw pull contains wallet lists our decodes chose not to publish. Commit times are unchanged; commit IDs changed,
-and the freeze commit is now `f99f40eb42b69b7d90dcf76305db08a6b42f92d2` (first
-`81c736c`, then `4037a54` between the two rewrites).
+On Oct 23, 2026 the history of this repository was rewritten three times, the first
+two before it was first published and the third after: to replace 62 BNB Chain wallet addresses, the
+members of the two rebuilt rings, with the pseudonyms `ring48-01` to `ring48-48` and
+`group14-01` to `group14-14` (and local home-directory paths with `$HOME`); to remove
+from every commit the raw BNB Chain pull (`data/raw/bsc/`) and a draft of the
+submission form; and to remove from every commit the per-transaction tables of the
+cases that contain a ring wallet and redact, everywhere else, the ring wallets' agent
+ids, order ids and transaction hashes, any of which finds a ring wallet on the public
+ERC-8004 registry or an explorer. The published decodes describe these rings without
+listing them (one names four members as hiring examples), and the raw pull contains
+wallet lists our decodes chose not to publish. The third rewrite dropped the tables of
+63 cases (the 62 ring cases and one F20 case with a ring wallet among its payers; 315
+files) and 6 lines of `data/decode_printed_hex.txt` (printed prefixes of ring
+transactions), and wrote `REDACTED` for 124 ring agent ids in `data/bsc_rings.json`
+and `data/cases/extract_bsc_summary.json`, for the hash and agent of 2 of the 30
+sampled settlements (`data/bsc_settle_sample.csv`, `data/bsc_validation.json`), and for
+the agent-id range and the example transaction the decodes print (`cases/cases.yaml`,
+`src/extract_bsc.py`). Commit times are unchanged; commit IDs changed, and the freeze
+commit is now `f99f40eb42b69b7d90dcf76305db08a6b42f92d2` (first `81c736c`, then
+`4037a54` and `b28bded` between the rewrites).
 
 ## Layout
 
@@ -57,7 +68,8 @@ and the freeze commit is now `f99f40eb42b69b7d90dcf76305db08a6b42f92d2` (first
 | `pull/` | Data pulls from public chain endpoints |
 | `src/` | Extraction, features, rule search, evaluation, controls, report |
 | `tests/` | Unit tests for the features, the ring injection and the BNB Chain pseudonyms |
-| `data/cases/` | Per-case evidence tables (the input of every feature), committed |
+| `data/cases/` | Per-case evidence tables (the input of every feature), committed except for the 63 withheld cases (see Data) |
+| `data/withheld/`, `src/withheld.py` | Case-level rows of the withheld cases (features, sensitivity, controls), used when their tables are absent |
 | `data/*.json`, `data/bsc_settle_sample.csv` | Pull verification, BNB Chain validation against published counts and on 30 sampled settlements, ring reconstruction (ring wallets under pseudonyms) |
 | `results/` | Case table, frozen rule, test metrics, controls, figures, `results.md` |
 | `cases/market_plan.md`, `cases/spotcheck_judge_*.md` | Added after the freeze: plan for the whole-market run, spot-check and end-to-end control; the judges' protocol and prompt |
@@ -104,8 +116,14 @@ each feature can be checked.
   evidence is the market's own hire graph. The raw BNB Chain pull is not included in
   this repository: it contains wallet lists our decodes chose not to publish (the
   members of the two rings). `pull/bsc_termix_pull.py` re-pulls it (Reproduce, step 3).
-  The per-case tables built from it are committed with the ring wallets under
-  pseudonyms, and `src/extract_bsc.py` assigns the same pseudonyms when it rebuilds them.
+  Of the 64 BNB Chain cases, one has its per-transaction tables committed. The tables
+  of the 62 ring cases, and of one other case with a ring wallet among its payers, are
+  not included: an agent id, an order id, a transaction hash, or the block and time of
+  a ring hire is enough to find a ring wallet on the public registry or an explorer.
+  Their case-level features, and the controls computed from their tables, are
+  committed in `data/withheld/`, and the pipeline uses them when the tables are absent.
+  `src/extract_bsc.py` rebuilds those tables from a re-pull into `data/cases_private/`
+  (not committed), with the ring wallets under the same pseudonyms.
 
 ### Definitions (fixed before any case was scored)
 
@@ -169,7 +187,7 @@ rule.
   frozen extraction and features run unchanged.
 - **Whole market, BNB Chain.** Every owner of an agent hired on TermiX in the Set and Earn
   window, no floor, built exactly as the case tables (`src/market_bsc.py` reproduces the
-  loop, funding and concentration features of the 64 committed BNB Chain cases exactly).
+  loop, funding and concentration features of the 64 BNB Chain cases exactly).
   Ring wallets appear only as `ring48-NN` / `group14-NN`; no agent or order ids are written.
 - **Blinded spot-check.** 25 flagged and 15 unflagged Base payees the decodes did not
   examine (not printed in a decode, not a case, never in a week's top 30), drawn with seed
@@ -195,7 +213,10 @@ python pull/base_usdc_pull.py --rpc <URL> --start 50715727 --end 52530126 --out 
 # 2. Base per-case tables (DuckDB; about 10 GB of disk)
 python src/extract_base.py --db base.duckdb --raw data/raw/base --load
 python src/extract_base.py --db base.duckdb --out data/cases --hub 1000 --k 6   # reach to 6 hops for the K = 5, 6 sensitivity
-# 3. BNB Chain pulls (not included in the repo, see Data) and per-case tables
+# 3. BNB Chain pulls (not included in the repo, see Data) and per-case tables. First write
+#    data/raw/bsc/ring_spec.json from the decodes: the 48-wallet ring's agent-id range
+#    (set-and-earn-week-one) and the 14-wallet group's example hire (set-and-earn-week-one-closed),
+#    as {"ring48_agent_id_range": [first, last], "group14_example_tx": "0x..."}
 python pull/bsc_termix_pull.py anchors --start 122313771 --end 126344213 --seg 50000
 python pull/bsc_termix_pull.py escrow --start 122313771 --end 126344213
 python src/extract_bsc.py --stage orders
@@ -203,7 +224,7 @@ python pull/bsc_termix_pull.py owners --ids data/raw/bsc/agents.txt --block 1263
 tail -n +2 data/bsc_settle_sample.csv | cut -d, -f1 > data/raw/bsc/settle_sample.txt
 python pull/bsc_termix_pull.py receipts --txs data/raw/bsc/settle_sample.txt
 python src/extract_bsc.py --stage cases
-# 4. From the committed per-case tables onward (no chain access needed)
+# 4. From the committed per-case tables and data/withheld onward (no chain access needed)
 python src/run_features.py --sensitivity
 python src/select_rule.py      # development half only
 python src/evaluate.py
@@ -230,15 +251,17 @@ python src/fig_reach_walk.py
 python src/report.py
 ```
 
-Steps 4 onward run from `data/cases/`, which is committed, so the results can be
-checked without re-pulling the chain. Re-run that way from the pseudonymized tables,
-they give the same frozen rules, figures, tables and numbers, with one exception: for one
-development case (F20-se-clear-outside, agent 352475) the exploratory
-`payer_synchrony`, which no rule uses, comes out -0.021 instead of -0.023, and timing
-values in the controls run on that case move by similar noise without changing any
-flag. The timing nulls give each payer its random shift in sorted order of the payer
-IDs, and one of that case's payers, a 14-wallet-group member, sorts in a different place than the
-address it replaced.
+Steps 4 onward run from `data/cases/` and `data/withheld/`, which are committed, so
+the results can be checked without re-pulling the chain; run that way they give the
+committed results exactly, with the withheld cases carried over. With the withheld
+tables rebuilt from a re-pull, they give the same frozen rules, figures, tables and
+numbers, with one exception: for one development case (F20-se-clear-outside, agent
+352475) the exploratory `payer_synchrony`, which no rule uses, comes out -0.021
+instead of -0.023, and timing values in the controls run on that case move by similar
+noise without changing any flag. The timing nulls give each payer its random shift in
+sorted order of the payer IDs, and one of that case's payers, a 14-wallet-group member, sorts in a
+different place than the address it replaced. After such a run, `python
+src/withheld.py` refreshes `data/withheld/` from `results/`.
 
 ## Preexisting work
 
@@ -262,6 +285,7 @@ accompany some decodes. Cases are wallets and contracts only. Third-party public
 after the freeze: x402scan's facilitator list (github.com/Merit-Systems/x402scan at
 commit `f205fbe`) and Agent402's public seller index (agent402.tools, read Oct 23, 2026).
 One BNB Chain decode (`set-and-earn-week-one`) prints four of the 62 ring wallets as hiring
-examples; the repository still names all 62 only by pseudonym.
+examples; the repository still names all 62 only by pseudonym, with none of their agent ids,
+order ids or transactions.
 
 AI assistance: the code and analysis in this repo were written with an AI coding agent.

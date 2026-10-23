@@ -33,6 +33,7 @@ Chosen by `src/select_rule.py` on the development half only (75 cases, 10 famili
 - Base pull: 157,753,459 USDC transfers, blocks 50,715,727 to 52,530,126, no gaps and no thin segments (`data/base_pull_coverage.json`). 24 segments came from public endpoints; 72 random 40-block ranges in them were re-read from ChainWard's node and all matched row for row (`data/verify_base_public_segments.json`). Three segments from one endpoint were discarded as incomplete and re-pulled (`data/base_pull_discarded_segments.jsonl`).
 - BNB Chain pull: 10,325 TermiX hires in the Set and Earn window against 10,325 published; 7 of 7 daily counts equal. Each chunk was queried twice: 0 disagreements. On 30 sampled settlements the escrow paid the agent's ERC-8004 owner 30 times.
 - Rings rebuilt from the decode's published description: 48 wallets in closed groups of 24, 12, 12, 218 orders of which 216 settled (published: 48 wallets, 218 orders, 216 settled); the second group has 14 wallets, 38 hires inside on 10-01, 10-04, 10-06, 0 hires in and 1 out (published: 14 wallets, no hire in, one $1 hire out).
+- Withheld tables: the per-transaction tables of 63 cases that contain a ring wallet (62 ring cases and 1 other) are not committed, because their agent ids, order ids, blocks and times would let anyone find the ring wallets on the public registry or an explorer. Their case-level features and control rows are committed in `data/withheld/`, and a run without the tables uses them; the committed JSON files write the ring wallets' agent ids, order ids and transaction hashes as REDACTED.
 
 ## Sensitivity
 
@@ -305,7 +306,7 @@ Baselines measured by the same pipeline with no ring, against the committed case
 
 - The plan read every transaction sender from ChainWard's node; at about 250 a second (its disk is the bottleneck) that was 2.7 hours, so an amendment committed before any population count reads senders for candidate payees only, exactly for those with at most 1,000 payment transactions in a week and from 1,000 value-weighted draws for the others (133 of the 750 payee-weeks in the population).
 - The first run of the end-to-end control scored the four-relay route (hop 5) against the within-K expectation, a bug in its summary code, not in the pipeline: the measured loop shares were already (1 - phi) b. The expectation was fixed and the control re-run before any of it was reported.
-- One BNB Chain decode prints four of the 62 ring wallets as hiring examples. Their tokens are dropped from `data/decode_printed_hex.txt`, which lists what the decodes print, so that no committed file names a ring wallet; no ring wallet is a Base payee in the population, so the exclusions do not change.
+- One BNB Chain decode prints four of the 62 ring wallets as hiring examples, and the BNB Chain decodes print prefixes of some ring transactions. These tokens are dropped from `data/decode_printed_hex.txt`, which lists what the decodes print, so that no committed file names a ring wallet or its transactions; no ring wallet is a Base payee in the population and no Base payee starts with a dropped prefix, so the exclusions do not change.
 - The market features and the spot-check key stayed outside the repository until both verdict files were committed. The judges are AI agent sessions, not human investigators, and both read the same tools.
 
 ### Reach walk
