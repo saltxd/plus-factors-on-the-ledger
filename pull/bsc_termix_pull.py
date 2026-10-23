@@ -291,10 +291,21 @@ def main() -> None:
     elif args.cmd == "receipts":
         txs = [t.strip() for t in Path(args.txs).read_text().split() if t.strip()]
         rows = []
+        missing = []
         for tx in txs:
-            r = c.call("eth_getTransactionReceipt", [tx])
+            r = None
+            for _ in range(8):  # load-balanced endpoints sometimes answer null for a known tx
+                r = c.call("eth_getTransactionReceipt", [tx])
+                if r:
+                    break
+                time.sleep(3)
+            if not r:
+                missing.append(tx)
+                continue
             for lg in r["logs"]:  # type: ignore[index]
                 rows.append(fmt_raw(lg))
+        if missing:
+            log.warning("no receipt for %d txs: %s", len(missing), missing)
         write_rows(out / f"receipts_{Path(args.txs).stem}.tsv.gz", rows)
         log.info("receipts: %d logs from %d txs", len(rows), len(txs))
 

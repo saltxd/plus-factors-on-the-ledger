@@ -156,6 +156,32 @@ def rebuild_group14(orders: pd.DataFrame, owner: dict[int, str]) -> dict:
             "agents": sorted(se[se["payee"].isin(m)]["agent_id"].unique().tolist())}
 
 
+ESCROWS = {"0x6a52ba4c84b348faeae13ddc7a97b4f6af23913c", "0xce02f987d8b8af694e13c8a843db9c77cabf544c"}
+FEE_SAFE = "0x1095ded95cb6e81c01204f7a94950dd559195e42"
+TRANSFER = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+
+
+def validate_payees(owner: dict[int, str]) -> dict:
+    """On a seeded sample of settlement transactions, compare the wallet the escrow paid
+    (largest non-fee stablecoin transfer out of an escrow) with ERC-8004 ownerOf(agent)."""
+    sample = pd.read_csv(RAW / "settle_sample_orders.csv")
+    rec = read_tsv("receipts_settle_sample.tsv.gz", ["block", "txi", "li", "tx", "address", "topics", "data"])
+    rows = []
+    for r in sample.itertuples(index=False):
+        logs = rec[rec["tx"] == r.settle_tx]
+        paid = []
+        for lg in logs.itertuples(index=False):
+            t = lg.topics.split(";")
+            if t[0] == TRANSFER and len(t) == 3:
+                src, dst = "0x" + t[1][-40:], "0x" + t[2][-40:]
+                if src in ESCROWS and dst not in ESCROWS and dst != FEE_SAFE:
+                    paid.append((int(lg.data, 16), dst))
+        recipient = max(paid)[1] if paid else None
+        rows.append({"settle_tx": r.settle_tx, "agent_id": int(r.agent_id), "paid_to": recipient,
+                     "owner_of": owner.get(int(r.agent_id)), "match": recipient is not None and recipient == owner.get(int(r.agent_id))})
+    return {"sampled": len(rows), "matched": int(sum(x["match"] for x in rows)), "rows": rows}
+
+
 def load_owners() -> dict[int, str]:
     o = read_tsv(f"owners_agents_{SE_LAST}.tsv.gz", ["agent_id", "owner"])
     return {int(a): (w.lower() if w.startswith("0x") else None) for a, w in zip(o["agent_id"], o["owner"])}
@@ -257,6 +283,10 @@ def main() -> None:
         log.info("validation: ours %s vs published %s; %d agent ids to look up", val["se_hires_by_day_ours"], PUBLISHED_DAILY_HIRES, len(ids))
         return
     owner = load_owners()
+    val = json.loads((ROOT / "data" / "bsc_validation.json").read_text())
+    val["payee_is_owner_sample"] = validate_payees(owner)
+    (ROOT / "data" / "bsc_validation.json").write_text(json.dumps(val, indent=2) + "\n")
+    log.info("payee == ownerOf on sample: %d of %d", val["payee_is_owner_sample"]["matched"], val["payee_is_owner_sample"]["sampled"])
     rings = {"ring48": rebuild_ring48(orders, owner), "group14": rebuild_group14(orders, owner)}
     (ROOT / "data" / "bsc_rings.json").write_text(json.dumps(rings, indent=2, default=str) + "\n")
     log.info("ring48: %s", {k: v for k, v in rings["ring48"].items() if k not in ("agents", "payees")})
