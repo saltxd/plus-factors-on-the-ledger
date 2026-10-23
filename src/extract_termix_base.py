@@ -115,13 +115,18 @@ def main() -> None:
     payees = np.array([p for p, _ in vol])
     v = np.array([x for _, x in vol], dtype=float)
     rng = np.random.default_rng(args.seed)
-    k = min(args.sample, len(payees))
-    pick = sorted(rng.choice(payees, size=k, replace=False, p=v / v.sum()).tolist())
-    log.info("window %s: %d payees, $%.0f of orders; sampled %d", args.window, len(payees), v.sum(), k)
+    # draws with replacement, probability proportional to volume: the mean of a 0/1 flag over the
+    # draws is an unbiased estimate of the flagged share of volume (Hansen-Hurwitz)
+    draws = rng.choice(payees, size=args.sample, replace=True, p=v / v.sum()).tolist()
+    mult = {p: draws.count(p) for p in sorted(set(draws))}
+    pick = sorted(mult)
+    log.info("window %s: %d payees, $%.0f of orders; %d draws, %d distinct payees", args.window, len(payees), v.sum(), len(draws), len(pick))
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     (out / "population.json").write_text(json.dumps({"window": args.window, "payees": len(payees), "volume": float(v.sum()),
-                                                     "sample": k, "seed": args.seed, "weights": "order volume in window"}, indent=2) + "\n")
+                                                     "draws": len(draws), "distinct": len(pick), "seed": args.seed,
+                                                     "design": "with replacement, probability proportional to order volume in window",
+                                                     "multiplicity": mult}, indent=2) + "\n")
     # graph: every USDC transfer except those touching the escrow, plus hire edges
     con.execute(
         f"""
