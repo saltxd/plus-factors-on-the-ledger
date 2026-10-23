@@ -105,11 +105,11 @@ def _inject_one_case(args: tuple) -> list[dict]:
 
 
 def positive_control(frozen: dict, cases_dir: Path, feats: pd.DataFrame) -> pd.DataFrame:
-    """Base markets: every Base case the decodes did not label coordinated or linked (I, N)
-    with at least 5 payers, from both halves (the rule is frozen; this measures sensitivity)."""
+    """Base markets: every case the decodes did not label coordinated or linked (I, N) with at
+    least 5 payers, both chains and both halves (the rule is frozen; this measures sensitivity)."""
     from multiprocessing import Pool
 
-    base = feats[(feats["y"] == 0) & (feats["label"].isin(["I", "N"])) & (feats["n_payers"] >= 5) & (feats["chain"] == "base")]
+    base = feats[(feats["y"] == 0) & (feats["label"].isin(["I", "N"])) & (feats["n_payers"] >= 5)]
     jobs = [(cases_dir / r["case_id"].replace("|", "__"), r["case_id"], r["label"], r["half"]) for _, r in base.iterrows()]
     rows: list[dict] = []
     with Pool(min(8, max(1, len(jobs)))) as pool:
