@@ -1,0 +1,61 @@
+{
+  "case_id": "F17-ax1|0x7284d41b5b852f2bd4c99bdf95043d84452d299c|W4",
+  "family": "F17-ax1",
+  "label": "N",
+  "y": 0,
+  "half": "dev",
+  "payee": "0x7284d41b5b852f2bd4c99bdf95043d84452d299c",
+  "window": "W4",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1791244800,
+  "t1": 1791849600,
+  "window_blocks": [
+    52227727,
+    52530126
+  ],
+  "data_blocks": [
+    51622927,
+    52530126
+  ],
+  "hub_threshold": 1000,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      4,
+      618
+    ],
+    [
+      5,
+      37
+    ],
+    [
+      6,
+      1072
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 88130,
+  "n_payers": 572,
+  "volume": 1762.6,
+  "via_counts": {
+    "direct": 88130
+  }
+}

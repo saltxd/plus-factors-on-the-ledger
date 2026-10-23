@@ -1,0 +1,37 @@
+{
+  "case_id": "F12-stableenrich|0x325bdf6f7efab24a2210c48c1b64cab2eae1d430|W1",
+  "family": "F12-stableenrich",
+  "label": "I",
+  "y": 0,
+  "half": "test",
+  "payee": "0x325bdf6f7efab24a2210c48c1b64cab2eae1d430",
+  "window": "W1",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1789430400,
+  "t1": 1790035200,
+  "window_blocks": [
+    51320527,
+    51622926
+  ],
+  "data_blocks": [
+    50715727,
+    51622926
+  ],
+  "hub_threshold": 1000,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 8092,
+  "n_payers": 121,
+  "volume": 294.1618,
+  "via_counts": {
+    "direct": 8092
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "case_id": "F18-korus|0x8a12157b27c22fb239e558dc3cb43c7d1a8c0881|W3",
+  "family": "F18-korus",
+  "label": "L",
+  "y": 0,
+  "half": "dev",
+  "payee": "0x8a12157b27c22fb239e558dc3cb43c7d1a8c0881",
+  "window": "W3",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1790640000,
+  "t1": 1791244800,
+  "window_blocks": [
+    51925327,
+    52227726
+  ],
+  "data_blocks": [
+    51320527,
+    52227726
+  ],
+  "hub_threshold": 1000,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 2265,
+  "n_payers": 2265,
+  "volume": 4770.920139000001,
+  "via_counts": {
+    "direct": 2265
+  }
+}

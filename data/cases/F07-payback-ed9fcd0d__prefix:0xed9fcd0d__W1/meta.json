@@ -1,0 +1,49 @@
+{
+  "case_id": "F07-payback-ed9fcd0d|prefix:0xed9fcd0d|W1",
+  "family": "F07-payback-ed9fcd0d",
+  "label": "C",
+  "y": 1,
+  "half": "dev",
+  "payee": "0xed9fcd0d36d1fc847b6489865261ccbbbf299902",
+  "window": "W1",
+  "chain": "base",
+  "market": "x402",
+  "contested": true,
+  "t0": 1789430400,
+  "t1": 1790035200,
+  "window_blocks": [
+    51320527,
+    51622926
+  ],
+  "data_blocks": [
+    50715727,
+    51622926
+  ],
+  "hub_threshold": 1000,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      14
+    ],
+    [
+      2,
+      2
+    ],
+    [
+      3,
+      1
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 1059,
+  "n_payers": 13,
+  "volume": 2662.264,
+  "via_counts": {
+    "direct": 1059
+  }
+}

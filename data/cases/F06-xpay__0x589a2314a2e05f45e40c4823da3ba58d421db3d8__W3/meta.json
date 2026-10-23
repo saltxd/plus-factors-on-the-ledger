@@ -1,0 +1,41 @@
+{
+  "case_id": "F06-xpay|0x589a2314a2e05f45e40c4823da3ba58d421db3d8|W3",
+  "family": "F06-xpay",
+  "label": "C",
+  "y": 1,
+  "half": "test",
+  "payee": "0x589a2314a2e05f45e40c4823da3ba58d421db3d8",
+  "window": "W3",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1790640000,
+  "t1": 1791244800,
+  "window_blocks": [
+    51925327,
+    52227726
+  ],
+  "data_blocks": [
+    51320527,
+    52227726
+  ],
+  "hub_threshold": 1000,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      95
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 20295,
+  "n_payers": 37,
+  "volume": 991.1150000000002,
+  "via_counts": {
+    "direct": 20295
+  }
+}

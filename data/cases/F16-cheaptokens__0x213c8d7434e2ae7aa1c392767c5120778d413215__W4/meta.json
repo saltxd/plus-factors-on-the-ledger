@@ -1,0 +1,61 @@
+{
+  "case_id": "F16-cheaptokens|0x213c8d7434e2ae7aa1c392767c5120778d413215|W4",
+  "family": "F16-cheaptokens",
+  "label": "N",
+  "y": 0,
+  "half": "test",
+  "payee": "0x213c8d7434e2ae7aa1c392767c5120778d413215",
+  "window": "W4",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1791244800,
+  "t1": 1791849600,
+  "window_blocks": [
+    52227727,
+    52530126
+  ],
+  "data_blocks": [
+    51622927,
+    52530126
+  ],
+  "hub_threshold": 1000,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      556
+    ],
+    [
+      4,
+      68622
+    ],
+    [
+      5,
+      77808
+    ],
+    [
+      6,
+      77142
+    ]
+  ],
+  "reach_capped": true,
+  "n_payments": 160,
+  "n_payers": 11,
+  "volume": 196.86,
+  "via_counts": {
+    "direct": 160
+  }
+}

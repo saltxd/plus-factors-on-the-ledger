@@ -1,0 +1,43 @@
+{"start": 50715727, "end": 50765726, "transfers": 4651467, "auth": 136284, "escrow": 23754, "calls": 504, "secs": 872}
+{"start": 51622927, "end": 51672926, "transfers": 4268889, "auth": 161316, "escrow": 7784, "calls": 465, "secs": 886}
+{"start": 50765727, "end": 50815726, "transfers": 4506815, "auth": 239546, "escrow": 31366, "calls": 503, "secs": 632}
+{"start": 51672927, "end": 51722926, "transfers": 4136249, "auth": 234009, "escrow": 3638, "calls": 476, "secs": 581}
+{"start": 50815727, "end": 50865726, "transfers": 5042477, "auth": 136447, "escrow": 9814, "calls": 526, "secs": 968}
+{"start": 51722927, "end": 51772926, "transfers": 3957909, "auth": 82503, "escrow": 5615, "calls": 430, "secs": 886}
+{"start": 51772927, "end": 51822926, "transfers": 3474958, "auth": 81632, "escrow": 10357, "calls": 358, "secs": 486}
+{"start": 50865727, "end": 50915726, "transfers": 4075483, "auth": 86140, "escrow": 13682, "calls": 439, "secs": 573}
+{"start": 51822927, "end": 51872926, "transfers": 3220117, "auth": 127738, "escrow": 10705, "calls": 373, "secs": 1407}
+{"start": 50915727, "end": 50965726, "transfers": 3870262, "auth": 78485, "escrow": 38, "calls": 431, "secs": 2160}
+{"start": 51872927, "end": 51922926, "transfers": 4419554, "auth": 124642, "escrow": 12435, "calls": 474, "secs": 2420}
+{"start": 50965727, "end": 51015726, "transfers": 4215538, "auth": 85590, "escrow": 26999, "calls": 462, "secs": 2511}
+{"start": 51922927, "end": 51972926, "transfers": 6013962, "auth": 109451, "escrow": 6410, "calls": 609, "secs": 2741}
+{"start": 51015727, "end": 51065726, "transfers": 4197858, "auth": 98144, "escrow": 33834, "calls": 468, "secs": 2604}
+{"start": 52022927, "end": 52072926, "transfers": 5571243, "auth": 65843, "escrow": 12404, "calls": 654, "secs": 2526}
+{"start": 51065727, "end": 51115726, "transfers": 4810264, "auth": 86107, "escrow": 10532, "calls": 568, "secs": 3301}
+{"start": 52222927, "end": 52272926, "transfers": 5671019, "auth": 87698, "escrow": 23075, "calls": 634, "secs": 1987}
+{"start": 52272927, "end": 52322926, "transfers": 4706986, "auth": 108860, "escrow": 25246, "calls": 533, "secs": 945}
+{"start": 52372927, "end": 52422926, "transfers": 3933984, "auth": 101877, "escrow": 5635, "calls": 441, "secs": 455}
+{"start": 52522927, "end": 52530126, "transfers": 564600, "auth": 15107, "escrow": 2449, "calls": 61, "secs": 245, "rpc": "https://base.gateway.tenderly.co"}
+{"start": 52172927, "end": 52222926, "transfers": 4826574, "auth": 92723, "escrow": 27140, "calls": 537, "secs": 1456, "rpc": "https://base.api.pocket.network"}
+{"start": 51565727, "end": 51615726, "transfers": 4080226, "auth": 96148, "escrow": 7302, "calls": 445, "secs": 1747, "rpc": "https://base.api.pocket.network"}
+{"start": 51215727, "end": 51265726, "transfers": 2754679, "auth": 65529, "escrow": 29305, "calls": 341, "secs": 914, "rpc": "https://base.api.pocket.network"}
+{"start": 51165727, "end": 51215726, "transfers": 3552848, "auth": 69428, "escrow": 28783, "calls": 400, "secs": 1041, "rpc": "https://base.api.pocket.network"}
+{"start": 52122927, "end": 52172926, "transfers": 4504876, "auth": 154618, "escrow": 16670, "calls": 506, "secs": 1355, "rpc": "https://base.api.pocket.network"}
+{"start": 51972927, "end": 52022926, "transfers": 6669518, "auth": 95321, "escrow": 11102, "calls": 701, "secs": 2097, "rpc": "https://base.api.pocket.network"}
+{"start": 51515727, "end": 51565726, "transfers": 3238149, "auth": 87406, "escrow": 5465, "calls": 398, "secs": 1343, "rpc": "https://base.api.pocket.network"}
+{"start": 52472927, "end": 52522926, "transfers": 4123287, "auth": 126115, "escrow": 14932, "calls": 465, "secs": 3577, "rpc": "https://base.gateway.tenderly.co"}
+{"start": 51115727, "end": 51165726, "transfers": 4383175, "auth": 82928, "escrow": 14832, "calls": 482, "secs": 1284, "rpc": "https://base.api.pocket.network"}
+{"start": 51465727, "end": 51515726, "transfers": 3942957, "auth": 88484, "escrow": 5634, "calls": 439, "secs": 1269, "rpc": "https://base.api.pocket.network"}
+{"start": 52072927, "end": 52122926, "transfers": 5148467, "auth": 84534, "escrow": 7808, "calls": 600, "secs": 1562, "rpc": "https://base.api.pocket.network"}
+{"start": 51922927, "end": 51972926, "transfers": 6013962, "auth": 109451, "escrow": 6410, "calls": 609, "secs": 1689, "rpc": "https://base.api.pocket.network"}
+{"start": 51065727, "end": 51115726, "transfers": 4810264, "auth": 86107, "escrow": 10532, "calls": 568, "secs": 1548, "rpc": "https://base.api.pocket.network"}
+{"start": 51415727, "end": 51465726, "transfers": 4549505, "auth": 82764, "escrow": 926, "calls": 489, "secs": 1422, "rpc": "https://base.api.pocket.network"}
+{"start": 51265727, "end": 51315726, "transfers": 3398747, "auth": 77111, "escrow": 35474, "calls": 390, "secs": 1152, "rpc": "https://base.api.pocket.network"}
+{"start": 52422927, "end": 52472926, "transfers": 3625267, "auth": 75989, "escrow": 1114, "calls": 413, "secs": 2736, "rpc": "https://base.gateway.tenderly.co"}
+{"start": 52022927, "end": 52072926, "transfers": 5571243, "auth": 65843, "escrow": 12404, "calls": 654, "secs": 1909, "rpc": "https://base.api.pocket.network"}
+{"start": 52222927, "end": 52272926, "transfers": 5671019, "auth": 87698, "escrow": 23075, "calls": 634, "secs": 1788, "rpc": "https://base.api.pocket.network"}
+{"start": 51365727, "end": 51415726, "transfers": 3881759, "auth": 79553, "escrow": 0, "calls": 448, "secs": 1253, "rpc": "https://base.api.pocket.network"}
+{"start": 51315727, "end": 51365726, "transfers": 4154498, "auth": 71658, "escrow": 16186, "calls": 482, "secs": 1351, "rpc": "https://base.api.pocket.network"}
+{"start": 52322927, "end": 52372926, "transfers": 5014305, "auth": 107866, "escrow": 11520, "calls": 558, "secs": 1581, "rpc": "https://base.api.pocket.network"}
+{"start": 52272927, "end": 52322926, "transfers": 4706986, "auth": 108860, "escrow": 25246, "calls": 533, "secs": 1469, "rpc": "https://base.api.pocket.network"}
+{"start": 51615727, "end": 51622926, "transfers": 594988, "auth": 10038, "escrow": 2262, "calls": 68, "secs": 71, "rpc": "https://base.gateway.tenderly.co"}

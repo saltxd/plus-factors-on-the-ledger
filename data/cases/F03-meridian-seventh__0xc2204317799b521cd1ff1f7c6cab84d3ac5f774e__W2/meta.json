@@ -1,0 +1,61 @@
+{
+  "case_id": "F03-meridian-seventh|0xc2204317799b521cd1ff1f7c6cab84d3ac5f774e|W2",
+  "family": "F03-meridian-seventh",
+  "label": "C",
+  "y": 1,
+  "half": "dev",
+  "payee": "0xc2204317799b521cd1ff1f7c6cab84d3ac5f774e",
+  "window": "W2",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1790035200,
+  "t1": 1790640000,
+  "window_blocks": [
+    51622927,
+    51925326
+  ],
+  "data_blocks": [
+    51018127,
+    51925326
+  ],
+  "hub_threshold": 1000,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      3,
+      129
+    ],
+    [
+      4,
+      13277
+    ],
+    [
+      5,
+      106816
+    ],
+    [
+      6,
+      114282
+    ]
+  ],
+  "reach_capped": true,
+  "n_payments": 17,
+  "n_payers": 1,
+  "volume": 3416.4900000000002,
+  "via_counts": {
+    "passthrough": 17
+  }
+}

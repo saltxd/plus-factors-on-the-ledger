@@ -1,0 +1,45 @@
+{
+  "case_id": "F15-losbeto|0xd5ba9711a3d052846a3695c70e7fcb8b3168fe7d|W4",
+  "family": "F15-losbeto",
+  "label": "N",
+  "y": 0,
+  "half": "test",
+  "payee": "0xd5ba9711a3d052846a3695c70e7fcb8b3168fe7d",
+  "window": "W4",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1791244800,
+  "t1": 1791849600,
+  "window_blocks": [
+    52227727,
+    52530126
+  ],
+  "data_blocks": [
+    51622927,
+    52530126
+  ],
+  "hub_threshold": 1000,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      2,
+      1
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 2477,
+  "n_payers": 13,
+  "volume": 163.10500000000002,
+  "via_counts": {
+    "direct": 2477
+  }
+}

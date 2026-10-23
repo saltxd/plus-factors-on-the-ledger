@@ -1,0 +1,312 @@
+{
+  "segments": [
+    {
+      "file": "transfers_50715727_50765726.tsv.gz",
+      "start": 50715727,
+      "end": 50765726,
+      "rows": 4651467,
+      "per_block": 93.03,
+      "sha256_rows": "a3c34d36292ddb45d1fcad55c66af2459dd78933c6009c9bf640824eb8a94530"
+    },
+    {
+      "file": "transfers_50765727_50815726.tsv.gz",
+      "start": 50765727,
+      "end": 50815726,
+      "rows": 4506815,
+      "per_block": 90.14,
+      "sha256_rows": "8bab727d203bdcddc658deff5641587a343785b97b900225aef682b72a80c65e"
+    },
+    {
+      "file": "transfers_50815727_50865726.tsv.gz",
+      "start": 50815727,
+      "end": 50865726,
+      "rows": 5042477,
+      "per_block": 100.85,
+      "sha256_rows": "efbea9a8adb27dc2e5aada8b80264aa5cc9c6a5a682cf82ad1effb92273d96dd"
+    },
+    {
+      "file": "transfers_50865727_50915726.tsv.gz",
+      "start": 50865727,
+      "end": 50915726,
+      "rows": 4075483,
+      "per_block": 81.51,
+      "sha256_rows": "d25fb317801ea700ef1768236620ed3f2a2b410357147b8e47ec18eb764603d7"
+    },
+    {
+      "file": "transfers_50915727_50965726.tsv.gz",
+      "start": 50915727,
+      "end": 50965726,
+      "rows": 3870262,
+      "per_block": 77.41,
+      "sha256_rows": "0149ff4fa580763ebb0f8b71ce5efa0880ff22ab47114651c7bb381fa9c4a90d"
+    },
+    {
+      "file": "transfers_50965727_51015726.tsv.gz",
+      "start": 50965727,
+      "end": 51015726,
+      "rows": 4215538,
+      "per_block": 84.31,
+      "sha256_rows": "1324cc208b766422faeaf191cb505ff6526e67e87d74b8c220b878bf7b8a7a12"
+    },
+    {
+      "file": "transfers_51015727_51065726.tsv.gz",
+      "start": 51015727,
+      "end": 51065726,
+      "rows": 4197858,
+      "per_block": 83.96,
+      "sha256_rows": "17b93f4148324913c6cf032113c1ed436d6d688921df0ecabdc5a1c73c7850e0"
+    },
+    {
+      "file": "transfers_51065727_51115726.tsv.gz",
+      "start": 51065727,
+      "end": 51115726,
+      "rows": 4810264,
+      "per_block": 96.21,
+      "sha256_rows": "3f1af3f8a07087a0635595314772a931a2a68c61dda2e13e11f98cfa35d4e1e6"
+    },
+    {
+      "file": "transfers_51115727_51165726.tsv.gz",
+      "start": 51115727,
+      "end": 51165726,
+      "rows": 4383175,
+      "per_block": 87.66,
+      "sha256_rows": "5500b4d1c463dddeda740e36a44e95407bff8d3e8bfaf7775a4fd17a2d6fe7d5"
+    },
+    {
+      "file": "transfers_51165727_51215726.tsv.gz",
+      "start": 51165727,
+      "end": 51215726,
+      "rows": 3552848,
+      "per_block": 71.06,
+      "sha256_rows": "531e250a4a1e138eb6248647114ee81f28d8ad2178b150318613b6cae324b966"
+    },
+    {
+      "file": "transfers_51215727_51265726.tsv.gz",
+      "start": 51215727,
+      "end": 51265726,
+      "rows": 2754679,
+      "per_block": 55.09,
+      "sha256_rows": "1ca5be557176de32e3aab2ca9b9e08c07f9fcb80921a5bafd942b27cc0c82fb6"
+    },
+    {
+      "file": "transfers_51265727_51315726.tsv.gz",
+      "start": 51265727,
+      "end": 51315726,
+      "rows": 3398747,
+      "per_block": 67.97,
+      "sha256_rows": "ac4a0402b66969764f3917f06670a7c73ef697e20b29c04678a2ccfa4683069a"
+    },
+    {
+      "file": "transfers_51315727_51365726.tsv.gz",
+      "start": 51315727,
+      "end": 51365726,
+      "rows": 4154498,
+      "per_block": 83.09,
+      "sha256_rows": "a003aaf1ce9de31cde224ccc012d62673cd09428e067673a26d59aa4ee659627"
+    },
+    {
+      "file": "transfers_51365727_51415726.tsv.gz",
+      "start": 51365727,
+      "end": 51415726,
+      "rows": 3881759,
+      "per_block": 77.64,
+      "sha256_rows": "f883bac85bb03a7f76ae3f26cb6a3ce8d6df738625f82f18e730e6f4119d7c28"
+    },
+    {
+      "file": "transfers_51415727_51465726.tsv.gz",
+      "start": 51415727,
+      "end": 51465726,
+      "rows": 4549505,
+      "per_block": 90.99,
+      "sha256_rows": "0b877206e7c9c12e70bbce362289371638e7b10aa2c31a7f85ae863852451b41"
+    },
+    {
+      "file": "transfers_51465727_51515726.tsv.gz",
+      "start": 51465727,
+      "end": 51515726,
+      "rows": 3942957,
+      "per_block": 78.86,
+      "sha256_rows": "a173560ac146fb86e27be3d082c550c9eae464d0b6d887d2da83617e7208bc1d"
+    },
+    {
+      "file": "transfers_51515727_51565726.tsv.gz",
+      "start": 51515727,
+      "end": 51565726,
+      "rows": 3238149,
+      "per_block": 64.76,
+      "sha256_rows": "26987429f7411af7e4240d95ff35b38e844005fce29f440f44e01885ceb44aad"
+    },
+    {
+      "file": "transfers_51565727_51615726.tsv.gz",
+      "start": 51565727,
+      "end": 51615726,
+      "rows": 4080226,
+      "per_block": 81.6,
+      "sha256_rows": "cba8abfabc40defd07877d3ba3c16ae7112e4c22caa585adc66f66104118413a"
+    },
+    {
+      "file": "transfers_51615727_51622926.tsv.gz",
+      "start": 51615727,
+      "end": 51622926,
+      "rows": 594988,
+      "per_block": 82.64,
+      "sha256_rows": "0018df8c6398e7dcec413ee386d4d214d2ff4c6b9b72f840ca42bdce822350f5"
+    },
+    {
+      "file": "transfers_51622927_51672926.tsv.gz",
+      "start": 51622927,
+      "end": 51672926,
+      "rows": 4268889,
+      "per_block": 85.38,
+      "sha256_rows": "be809e8a384968dad3445c05ab3807655d88be6ec97bae46c410439201931d9b"
+    },
+    {
+      "file": "transfers_51672927_51722926.tsv.gz",
+      "start": 51672927,
+      "end": 51722926,
+      "rows": 4136249,
+      "per_block": 82.72,
+      "sha256_rows": "f2167738377700c1768bbfd5f8ac682fe08559d222b0acd41c1d7a1d05b442c4"
+    },
+    {
+      "file": "transfers_51722927_51772926.tsv.gz",
+      "start": 51722927,
+      "end": 51772926,
+      "rows": 3957909,
+      "per_block": 79.16,
+      "sha256_rows": "3622b4d2500b5cde5a14504f5c5e2c434e770e9af16baaa99723980abdcdb855"
+    },
+    {
+      "file": "transfers_51772927_51822926.tsv.gz",
+      "start": 51772927,
+      "end": 51822926,
+      "rows": 3474958,
+      "per_block": 69.5,
+      "sha256_rows": "9db109413ff7477160968e1905532ff8c1aa26b1b57d9ad13b9e34beb8e20465"
+    },
+    {
+      "file": "transfers_51822927_51872926.tsv.gz",
+      "start": 51822927,
+      "end": 51872926,
+      "rows": 3220117,
+      "per_block": 64.4,
+      "sha256_rows": "a5dc5692b42aae72fd70036cadcbb12c9cf73bc40542b4fbc40eb9d039dd844b"
+    },
+    {
+      "file": "transfers_51872927_51922926.tsv.gz",
+      "start": 51872927,
+      "end": 51922926,
+      "rows": 4419554,
+      "per_block": 88.39,
+      "sha256_rows": "0d091172c6ba83083680c59709dee6d80530c0c76dd32c7734e78fbbf7bc93d5"
+    },
+    {
+      "file": "transfers_51922927_51972926.tsv.gz",
+      "start": 51922927,
+      "end": 51972926,
+      "rows": 6013962,
+      "per_block": 120.28,
+      "sha256_rows": "2628c421dc7aac9f3e0836eece1bf53ceb8a31b3fd9e89b72a07446ab5fda229"
+    },
+    {
+      "file": "transfers_51972927_52022926.tsv.gz",
+      "start": 51972927,
+      "end": 52022926,
+      "rows": 6669518,
+      "per_block": 133.39,
+      "sha256_rows": "0fe988d811adde1c755bfbf9dd5a450df7d81d6927641eeb4d60f00d81421388"
+    },
+    {
+      "file": "transfers_52022927_52072926.tsv.gz",
+      "start": 52022927,
+      "end": 52072926,
+      "rows": 5571243,
+      "per_block": 111.42,
+      "sha256_rows": "3d91128ba57b031c684169df05c8a77c213fb6c28dfcc071b8b136b90d05d105"
+    },
+    {
+      "file": "transfers_52072927_52122926.tsv.gz",
+      "start": 52072927,
+      "end": 52122926,
+      "rows": 5148467,
+      "per_block": 102.97,
+      "sha256_rows": "953d9373ecf5e7929351c06cf3541cf827df00d545908ea9ee88e785a12f285a"
+    },
+    {
+      "file": "transfers_52122927_52172926.tsv.gz",
+      "start": 52122927,
+      "end": 52172926,
+      "rows": 4504876,
+      "per_block": 90.1,
+      "sha256_rows": "bcde0879df6ac75c07cbe8ca93bae0598c332ad720e52b9f169eb4aba4b206b5"
+    },
+    {
+      "file": "transfers_52172927_52222926.tsv.gz",
+      "start": 52172927,
+      "end": 52222926,
+      "rows": 4826574,
+      "per_block": 96.53,
+      "sha256_rows": "f4171ef0b952e65d8c1e5d9335e113abac3189c873ac4cefbb6a0d2f043853c5"
+    },
+    {
+      "file": "transfers_52222927_52272926.tsv.gz",
+      "start": 52222927,
+      "end": 52272926,
+      "rows": 5671019,
+      "per_block": 113.42,
+      "sha256_rows": "6b4cb8b47cde7d4787d62ac24507912074ae3128288d9664f8c6cccc6484be8a"
+    },
+    {
+      "file": "transfers_52272927_52322926.tsv.gz",
+      "start": 52272927,
+      "end": 52322926,
+      "rows": 4706986,
+      "per_block": 94.14,
+      "sha256_rows": "6e52708cdb2babe315c52bc0ec53ac48d06ef1da58a6aed51f8f37ffc2366a03"
+    },
+    {
+      "file": "transfers_52322927_52372926.tsv.gz",
+      "start": 52322927,
+      "end": 52372926,
+      "rows": 5014305,
+      "per_block": 100.29,
+      "sha256_rows": "96d2c14d29811266773424a3d643aafd8be95bf16755499cdede22ed699a103f"
+    },
+    {
+      "file": "transfers_52372927_52422926.tsv.gz",
+      "start": 52372927,
+      "end": 52422926,
+      "rows": 3933984,
+      "per_block": 78.68,
+      "sha256_rows": "0c40c6775be09571a91e604594bd66d1f29c8d2df5baa36f0c909ce1fa5b36b5"
+    },
+    {
+      "file": "transfers_52422927_52472926.tsv.gz",
+      "start": 52422927,
+      "end": 52472926,
+      "rows": 3625267,
+      "per_block": 72.51,
+      "sha256_rows": "fdae81472a07f0c82b9cd2f3ff0e2ee451b7d86b5455572b6a37cf85046c72b4"
+    },
+    {
+      "file": "transfers_52472927_52522926.tsv.gz",
+      "start": 52472927,
+      "end": 52522926,
+      "rows": 4123287,
+      "per_block": 82.47,
+      "sha256_rows": "e4c48b42257a85c6d7aefdc5774731a4d8bd032235f31a4ff008aee410691ac0"
+    },
+    {
+      "file": "transfers_52522927_52530126.tsv.gz",
+      "start": 52522927,
+      "end": 52530126,
+      "rows": 564600,
+      "per_block": 78.42,
+      "sha256_rows": "074f7a16c824efd3acb62b4dc719ae0d9f9fd04c2d4fa57ce41f3128259dab72"
+    }
+  ],
+  "gaps": [],
+  "thin_segments": [],
+  "total_rows": 157753459,
+  "ok": true
+}
