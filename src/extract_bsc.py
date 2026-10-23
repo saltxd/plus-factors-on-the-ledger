@@ -16,6 +16,12 @@ Market mapping (BNB Chain evidence is the market's own payment graph):
                the allowed pace from keyless endpoints (topic-filtered token queries are capped
                at under 1,000 blocks), so funding from exchanges or direct transfers is not seen.
   hub          a wallet with >= 1000 distinct counterparties in the hire graph.
+
+Pseudonyms: the decodes describe the two rings without listing their wallets, so no output of
+this script names them. Every ring wallet appears as ring48-01 .. ring48-48 or group14-01 ..
+group14-14, numbered in ascending order of its lowercase address, in every case id, directory
+name, table and JSON file written here, wherever it occurs (also as another case's payer).
+Only the raw pull (data/raw/bsc) and the in-memory joins use the addresses.
 """
 
 from __future__ import annotations
@@ -216,12 +222,32 @@ def validate_payees(owner: dict[int, str]) -> dict:
     return {"sampled": len(rows), "matched": int(sum(x["match"] for x in rows)), "rows": rows}
 
 
+def ring_aliases(rings: dict) -> dict[str, str]:
+    """Address -> pseudonym for the wallets of both rebuilt rings (see the module docstring)."""
+    alias: dict[str, str] = {}
+    for name in ("ring48", "group14"):
+        for i, addr in enumerate(sorted(rings[name].get("payees", [])), 1):
+            alias[addr] = f"{name}-{i:02d}"
+    return alias
+
+
+def pseudonymize(obj, alias: dict[str, str]):
+    """Replace every string that is a ring wallet's address, anywhere in a JSON-like object."""
+    if isinstance(obj, str):
+        return alias.get(obj, obj)
+    if isinstance(obj, dict):
+        return {pseudonymize(k, alias): pseudonymize(v, alias) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [pseudonymize(v, alias) for v in obj]
+    return obj
+
+
 def load_owners() -> dict[int, str]:
     o = read_tsv(f"owners_agents_{SE_LAST}.tsv.gz", ["agent_id", "owner"])
     return {int(a): (w.lower() if w.startswith("0x") else None) for a, w in zip(o["agent_id"], o["owner"])}
 
 
-def build_cases(orders: pd.DataFrame, owner: dict[int, str], rings: dict) -> list[dict]:
+def build_cases(orders: pd.DataFrame, owner: dict[int, str], rings: dict, alias: dict[str, str]) -> list[dict]:
     reg = load_registry()
     t0, t1, w0, w1 = window_bounds(reg, "SE")
     o = orders.copy()
@@ -261,7 +287,7 @@ def build_cases(orders: pd.DataFrame, owner: dict[int, str], rings: dict) -> lis
     for c in cases:
         payees = payee_sets.get(c.family) if c.payee.startswith("reconstruct:") else [c.payee]
         for p in payees:
-            case_id = f"{c.family}|{p}|{c.window}"
+            case_id = f"{c.family}|{alias.get(p, p)}|{c.window}"
             d = ROOT / "data" / "cases" / case_id.replace("|", "__")
             pay = se[se["payee"] == p]
             if pay.empty:
@@ -284,13 +310,16 @@ def build_cases(orders: pd.DataFrame, owner: dict[int, str], rings: dict) -> lis
             out_t = pd.DataFrame({"dst": outs["payee"].fillna("unknown-owner"), "value": outs["budget"], "ts": outs["created_ts"], "block": outs["created_block"],
                                   "dst_is_hub": outs["payee"].isin(hubs).astype(int)})
             reach_t = pd.DataFrame({"payer": payers, "hops": [dist.get(b) for b in payers]})
+            for t, cols in ((pay_t, ["payer"]), (inf_t, ["payer", "src"]), (out_t, ["dst"]), (reach_t, ["payer"])):
+                for col in cols:
+                    t[col] = t[col].map(lambda x: alias.get(x, x))
             pay_t.sort_values("ts").to_csv(d / "payments.csv.gz", index=False)
             inf_t.sort_values("order").to_csv(d / "payer_inflows.csv.gz", index=False)
             out_t.sort_values("ts").to_csv(d / "seller_outflows.csv.gz", index=False)
             reach_t.to_csv(d / "payer_reach.csv.gz", index=False)
             hop_counts = pd.Series(list(dist.values())).value_counts().sort_index()
             meta = {
-                "case_id": case_id, "family": c.family, "label": c.label, "y": c.y, "half": c.half, "payee": p, "window": c.window,
+                "case_id": case_id, "family": c.family, "label": c.label, "y": c.y, "half": c.half, "payee": alias.get(p, p), "window": c.window,
                 "chain": "bsc", "market": c.market, "contested": c.contested, "t0": t0, "t1": t1, "window_blocks": [w0, w1],
                 "data_blocks": [D0_BLOCK, w1], "hub_threshold": HUB_DEGREE, "k": K_MAX, "graph": "termix hire graph only",
                 "reach_by_hop": [[int(h), int(n)] for h, n in hop_counts.items()], "reach_capped": False,
@@ -319,14 +348,16 @@ def main() -> None:
     owner = load_owners()
     val = json.loads((ROOT / "data" / "bsc_validation.json").read_text())
     val["payee_is_owner_sample"] = validate_payees(owner)
-    (ROOT / "data" / "bsc_validation.json").write_text(json.dumps(val, indent=2) + "\n")
-    log.info("payee == ownerOf on sample: %d of %d", val["payee_is_owner_sample"]["matched"], val["payee_is_owner_sample"]["sampled"])
     rings = {"ring48": rebuild_ring48(orders, owner), "group14": rebuild_group14(orders, owner)}
-    (ROOT / "data" / "bsc_rings.json").write_text(json.dumps(rings, indent=2, default=str) + "\n")
-    log.info("ring48: %s", {k: v for k, v in rings["ring48"].items() if k not in ("agents", "payees")})
-    log.info("group14: %s", {k: v for k, v in rings["group14"].items() if k not in ("agents", "payees")})
-    summary = build_cases(orders, owner, rings)
-    (ROOT / "data" / "cases" / "extract_bsc_summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n")
+    alias = ring_aliases(rings)
+    (ROOT / "data" / "bsc_validation.json").write_text(json.dumps(pseudonymize(val, alias), indent=2) + "\n")
+    log.info("payee == ownerOf on sample: %d of %d", val["payee_is_owner_sample"]["matched"], val["payee_is_owner_sample"]["sampled"])
+    shown = pseudonymize(rings, alias)
+    (ROOT / "data" / "bsc_rings.json").write_text(json.dumps(shown, indent=2, default=str) + "\n")
+    log.info("ring48: %s", {k: v for k, v in shown["ring48"].items() if k not in ("agents", "payees")})
+    log.info("group14: %s", {k: v for k, v in shown["group14"].items() if k not in ("agents", "payees")})
+    summary = build_cases(orders, owner, rings, alias)
+    (ROOT / "data" / "cases" / "extract_bsc_summary.json").write_text(json.dumps(pseudonymize(summary, alias), indent=2, default=str) + "\n")
 
 
 if __name__ == "__main__":
