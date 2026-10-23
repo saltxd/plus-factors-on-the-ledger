@@ -68,6 +68,7 @@ The labels come from ChainWard's own earlier decodes, and most of them were reac
 ## Deviations from the plan
 
 - Two exploratory timing features (`pair_reciprocity_timing`, `payer_synchrony`) were added after a one-day debug run showed that `timing_coupling` saturates for payees that send thousands of transfers. They were added before the full data existed, are reported, and never entered the rule search.
+- Before the freeze, the extraction and feature code were smoke-tested on a one-day slice of Sep 22-24 data with a one-day lookback; that run printed feature values for three development cases (F03, F05, F19) and payment counts for test cases, and no test-half feature value was seen before the rule was frozen.
 - The fine-grid positive control near the threshold was added after the pre-set grid ran, because that grid jumps from 30% to 50%.
 - BNB Chain evidence is TermiX's hire graph only: keyless endpoints cap topic-filtered token queries below 1,000 blocks, so plain USDC/USDT transfers of BNB Chain wallets were not pulled.
 - The 48-wallet ring was first rebuilt by id range alone (58 wallets, 10 of them in the 14-wallet group), then as the closed hire components the decode describes, which reproduces its published counts. This was done before any feature was computed.
