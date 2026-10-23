@@ -39,11 +39,19 @@ def test_redact_replaces_ring_agents_and_ring_hashes_only():
     assert out == {"agents": ["REDACTED", 8], "agent_id": "REDACTED", "other_agent": {"agent_id": 9}, "settle_tx": "REDACTED", "tx": "0x" + "cd" * 32}
 
 
+def test_redact_strips_transaction_fields_next_to_a_pseudonym():
+    obj = {"hires_out": [{"buyer": "group14-01", "agent_id": 12345, "budget": 1.0}], "rows": [{"paid_to": "0x" + "1" * 40, "agent_id": 12345}]}
+    out = redact(obj, set(), set())
+    assert out == {"hires_out": [{"buyer": "group14-01", "agent_id": "REDACTED", "budget": "REDACTED"}], "rows": [{"paid_to": "0x" + "1" * 40, "agent_id": 12345}]}
+
+
 def test_committed_ring_files_use_pseudonyms_only():
     rings = json.loads((ROOT / "data" / "bsc_rings.json").read_text())
     for name, n in (("ring48", 48), ("group14", 14)):
         assert rings[name]["payees"] == [f"{name}-{i:02d}" for i in range(1, n + 1)]
         assert rings[name]["agents"] == ["REDACTED"] * n
+    for h in rings["group14"]["hires_out"]:
+        assert h["agent_id"] == h["budget"] == "REDACTED"
 
 
 def test_ring_cases_have_no_committed_tables_and_are_carried_over():

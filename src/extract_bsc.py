@@ -39,6 +39,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import re
 from collections import defaultdict, deque
 from pathlib import Path
 
@@ -281,13 +282,23 @@ def ring_identifiers(orders: pd.DataFrame, owner: dict[int, str], alias: dict[st
     return {"agents": agents, "orders": order_ids, "txs": set(esc.loc[mask, "tx"].str.lower())}
 
 
+PSEUDONYM = re.compile(r"(ring48|group14)-\d\d")
+PAIRED = ("agent_id", "budget", "value", "ts", "block", "tx", "order_id", "created_tx", "settle_tx")
+
+
 def redact(obj, ring_agents: set[int], ring_hex: set[str]):
     """Replace ring agent ids (in "agents" lists and "agent_id" fields) and ring order ids and
-    transaction hashes (any string) with REDACTED, anywhere in a JSON-like object."""
+    transaction hashes (any string) with REDACTED, anywhere in a JSON-like object. A record that
+    names a ring wallet by pseudonym also loses its per-transaction fields (PAIRED: the hired
+    agent, the amount, the time, the block, the hashes), which would let anyone find the hire on
+    an explorer and so the wallet behind the pseudonym."""
     if isinstance(obj, dict):
+        named = any(isinstance(v, str) and PSEUDONYM.fullmatch(v) for v in obj.values())
         out = {}
         for k, v in obj.items():
-            if k == "agents" and isinstance(v, list):
+            if named and k in PAIRED:
+                out[k] = REDACTED
+            elif k == "agents" and isinstance(v, list):
                 out[k] = [REDACTED if isinstance(a, int) and a in ring_agents else a for a in v]
             elif k == "agent_id" and isinstance(v, int) and v in ring_agents:
                 out[k] = REDACTED
