@@ -19,7 +19,7 @@ import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 import yaml  # noqa: E402
 
-from features import DIRECTION, FEATURES  # noqa: E402
+from features import EXPLORATORY_FEATURES, FEATURES  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 RES = ROOT / "results"
@@ -163,8 +163,53 @@ def fig_timing_shuffle(t: pd.DataFrame, nc: pd.DataFrame) -> None:
     plt.close(fig)
 
 
+BASIS_TO_FEATURE = {
+    "seller_to_buyer_funding_path": "loop_share",
+    "seller_funds_buyers": "loop_share",
+    "payment_tree": "loop_share",
+    "direct_reciprocity": "loop_share_1hop",
+    "closure_of_payment_set": "outside_funding_share",
+    "closure_of_hiring_set": "loop_share",
+    "no_outside_payments": "outside_funding_share",
+    "first_funder_is_seller": "shared_funder_share",
+    "shared_funder": "shared_funder_share",
+    "shared_funder_without_seller_path": "shared_funder_share",
+    "shared_high_throughput_funder": "shared_funder_share",
+    "many_distinct_funders": "shared_funder_share",
+    "no_loop_in_seller_outflow_trace": "loop_share",
+    "no_seller_funding": "loop_share",
+    "no_funding_link_pairwise": "loop_share",
+    "money_returns_through_high_throughput_account": "loop_share",
+}
+
+
+def md_table(df: pd.DataFrame, floatfmt: str = "{:.3f}") -> str:
+    cols = list(df.columns)
+    lines = ["| " + " | ".join(str(c) for c in cols) + " |", "|" + "|".join("---" for _ in cols) + "|"]
+    for _, r in df.iterrows():
+        cells = []
+        for c in cols:
+            v = r[c]
+            cells.append(floatfmt.format(v) if isinstance(v, float) and not np.isnan(v) else ("" if isinstance(v, float) else str(v)))
+        lines.append("| " + " | ".join(cells) + " |")
+    return "\n".join(lines)
+
+
+def circularity_table() -> pd.DataFrame:
+    """Which features the decode's own evidence corresponds to, per family."""
+    reg = yaml.safe_load((ROOT / "cases" / "cases.yaml").read_text())
+    rows = []
+    for f in reg["families"]:
+        used = sorted({BASIS_TO_FEATURE.get(b, "(none)") for b in f["label_basis"]})
+        rows.append({"family": f["family"], "label": f["label"], "decode_evidence": ", ".join(f["label_basis"]), "closest_feature": ", ".join(used)})
+    t = pd.DataFrame(rows)
+    t.to_csv(RES / "circularity.csv", index=False)
+    return t
+
+
 def main() -> None:
     frozen = json.loads((RES / "frozen_rule.json").read_text())
+    circularity_table()
     t = case_table()
     fig_features(t, frozen)
     auc = pd.read_csv(RES / "feature_auc.csv")
