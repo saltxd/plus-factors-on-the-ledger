@@ -21,7 +21,8 @@ Pseudonyms: the decodes describe the two rings without listing their wallets, so
 this script names them. Every ring wallet appears as ring48-01 .. ring48-48 or group14-01 ..
 group14-14, numbered in ascending order of its lowercase address, in every case id, directory
 name, table and JSON file written here, wherever it occurs (also as another case's payer).
-Only the raw pull (data/raw/bsc) and the in-memory joins use the addresses.
+Only the raw pull (data/raw/bsc) and the in-memory joins use the addresses. The raw pull is
+not committed, because it holds these wallet lists; pull/bsc_termix_pull.py re-pulls it.
 """
 
 from __future__ import annotations
@@ -202,9 +203,10 @@ TRANSFER = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
 
 
 def validate_payees(owner: dict[int, str]) -> dict:
-    """On a seeded sample of settlement transactions, compare the wallet the escrow paid
-    (largest non-fee stablecoin transfer out of an escrow) with ERC-8004 ownerOf(agent)."""
-    sample = pd.read_csv(RAW / "settle_sample_orders.csv")
+    """On a seeded sample of settlement transactions (data/bsc_settle_sample.csv; their receipts
+    come from pull/bsc_termix_pull.py receipts), compare the wallet the escrow paid (largest
+    non-fee stablecoin transfer out of an escrow) with ERC-8004 ownerOf(agent)."""
+    sample = pd.read_csv(ROOT / "data" / "bsc_settle_sample.csv")
     rec = read_tsv("receipts_settle_sample.tsv.gz", ["block", "txi", "li", "tx", "address", "topics", "data"])
     rows = []
     for r in sample.itertuples(index=False):

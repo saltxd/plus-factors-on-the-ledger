@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 data/raw/base/
 data/raw/base_mac/
+data/raw/bsc/
 data/raw/bsc_sentio/
 *.partial.tsv
 *.part
