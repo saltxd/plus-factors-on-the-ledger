@@ -6,10 +6,13 @@ with a shorter one. Transaction hashes (64 digits) are skipped; their printed pr
 which can only exclude more payees. Reads the decodes' published markdown from a ChainWard
 checkout and writes data/decode_printed_hex.txt.
 
-One BNB Chain decode prints four of the 62 ring wallets as examples. The list is written for Base
-payees, and the repository names ring wallets only by pseudonym, so tokens matching a ring wallet
-are dropped (rebuilt from the raw BNB Chain pull, which must be present); the sampler checks that
-no ring wallet is a Base payee in the population, so dropping them changes nothing.
+One BNB Chain decode prints four of the 62 ring wallets as examples, and the BNB Chain decodes
+print prefixes of some ring transactions. The list is written for Base payees, and the repository
+names ring wallets only by pseudonym and never their transactions, so tokens matching a ring
+wallet, or a prefix of a ring order id or of a transaction a ring wallet takes part in, are dropped
+(rebuilt from the raw BNB Chain pull, which must be present). The sampler checks that no ring
+wallet is a Base payee in the population, and no Base payee starts with a dropped transaction
+prefix, so dropping them changes nothing.
 
   python scripts/decode_printed_hex.py --decodes ~/Forge/chainward/deliverables
 """
@@ -53,14 +56,18 @@ def main() -> None:
     logging.disable(logging.INFO)
     orders = xb.load_orders(xb.Clock())
     owner = xb.load_owners()
-    ring = set(xb.ring_aliases({"ring48": xb.rebuild_ring48(orders, owner), "group14": xb.rebuild_group14(orders, owner)}))
+    alias = xb.ring_aliases({"ring48": xb.rebuild_ring48(orders, owner), "group14": xb.rebuild_group14(orders, owner)})
+    ring = set(alias)
     if len(ring) != 62:
         raise SystemExit("could not rebuild the 62 ring wallets; the raw BNB Chain pull is needed")
+    ids = xb.ring_identifiers(orders, owner, alias)
+    ring_hex = ids["orders"] | ids["txs"]
     dropped = {t for t in found if any(a.startswith(t) for a in ring)}
-    kept = found - dropped
+    dropped_tx = {t for t in found - dropped if any(h.startswith(t) for h in ring_hex)}
+    kept = found - dropped - dropped_tx
     Path(args.out).write_text("".join(f"{t}\n" for t in sorted(kept)))
     print(f"{len(kept)} tokens kept ({sum(len(t) == 42 for t in kept)} full addresses) from {len(SLUGS)} decodes; "
-          f"{len(dropped)} tokens matching a ring wallet dropped")
+          f"{len(dropped)} tokens matching a ring wallet and {len(dropped_tx)} matching a ring order or transaction dropped")
 
 
 if __name__ == "__main__":

@@ -2,7 +2,8 @@
 
 Reads data/cases/<case>/ (payments, payer_inflows, seller_outflows, payer_reach, meta.json)
 and writes results/case_features.csv (primary settings) and, with --sensitivity,
-results/sensitivity_features.csv (reach depth K = 1..6).
+results/sensitivity_features.csv (reach depth K = 1..6). Withheld cases (src/withheld.py) are
+computed from data/cases_private/ when it is present and carried over from data/withheld/ otherwise.
 """
 
 from __future__ import annotations
@@ -16,6 +17,7 @@ import numpy as np
 import pandas as pd
 
 from features import K_HOPS, CaseData, compute_features
+from withheld import CASES, PRIVATE, carried, dir_name
 
 ROOT = Path(__file__).resolve().parents[1]
 log = logging.getLogger("run_features")
@@ -55,7 +57,23 @@ def main() -> None:
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     rows, sens = [], []
-    for d in sorted(p for p in Path(args.cases).iterdir() if (p / "meta.json").exists()):
+    dirs = [p for p in Path(args.cases).iterdir() if (p / "meta.json").exists()]
+    main_run = Path(args.cases).resolve() == CASES.resolve()
+    if main_run and PRIVATE.exists():
+        dirs += [p for p in PRIVATE.iterdir() if (p / "meta.json").exists()]
+    have = {json.loads((d / "meta.json").read_text())["case_id"] for d in dirs}
+    carry = carried("case_features.csv") if main_run else carried("case_features.csv").iloc[0:0]
+    carry = carry[~carry["case_id"].isin(have)]
+    carry_sens = carried("sensitivity_features.csv")
+    items = sorted([(d.name, d) for d in dirs] + [(dir_name(c), c) for c in carry["case_id"]], key=lambda t: t[0])
+    for _, item in items:
+        if isinstance(item, str):  # tables withheld: committed case-level rows
+            rows.append(carry[carry["case_id"] == item].iloc[0].to_dict())
+            if args.sensitivity:
+                sens += carry_sens[carry_sens["case_id"] == item].sort_values("k").to_dict("records")
+            log.info("%s (tables withheld, rows carried over from data/withheld)", item)
+            continue
+        d = item
         cd = load_case(d)
         f = compute_features(cd, k=K_HOPS, n_null=args.n_null)
         rows.append({**meta_cols(cd.meta), **f})

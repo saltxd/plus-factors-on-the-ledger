@@ -32,6 +32,7 @@ import pandas as pd
 from features import CaseData, compute_features
 from rules import apply_rule, family_weights, metrics
 from run_features import load_case
+from withheld import carried, case_dir
 
 ROOT = Path(__file__).resolve().parents[1]
 log = logging.getLogger("controls")
@@ -110,7 +111,13 @@ def positive_control(frozen: dict, cases_dir: Path, feats: pd.DataFrame) -> pd.D
     from multiprocessing import Pool
 
     base = feats[(feats["y"] == 0) & (feats["label"].isin(["I", "N"])) & (feats["n_payers"] >= 5)]
-    jobs = [(cases_dir / r["case_id"].replace("|", "__"), r["case_id"], r["label"], r["half"]) for _, r in base.iterrows()]
+    jobs, withheld = [], []
+    for _, r in base.iterrows():
+        d = case_dir(r["case_id"])
+        if d is None:  # tables withheld (src/withheld.py): committed rows
+            withheld.append(r["case_id"])
+            continue
+        jobs.append((d, r["case_id"], r["label"], r["half"]))
     rows: list[dict] = []
     with Pool(min(8, max(1, len(jobs)))) as pool:
         for part in pool.imap_unordered(_inject_one_case, jobs):
@@ -119,19 +126,34 @@ def positive_control(frozen: dict, cases_dir: Path, feats: pd.DataFrame) -> pd.D
     df = pd.DataFrame(rows)
     df["flag_primary"] = apply_rule(df, frozen["rule"])
     df["flag_non_circular"] = apply_rule(df, frozen["non_circular_rule"])
+    if withheld:
+        c = carried("positive_control.csv")
+        df = pd.concat([df, c[c["base_case"].isin(withheld)][df.columns]], ignore_index=True)
+        log.info("positive control carried over for %s (tables withheld)", withheld)
     return df
 
 
 def negative_control(frozen: dict, cases_dir: Path, feats: pd.DataFrame) -> pd.DataFrame:
-    rows = []
+    rows, carried_row = [], []
+    carry = carried("negative_control_timing_shuffle.csv")
     for _, r in feats.iterrows():
-        cd = load_case(cases_dir / r["case_id"].replace("|", "__"))
+        d = case_dir(r["case_id"])
+        if d is None:  # tables withheld (src/withheld.py): committed rows, flags included
+            recs = carry[carry["case_id"] == r["case_id"]].sort_values("seed").to_dict("records")
+            rows += recs
+            carried_row += [True] * len(recs)
+            continue
+        cd = load_case(d)
         for seed in range(3):
             f = compute_features(shuffle_times(cd, 1000 + seed), n_null=50)
             rows.append({"case_id": r["case_id"], "family": r["family"], "label": r["label"], "y": r["y"], "half": r["half"], "seed": seed, **f})
+            carried_row.append(False)
     df = pd.DataFrame(rows)
-    df["flag_primary"] = apply_rule(df, frozen["rule"])
-    df["flag_non_circular"] = apply_rule(df, frozen["non_circular_rule"])
+    comp = ~np.array(carried_row)
+    for col, rule in (("flag_primary", frozen["rule"]), ("flag_non_circular", frozen["non_circular_rule"])):
+        flags = df[col].to_numpy(dtype=object) if col in df else np.full(len(df), None, dtype=object)
+        flags[comp] = apply_rule(df[comp].reset_index(drop=True), rule)
+        df[col] = flags.astype(bool)
     return df
 
 
@@ -201,8 +223,13 @@ def boundary_check(frozen: dict, cases_dir: Path, feats: pd.DataFrame) -> pd.Dat
     base = feats[(feats["y"] == 0) & (feats["label"].isin(["I", "N"])) & (feats["n_payers"] >= 5)].reset_index(drop=True)
     base = base[~apply_rule(base, frozen["rule"])]
     rows = []
+    carry = carried("positive_control_boundary.csv")
     for _, r in base.iterrows():
-        cd = load_case(cases_dir / r["case_id"].replace("|", "__"))
+        d = case_dir(r["case_id"])
+        if d is None:  # tables withheld (src/withheld.py): committed rows
+            rows += carry[carry["base_case"] == r["case_id"]].to_dict("records")
+            continue
+        cd = load_case(d)
         b = float(r["loop_share"])
         for route in ("direct", "relay4"):
             for phi in [0.30, 0.35, 0.38, 0.40, 0.41, 0.42, 0.43, 0.44, 0.45, 0.50]:

@@ -23,6 +23,15 @@ group14-14, numbered in ascending order of its lowercase address, in every case 
 name, table and JSON file written here, wherever it occurs (also as another case's payer).
 Only the raw pull (data/raw/bsc) and the in-memory joins use the addresses. The raw pull is
 not committed, because it holds these wallet lists; pull/bsc_termix_pull.py re-pulls it.
+
+Withheld cases: an agent id, an order id, a transaction hash or a block of a ring hire is enough to
+look a ring wallet up on the public registry or an explorer. So no committed output names them:
+the per-transaction tables of every case that contains a ring wallet (the 62 ring cases, and any
+other case with a ring wallet among its payers, their funders or the payee's recipients) are
+written to data/cases_private/ (not committed), and the ring agent ids, order ids and transaction
+hashes in the JSON files become "REDACTED". Their case-level rows are committed in data/withheld/
+(src/withheld.py). The agent-id range and the example hire that the decodes print for the two
+rings are read from data/raw/bsc/ring_spec.json, next to the raw pull.
 """
 
 from __future__ import annotations
@@ -45,12 +54,21 @@ log = logging.getLogger("extract_bsc")
 T_CREATED = "0xac4801e0cf6c58578da06571bd840e030ab529c0ca954375ff4e7b45086fef7c"
 T_SETTLED = "0xdd533cd5141138294c3af311a217f94675d6ab3f45a7eee05943a2d51058e1a7"
 D0_BLOCK, SE_FIRST, SE_LAST = 122313771, 125000755, 126344213
-RING_ID_RANGE = (REDACTED, REDACTED)
-GROUP14_EXAMPLE_TX = "REDACTED"
+RING_SPEC = RAW / "ring_spec.json"  # local, like the raw pull: see the module docstring
+PRIVATE_CASES = ROOT / "data" / "cases_private"
+REDACTED = "REDACTED"
 PUBLISHED_DAILY_HIRES = {"2026-10-01": 448, "2026-10-02": 4176, "2026-10-03": 2580, "2026-10-04": 1139, "2026-10-05": 638, "2026-10-06": 697, "2026-10-07": 647}
 FEE = 0.02
 HUB_DEGREE = 1000
 K_MAX = 6
+
+
+def ring_spec() -> dict:
+    """{"ring48_agent_id_range": [lo, hi], "group14_example_tx": "0x..."}, as printed in the decodes."""
+    if not RING_SPEC.exists():
+        raise SystemExit(f"{RING_SPEC} is missing: write the agent-id range and the example hire the decodes print "
+                         "(README, Reproduce, step 3)")
+    return json.loads(RING_SPEC.read_text())
 
 
 def read_tsv(pattern: str, names: list[str]) -> pd.DataFrame:
@@ -118,13 +136,13 @@ def se_orders(orders: pd.DataFrame) -> pd.DataFrame:
 
 
 def rebuild_ring48(orders: pd.DataFrame, owner: dict[int, str]) -> dict:
-    """The decode's description: agents with ids REDACTED..REDACTED (registered Sep 4), each hired during
+    """The decode's description: agents in the id range it prints (ring_spec.json; registered Sep 4), each hired during
     the window only by owners of other agents in the set, whose owners hire no agent outside it.
     Candidates are window hires of in-range agents by owners of in-range agents; the ring is the union
     of the candidates' connected hire components that are closed (no window hire in or out)."""
     se = se_orders(orders).copy()
     se["payee"] = se["agent_id"].map(owner)
-    lo, hi = RING_ID_RANGE
+    lo, hi = ring_spec()["ring48_agent_id_range"]
     in_range = {a for a in owner if lo <= a <= hi and owner[a]}
     owners_in_range = {owner[a] for a in in_range}
     cand = se[se["agent_id"].isin(in_range) & se["buyer"].isin(owners_in_range)]
@@ -174,7 +192,7 @@ def rebuild_group14(orders: pd.DataFrame, owner: dict[int, str]) -> dict:
     $1 hire out), until nothing changes."""
     se = se_orders(orders).copy()
     se["payee"] = se["agent_id"].map(owner)
-    ex = se[se["created_tx"] == GROUP14_EXAMPLE_TX]
+    ex = se[se["created_tx"].str.lower() == ring_spec()["group14_example_tx"].lower()]
     if ex.empty:
         return {"error": "example transaction not found in the pull"}
     big = se[se["budget"] >= 2]
@@ -205,11 +223,22 @@ TRANSFER = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
 def validate_payees(owner: dict[int, str]) -> dict:
     """On a seeded sample of settlement transactions (data/bsc_settle_sample.csv; their receipts
     come from pull/bsc_termix_pull.py receipts), compare the wallet the escrow paid (largest
-    non-fee stablecoin transfer out of an escrow) with ERC-8004 ownerOf(agent)."""
-    sample = pd.read_csv(ROOT / "data" / "bsc_settle_sample.csv")
+    non-fee stablecoin transfer out of an escrow) with ERC-8004 ownerOf(agent). The committed sample
+    lists the settlements that paid a ring wallet as REDACTED; the full sample is read from
+    data/raw/bsc/settle_sample_orders.csv when it is present (local, like the raw pull), and
+    otherwise those rows are reported unchecked."""
+    sample = pd.read_csv(ROOT / "data" / "bsc_settle_sample.csv", dtype=str)
+    full = RAW / "settle_sample_orders.csv"
+    if full.exists():
+        local = pd.read_csv(full, dtype=str)[["settle_tx", "agent_id"]]
+        if len(local) == len(sample) and all(a in (b, REDACTED) for a, b in zip(sample["settle_tx"], local["settle_tx"])):
+            sample = local
     rec = read_tsv("receipts_settle_sample.tsv.gz", ["block", "txi", "li", "tx", "address", "topics", "data"])
     rows = []
     for r in sample.itertuples(index=False):
+        if r.settle_tx == REDACTED:
+            rows.append({"settle_tx": REDACTED, "agent_id": REDACTED, "paid_to": None, "owner_of": None, "match": None})
+            continue
         logs = rec[rec["tx"] == r.settle_tx]
         paid = []
         for lg in logs.itertuples(index=False):
@@ -221,7 +250,55 @@ def validate_payees(owner: dict[int, str]) -> dict:
         recipient = max(paid)[1] if paid else None
         rows.append({"settle_tx": r.settle_tx, "agent_id": int(r.agent_id), "paid_to": recipient,
                      "owner_of": owner.get(int(r.agent_id)), "match": recipient is not None and recipient == owner.get(int(r.agent_id))})
-    return {"sampled": len(rows), "matched": int(sum(x["match"] for x in rows)), "rows": rows}
+    return {"sampled": len(rows), "matched": int(sum(bool(x["match"]) for x in rows)), "rows": rows}
+
+
+def ring_agent_ids(owner: dict[int, str], alias: dict[str, str]) -> set[int]:
+    """Agents owned by a ring wallet."""
+    return {a for a, o in owner.items() if o in alias}
+
+
+def ring_order_hex(orders: pd.DataFrame, owner: dict[int, str], alias: dict[str, str]) -> set[str]:
+    """Order ids, creation and settlement hashes of every order a ring wallet placed or received."""
+    ro = orders[orders["buyer"].isin(alias) | orders["agent_id"].isin(ring_agent_ids(owner, alias))]
+    return {str(x).lower() for col in ("order_id", "created_tx", "settle_tx") for x in ro[col].dropna()}
+
+
+def ring_identifiers(orders: pd.DataFrame, owner: dict[int, str], alias: dict[str, str]) -> dict[str, set]:
+    """Agent ids, order ids and transaction hashes tied to the ring wallets: their agents, the orders
+    they placed or received, and every escrow transaction with a log that names a ring wallet, a ring
+    agent or one of those orders (ABI words of topics and data)."""
+    agents = ring_agent_ids(owner, alias)
+    ro = orders[orders["buyer"].isin(alias) | orders["agent_id"].isin(agents)]
+    order_ids = {o.lower() for o in ro["order_id"]}
+    esc = read_tsv("escrow/escrow_*.tsv.gz", ["block", "txi", "li", "tx", "address", "topics", "data"])
+    addr = {a[2:] for a in alias}
+    words_ring = {"0x" + "0" * 24 + a for a in addr} | order_ids | {"0x" + format(a, "064x") for a in agents}
+    def hit(topics: str, data: str) -> bool:
+        words = topics.lower().split(";")[1:] + ["0x" + data[2 + 64 * i: 66 + 64 * i].lower() for i in range((len(data) - 2) // 64)]
+        return any(w in words_ring for w in words)
+    mask = [hit(t, d) for t, d in zip(esc["topics"], esc["data"])]
+    return {"agents": agents, "orders": order_ids, "txs": set(esc.loc[mask, "tx"].str.lower())}
+
+
+def redact(obj, ring_agents: set[int], ring_hex: set[str]):
+    """Replace ring agent ids (in "agents" lists and "agent_id" fields) and ring order ids and
+    transaction hashes (any string) with REDACTED, anywhere in a JSON-like object."""
+    if isinstance(obj, dict):
+        out = {}
+        for k, v in obj.items():
+            if k == "agents" and isinstance(v, list):
+                out[k] = [REDACTED if isinstance(a, int) and a in ring_agents else a for a in v]
+            elif k == "agent_id" and isinstance(v, int) and v in ring_agents:
+                out[k] = REDACTED
+            else:
+                out[k] = redact(v, ring_agents, ring_hex)
+        return out
+    if isinstance(obj, (list, tuple)):
+        return [redact(v, ring_agents, ring_hex) for v in obj]
+    if isinstance(obj, str) and obj.lower() in ring_hex:
+        return REDACTED
+    return obj
 
 
 def ring_aliases(rings: dict) -> dict[str, str]:
@@ -290,12 +367,10 @@ def build_cases(orders: pd.DataFrame, owner: dict[int, str], rings: dict, alias:
         payees = payee_sets.get(c.family) if c.payee.startswith("reconstruct:") else [c.payee]
         for p in payees:
             case_id = f"{c.family}|{alias.get(p, p)}|{c.window}"
-            d = ROOT / "data" / "cases" / case_id.replace("|", "__")
             pay = se[se["payee"] == p]
             if pay.empty:
                 out.append({"case_id": case_id, "dropped": "no payments in window"})
                 continue
-            d.mkdir(parents=True, exist_ok=True)
             dist = reach_from(p)
             payers = sorted(pay["buyer"].unique())
             pset = set(payers)
@@ -309,6 +384,9 @@ def build_cases(orders: pd.DataFrame, owner: dict[int, str], rings: dict, alias:
                 "src_is_payer": inf["buyer"].isin(pset).astype(int), "src_is_hub": inf["buyer"].isin(hubs).astype(int),
                 "src_is_seller": (inf["buyer"] == p).astype(int)})
             outs = o[(o["buyer"] == p) & (o["created_block"] >= D0_BLOCK) & (o["created_block"] <= w1)]
+            ring_rows = p in alias or bool((set(pay["buyer"]) | set(inf["buyer"]) | set(outs["payee"].dropna())) & set(alias))
+            d = (PRIVATE_CASES if ring_rows else ROOT / "data" / "cases") / case_id.replace("|", "__")
+            d.mkdir(parents=True, exist_ok=True)
             out_t = pd.DataFrame({"dst": outs["payee"].fillna("unknown-owner"), "value": outs["budget"], "ts": outs["created_ts"], "block": outs["created_block"],
                                   "dst_is_hub": outs["payee"].isin(hubs).astype(int)})
             reach_t = pd.DataFrame({"payer": payers, "hops": [dist.get(b) for b in payers]})
@@ -352,14 +430,19 @@ def main() -> None:
     val["payee_is_owner_sample"] = validate_payees(owner)
     rings = {"ring48": rebuild_ring48(orders, owner), "group14": rebuild_group14(orders, owner)}
     alias = ring_aliases(rings)
-    (ROOT / "data" / "bsc_validation.json").write_text(json.dumps(pseudonymize(val, alias), indent=2) + "\n")
+    ring_agents, ring_hex = ring_agent_ids(owner, alias), ring_order_hex(orders, owner, alias)
+
+    def clean(obj):
+        return redact(pseudonymize(obj, alias), ring_agents, ring_hex)
+
+    (ROOT / "data" / "bsc_validation.json").write_text(json.dumps(clean(val), indent=2) + "\n")
     log.info("payee == ownerOf on sample: %d of %d", val["payee_is_owner_sample"]["matched"], val["payee_is_owner_sample"]["sampled"])
-    shown = pseudonymize(rings, alias)
+    shown = clean(rings)
     (ROOT / "data" / "bsc_rings.json").write_text(json.dumps(shown, indent=2, default=str) + "\n")
     log.info("ring48: %s", {k: v for k, v in shown["ring48"].items() if k not in ("agents", "payees")})
     log.info("group14: %s", {k: v for k, v in shown["group14"].items() if k not in ("agents", "payees")})
     summary = build_cases(orders, owner, rings, alias)
-    (ROOT / "data" / "cases" / "extract_bsc_summary.json").write_text(json.dumps(pseudonymize(summary, alias), indent=2, default=str) + "\n")
+    (ROOT / "data" / "cases" / "extract_bsc_summary.json").write_text(json.dumps(clean(summary), indent=2, default=str) + "\n")
 
 
 if __name__ == "__main__":
