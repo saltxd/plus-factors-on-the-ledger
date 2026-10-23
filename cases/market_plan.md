@@ -36,6 +36,16 @@ test-half results stay as they are. Everything here is new work of Oct 23 to 24,
   flags in W4. The same numbers for the frozen non-circular rule and for outside funding share are
   reported as secondary.
 
+**Amendment, Oct 23, 2026, 16:00 UTC, before any population count.** Reading every sender from
+the node ran at about 250 transactions a second (its disk is the bottleneck), 2.7 hours for the 2.4
+million transactions, while the node also syncs. Senders are therefore read for the payments of
+candidate payees only: every payee whose payments under the frozen definition (any sender, proxies
+excluded) reach $10 in the window. A candidate with at most 1,000 payment transactions has every
+sender read, so its x402 volume is exact; a larger one gets 1,000 draws of its payments with
+probability proportional to value (with replacement, seeded), and its x402 volume is its payment
+volume times the share of draws sent by a listed facilitator. Only a sizing count of candidates
+(no x402 volume, feature or flag) was seen before this amendment.
+
 ## 2. BNB Chain: every Set and Earn payee
 
 Every ERC-8004 owner (read at block 126,344,213) of an agent with a TermiX order created in the
