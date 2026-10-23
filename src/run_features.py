@@ -63,7 +63,11 @@ def main() -> None:
             for k in range(1, 7):
                 fk = compute_features(cd, k=k, n_null=20)
                 sens.append({**meta_cols(cd.meta), "k": k, **fk})
-        log.info("%s %s", cd.case_id, {k: (round(v, 3) if isinstance(v, float) else v) for k, v in f.items()})
+        # test-half feature values stay out of the log until the rule is frozen
+        if cd.meta.get("half") == "dev":
+            log.info("%s %s", cd.case_id, {k: (round(v, 3) if isinstance(v, float) else v) for k, v in f.items()})
+        else:
+            log.info("%s (test half, values not shown)", cd.case_id)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     df = pd.DataFrame(rows).sort_values(["half", "family", "case_id"])

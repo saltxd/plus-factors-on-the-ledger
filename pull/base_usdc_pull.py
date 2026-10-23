@@ -49,7 +49,9 @@ def rpc_call(url: str, method: str, params: list, timeout: int = 900) -> object:
         res = json.loads(resp.read())
     if "error" in res:
         msg = str(res["error"].get("message", res["error"]))
-        if "exceeds max results" in msg or "too many" in msg.lower():
+        # reth: "query exceeds max results 20000, retry with the range a-b";
+        # Tenderly's gateway answers "invalid params" when a range returns too many logs
+        if "exceeds max results" in msg or "too many" in msg.lower() or msg == "invalid params":
             m = re.search(r"range (\d+)-(\d+)", msg)
             raise RangeTooLarge(int(m.group(2)) if m else None)
         raise RuntimeError(msg)
@@ -78,9 +80,9 @@ def get_logs(url: str, pacer: Pacer, a: int, b: int) -> list[dict]:
             return rpc_call(url, "eth_getLogs", [flt])  # type: ignore[return-value]
         except RangeTooLarge:
             raise
-        except Exception as exc:  # network hiccup or node busy
+        except Exception as exc:  # network hiccup, node busy or provider rate limit
             log.warning("retry %d-%d attempt %d: %s", a, b, attempt, exc)
-            time.sleep(min(60, 5 * (attempt + 1)))
+            time.sleep(90 if "429" in str(exc) else min(60, 5 * (attempt + 1)))
     raise RuntimeError(f"failed {a}-{b}")
 
 
@@ -141,14 +143,20 @@ def main() -> None:
     ap.add_argument("--out", required=True)
     ap.add_argument("--segment", type=int, default=50000)
     ap.add_argument("--max-rps", type=float, default=1.0)
+    ap.add_argument("--reverse", action="store_true", help="process segments from the end backwards")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     pacer = Pacer(args.max_rps)
-    seg_start = args.start
-    while seg_start <= args.end:
-        seg_end = min(seg_start + args.segment - 1, args.end)
+    segments = []
+    a = args.start
+    while a <= args.end:
+        segments.append((a, min(a + args.segment - 1, args.end)))
+        a += args.segment
+    if args.reverse:
+        segments.reverse()
+    for seg_start, seg_end in segments:
         done = all((out / f"{k}_{seg_start}_{seg_end}.tsv.gz").exists() for k in ("transfers", "auth", "escrow"))
         if done:
             log.info("skip %d-%d (done)", seg_start, seg_end)
@@ -157,8 +165,7 @@ def main() -> None:
             c = pull_segment(args.rpc, pacer, seg_start, seg_end, out)
             log.info("segment %d-%d %s in %.0fs", seg_start, seg_end, c, time.time() - t)
             with open(out / "manifest.jsonl", "a") as mf:
-                mf.write(json.dumps({"start": seg_start, "end": seg_end, **c, "secs": round(time.time() - t)}) + "\n")
-        seg_start = seg_end + 1
+                mf.write(json.dumps({"start": seg_start, "end": seg_end, **c, "secs": round(time.time() - t), "rpc": args.rpc}) + "\n")
     log.info("DONE %d-%d", args.start, args.end)
 
 
