@@ -207,9 +207,61 @@ def circularity_table() -> pd.DataFrame:
     return t
 
 
+def fmt_ci(d: dict) -> str:
+    return f"[{d['ci95'][0]:.2f}, {d['ci95'][1]:.2f}]"
+
+
+def tables_md(frozen: dict) -> str:
+    """Every table in results.md, built from the result files."""
+    tm = json.loads((RES / "test_metrics.json").read_text())
+    out = []
+    rows = []
+    for name, r in tm.items():
+        te, dv = r["test"], r["dev"]
+        rows.append({
+            "rule": name, "text": __import__("rules").describe(r["rule"]),
+            "dev BA (fw)": dv["family_weighted"]["balanced_accuracy"],
+            "test TPR (fw)": te["family_weighted"]["tpr"], "test FPR (fw)": te["family_weighted"]["fpr"],
+            "test BA (fw)": te["family_weighted"]["balanced_accuracy"], "test BA 95% CI": fmt_ci(te["bootstrap_family_weighted"]["balanced_accuracy"]),
+            "test TP/FN/FP/TN (cases)": "{tp}/{fn}/{fp}/{tn}".format(**te["confusion_cases"]),
+        })
+    out.append("### Frozen rules on the test half\n\n" + md_table(pd.DataFrame(rows), "{:.2f}"))
+    err = pd.read_csv(RES / "errors.csv")
+    if len(err):
+        cols = ["half", "error", "family", "window", "payee", "label", "n_payers", "loop_share", "shared_funder_share", "payer_hhi", "outside_funding_share"]
+        out.append("### Errors of the primary rule (both halves)\n\n" + md_table(err[cols].sort_values(["half", "error", "family"]), "{:.2f}"))
+    auc = pd.read_csv(RES / "feature_auc.csv")
+    piv = auc.pivot_table(index="feature", columns="half", values="auc_family_weighted").reset_index()
+    piv["feature"] = piv["feature"].map(lambda f: FEATURE_NAMES.get(f, f))
+    out.append("### Single-feature AUC, family-weighted (* exploratory)\n\n" + md_table(piv[["feature", "dev", "test", "all"]], "{:.2f}"))
+    if (RES / "permutation_test.json").exists():
+        pt = json.loads((RES / "permutation_test.json").read_text())
+        prow = [{"rule": k, "test families": v["families"], "coordinated": v["coordinated_families"], "label assignments": v["label_assignments"],
+                 "observed BA": v["observed_balanced_accuracy"], "p": v["p_value"]} for k, v in pt.items()]
+        out.append("### Exact permutation test on the test half\n\n" + md_table(pd.DataFrame(prow), "{:.3f}"))
+    if (RES / "positive_control.csv").exists():
+        pc = pd.read_csv(RES / "positive_control.csv")
+        piv = pc.pivot_table(index="route", columns="phi", values="flag_primary", aggfunc="mean")
+        piv = piv.reindex(["direct", "relay2", "relay4", "relay5", "via_hub", "common_funder"]).reset_index()
+        piv.columns = [str(c) if c == "route" else f"{float(c):.1%}" for c in piv.columns]
+        out.append("### Positive control: share of injection runs the primary rule flags, by route and ring share\n\n" + md_table(piv, "{:.2f}"))
+    if (RES / "negative_control_timing_shuffle.csv").exists():
+        nc = pd.read_csv(RES / "negative_control_timing_shuffle.csv")
+        t = pd.read_csv(RES / "case_features.csv")
+        tf = ["timing_coupling", "relay_share", "pair_reciprocity_timing", "payer_synchrony"]
+        real = t.groupby("y")[tf].mean().assign(data="real timing")
+        shuf = nc.groupby("y")[tf].mean().assign(data="times shuffled")
+        both = pd.concat([real, shuf]).reset_index().rename(columns={"y": "coordinated"})
+        out.append("### Negative control: mean timing features, real vs circularly shifted payment times\n\n" + md_table(both[["data", "coordinated"] + tf], "{:.3f}"))
+    if (RES / "sensitivity.csv").exists():
+        out.append("### Sensitivity of the frozen rules\n\n" + md_table(pd.read_csv(RES / "sensitivity.csv"), "{:.2f}"))
+    return "\n\n".join(out) + "\n"
+
+
 def main() -> None:
     frozen = json.loads((RES / "frozen_rule.json").read_text())
     circularity_table()
+    (RES / "tables.md").write_text(tables_md(frozen))
     t = case_table()
     fig_features(t, frozen)
     auc = pd.read_csv(RES / "feature_auc.csv")
