@@ -189,8 +189,10 @@ def main() -> None:
         segments.reverse()
     for seg_start, seg_end in segments:
         done = all((out / f"{k}_{seg_start}_{seg_end}.tsv.gz").exists() for k in ("transfers", "auth", "escrow"))
-        if done:
-            log.info("skip %d-%d (done)", seg_start, seg_end)
+        part = out / f"transfers_{seg_start}_{seg_end}.tsv.gz.part"
+        busy = part.exists() and time.time() - part.stat().st_mtime < 600  # another worker on this segment
+        if done or busy:
+            log.info("skip %d-%d (%s)", seg_start, seg_end, "done" if done else "in progress elsewhere")
         else:
             t = time.time()
             c = pull_segment(args.rpc, pacer, seg_start, seg_end, out, args.require_coverage)
