@@ -5,6 +5,8 @@ Added Oct 23 to 24, 2026, after the freeze (plan: cases/market_plan.md, section 
   draw     eligible payee-weeks -> 25 flagged and 15 unflagged distinct payees (seed 20261024),
            shuffled into S01..S40. Writes the blinded list results/spotcheck_sample.csv and the key
            (stratum per sample) to --sealed, outside the repository, until the verdicts are committed.
+  merge    validates each judge's verdict file and combines them with the blinded list
+           -> results/spotcheck_verdicts.csv (committed before the key is joined)
   unblind  joins the committed verdict files with the key and the market features
            -> results/spotcheck_unblinded.csv, results/spotcheck_summary.json
 
@@ -106,6 +108,35 @@ def draw(features_csv: Path, sealed: Path) -> None:
     print(f"drew {len(df)} payees into results/spotcheck_sample.csv; key and counts in {sealed}")
 
 
+VERDICTS = {"coordinated", "independent", "unclear"}
+# names a judge read off an explorer (ENS and basenames) are withheld from the committed file
+NAME_RE = r"\b[0-9A-Za-z][0-9A-Za-z_-]*(?:\.[0-9A-Za-z_-]+)*\.eth\b"
+
+
+def merge(judges: list[str]) -> None:
+    """judges: NAME=path pairs. Checks every file covers S01..S40 once with a valid verdict."""
+    sample = pd.read_csv(ROOT / "results" / "spotcheck_sample.csv")
+    out = sample[["sample_id", "payee", "window"]].copy()
+    for spec in judges:
+        name, path = spec.split("=", 1)
+        v = pd.read_csv(path, dtype={"sample_id": str})
+        v.columns = [c.strip() for c in v.columns]
+        v["sample_id"] = v["sample_id"].str.strip()
+        v["verdict"] = v["verdict"].str.strip().str.lower()
+        if sorted(v["sample_id"]) != sorted(sample["sample_id"]) or v["sample_id"].duplicated().any():
+            raise SystemExit(f"judge {name}: sample ids do not match the list")
+        bad = set(v["verdict"]) - VERDICTS
+        if bad:
+            raise SystemExit(f"judge {name}: unknown verdicts {bad}")
+        v["est_coordinated_share"] = pd.to_numeric(v["est_coordinated_share"], errors="coerce")
+        v["reasoning"] = v["reasoning"].astype(str).str.replace(NAME_RE, "[name withheld]", regex=True)
+        v = v[["sample_id", "verdict", "est_coordinated_share", "confidence", "reasoning"]].rename(
+            columns={c: f"{c}_{name}" for c in ("verdict", "est_coordinated_share", "confidence", "reasoning")})
+        out = out.merge(v, on="sample_id", how="left")
+    out.sort_values("sample_id").to_csv(ROOT / "results" / "spotcheck_verdicts.csv", index=False)
+    print(out[[c for c in out.columns if c.startswith("verdict_")]].apply(lambda c: c.value_counts()).fillna(0).astype(int).to_string())
+
+
 def exact_ci(k: int, n: int, a: float = 0.05) -> list[float]:
     """Clopper-Pearson interval without scipy: invert the binomial tail by bisection."""
     def cdf(x: int, p: float) -> float:
@@ -167,12 +198,15 @@ def unblind(features_csv: Path, key_csv: Path) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["draw", "unblind"])
-    ap.add_argument("--features", required=True)
+    ap.add_argument("stage", choices=["draw", "merge", "unblind"])
+    ap.add_argument("--features")
     ap.add_argument("--sealed")
     ap.add_argument("--key")
+    ap.add_argument("--judge", action="append", default=[], help="NAME=path to that judge's verdict csv")
     a = ap.parse_args()
-    if a.stage == "draw":
+    if a.stage == "merge":
+        merge(a.judge)
+    elif a.stage == "draw":
         draw(Path(a.features), Path(a.sealed))
     else:
         unblind(Path(a.features), Path(a.key))
