@@ -86,7 +86,35 @@ def get_logs(url: str, pacer: Pacer, a: int, b: int) -> list[dict]:
     raise RuntimeError(f"failed {a}-{b}")
 
 
-def pull_segment(url: str, pacer: Pacer, a: int, b: int, out: Path) -> dict:
+COVERAGE_LOG: Path | None = None
+
+
+def covered_logs(url: str, pacer: Pacer, a: int, b: int, require: bool) -> list[dict]:
+    """eth_getLogs for [a, b]; with require=True every block must carry at least one USDC log.
+    Some load-balanced public endpoints answer from a backend that returns nothing for a range.
+    A block can legitimately have no USDC transfer, so an answer is also accepted when two
+    non-empty answers in a row miss exactly the same blocks."""
+    if not require:
+        return get_logs(url, pacer, a, b)
+    prev_missing = None
+    for attempt in range(8):
+        logs = get_logs(url, pacer, a, b)
+        have = {int(lg["blockNumber"], 16) for lg in logs if lg["address"].lower() == USDC}
+        missing = set(range(a, b + 1)) - have
+        if not missing:
+            return logs
+        if logs and prev_missing is not None and missing == prev_missing:
+            if COVERAGE_LOG:
+                with open(COVERAGE_LOG, "a") as fh:
+                    fh.write(json.dumps({"from": a, "to": b, "blocks_without_usdc_logs": sorted(missing)}) + "\n")
+            return logs
+        prev_missing = missing if logs else None
+        log.info("coverage retry %d-%d: %d of %d blocks missing", a, b, len(missing), b - a + 1)
+        time.sleep(2)
+    raise RuntimeError(f"no complete answer for {a}-{b}")
+
+
+def pull_segment(url: str, pacer: Pacer, a: int, b: int, out: Path, require_coverage: bool = False) -> dict:
     names = {k: out / f"{k}_{a}_{b}.tsv.gz" for k in ("transfers", "auth", "escrow")}
     parts = {k: Path(str(p) + ".part") for k, p in names.items()}
     fh = {k: gzip.open(p, "wt", compresslevel=5) for k, p in parts.items()}
@@ -96,7 +124,7 @@ def pull_segment(url: str, pacer: Pacer, a: int, b: int, out: Path) -> dict:
     while cur <= b:
         end = min(cur + chunk - 1, b)
         try:
-            logs = get_logs(url, pacer, cur, end)
+            logs = covered_logs(url, pacer, cur, end, require_coverage)
         except RangeTooLarge as exc:
             new_end = exc.suggested_end if exc.suggested_end and exc.suggested_end < end else cur + max(1, (end - cur) // 2)
             chunk = max(1, new_end - cur + 1)
@@ -144,11 +172,14 @@ def main() -> None:
     ap.add_argument("--segment", type=int, default=50000)
     ap.add_argument("--max-rps", type=float, default=1.0)
     ap.add_argument("--reverse", action="store_true", help="process segments from the end backwards")
+    ap.add_argument("--require-coverage", action="store_true", help="retry answers that skip blocks (public endpoints)")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     pacer = Pacer(args.max_rps)
+    global COVERAGE_LOG
+    COVERAGE_LOG = out / "coverage_exceptions.jsonl"
     segments = []
     a = args.start
     while a <= args.end:
@@ -162,7 +193,7 @@ def main() -> None:
             log.info("skip %d-%d (done)", seg_start, seg_end)
         else:
             t = time.time()
-            c = pull_segment(args.rpc, pacer, seg_start, seg_end, out)
+            c = pull_segment(args.rpc, pacer, seg_start, seg_end, out, args.require_coverage)
             log.info("segment %d-%d %s in %.0fs", seg_start, seg_end, c, time.time() - t)
             with open(out / "manifest.jsonl", "a") as mf:
                 mf.write(json.dumps({"start": seg_start, "end": seg_end, **c, "secs": round(time.time() - t), "rpc": args.rpc}) + "\n")
