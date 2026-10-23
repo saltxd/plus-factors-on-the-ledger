@@ -1,0 +1,41 @@
+{
+  "case_id": "F02-meridian-six|0xa6a90366a307080bccb859642d3378121fe8809d|W2",
+  "family": "F02-meridian-six",
+  "label": "C",
+  "y": 1,
+  "half": "test",
+  "payee": "0xa6a90366a307080bccb859642d3378121fe8809d",
+  "window": "W2",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1790035200,
+  "t1": 1790640000,
+  "window_blocks": [
+    51622927,
+    51925326
+  ],
+  "data_blocks": [
+    51018127,
+    51925326
+  ],
+  "hub_threshold": 300,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      6
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 139,
+  "n_payers": 5,
+  "volume": 5686.738352,
+  "via_counts": {
+    "passthrough": 139
+  }
+}

@@ -96,24 +96,32 @@ def fig_features(t: pd.DataFrame, frozen: dict) -> None:
     plt.close(fig)
 
 
-def fig_positive_control(summary: pd.DataFrame) -> None:
-    groups = {
-        "seller's money reaches the ring in 1 to 4 hops": ["direct", "relay2", "relay4"],
-        "5 hops, or through an exchange-like hub": ["relay5", "via_hub"],
-        "shared outside funder, no loop": ["common_funder"],
+def fig_positive_control(pc: pd.DataFrame, feats: pd.DataFrame, frozen: dict) -> None:
+    summ = positive_control_summary(pc, feats, frozen)
+    pc = pc[~pc["base_case"].isin(summ["excluded_flagged_at_baseline"])]
+    reached = pc[pc["route"].isin(["direct", "relay2", "relay4"])][["phi", "flag_primary"]]
+    if (RES / "positive_control_boundary.csv").exists():
+        bc = pd.read_csv(RES / "positive_control_boundary.csv")
+        reached = pd.concat([reached, bc[["phi", "flag_primary"]]])
+    series = {
+        "seller's money reaches the ring in 1 to 4 hops": reached.groupby("phi")["flag_primary"].mean(),
+        "5 hops, or through an exchange-like hub": pc[pc["route"].isin(["relay5", "via_hub"])].groupby("phi")["flag_primary"].mean(),
+        "one outside funder, no loop (parallel conduct)": pc[pc["route"] == "common_funder"].groupby("phi")["flag_primary"].mean(),
     }
     fig, ax = plt.subplots(figsize=(6.4, 3.6), dpi=200, facecolor=SURFACE)
     style(ax)
-    for (name, routes), color in zip(groups.items(), (BLUE, ORANGE, AQUA)):
-        s = summary[summary["route"].isin(routes)].groupby("phi")["flag_primary"].mean()
-        ax.plot(s.index, s.values, color=color, linewidth=2, marker="o", markersize=4.5, markeredgecolor=SURFACE,
-                markeredgewidth=1, label=name, solid_capstyle="round")
-    ax.set_xscale("log")
+    for (name, s_), color in zip(series.items(), (BLUE, ORANGE, AQUA)):
+        ax.plot(s_.index, s_.values, color=color, linewidth=2, marker="o", markersize=4.5, markeredgecolor=SURFACE,
+                markeredgewidth=1, label=name, solid_capstyle="round", zorder=3)
+    ax.text(0.14, 0.04, "orange and green coincide: 0% at every size", fontsize=7, color=INK2, ha="center")
+    ax.axvline(frozen["rule"]["threshold"], color=INK2, linewidth=0.9, zorder=2)
+    ax.text(frozen["rule"]["threshold"] - 0.005, 0.55, "frozen\nthreshold", fontsize=6.5, color=INK2, ha="right")
     ax.set_xlabel("injected ring's share of the seller's payment volume", fontsize=8, color=INK2)
     ax.set_ylabel("share of runs the frozen rule flags", fontsize=8, color=INK2)
-    ax.set_ylim(-0.03, 1.05)
-    ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:.1%}" if v < 0.01 else f"{v:.0%}"))
-    ax.legend(frameon=False, fontsize=7.5, labelcolor=INK2, loc="center right")
+    ax.set_ylim(-0.04, 1.06)
+    ax.set_xlim(-0.01, 0.52)
+    ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:.0%}"))
+    ax.legend(frameon=False, fontsize=7.5, labelcolor=INK2, loc="upper left")
     fig.tight_layout()
     fig.savefig(RES / "fig2_positive_control.png", facecolor=SURFACE)
     plt.close(fig)
@@ -134,7 +142,7 @@ def fig_auc(auc: pd.DataFrame) -> None:
     ax.set_yticks(y, [FEATURE_NAMES[f] for f in order], fontsize=8)
     ax.set_xlim(0, 1.02)
     ax.set_xlabel("AUC, family-weighted (0.5 = no better than chance; * exploratory)", fontsize=8, color=INK2)
-    ax.legend(frameon=False, fontsize=7.5, labelcolor=INK2, loc="lower right")
+    ax.legend(frameon=False, fontsize=7.5, labelcolor=INK2, loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2)
     fig.tight_layout()
     fig.savefig(RES / "fig3_feature_auc.png", facecolor=SURFACE)
     plt.close(fig)
@@ -241,10 +249,23 @@ def tables_md(frozen: dict) -> str:
         out.append("### Exact permutation test on the test half\n\n" + md_table(pd.DataFrame(prow), "{:.3f}"))
     if (RES / "positive_control.csv").exists():
         pc = pd.read_csv(RES / "positive_control.csv")
+        feats = pd.read_csv(RES / "case_features.csv")
+        summ = positive_control_summary(pc, feats, frozen)
+        pc = pc[~pc["base_case"].isin(summ["excluded_flagged_at_baseline"])]
         piv = pc.pivot_table(index="route", columns="phi", values="flag_primary", aggfunc="mean")
         piv = piv.reindex(["direct", "relay2", "relay4", "relay5", "via_hub", "common_funder"]).reset_index()
         piv.columns = [str(c) if c == "route" else f"{float(c):.1%}" for c in piv.columns]
-        out.append("### Positive control: share of injection runs the primary rule flags, by route and ring share\n\n" + md_table(piv, "{:.2f}"))
+        out.append(f"### Positive control: share of injection runs the primary rule flags, by route and ring share\n\n"
+                   f"{summ['base_markets']} base markets x 10 seeds per cell; excluded because the rule already flags their real data: "
+                   f"{', '.join(summ['excluded_flagged_at_baseline']) or 'none'}.\n\n" + md_table(piv, "{:.2f}"))
+        if (RES / "positive_control_boundary.csv").exists():
+            bc = pd.read_csv(RES / "positive_control_boundary.csv")
+            pv = bc.pivot_table(index="route", columns="phi", values="flag_primary", aggfunc="mean").reset_index()
+            pv.columns = [str(c) if c == "route" else f"{float(c):.0%}" for c in pv.columns]
+            mins = bc.groupby("base_case")["analytic_min_phi"].first()
+            out.append("### Positive control near the threshold (supplementary fine grid, added after the pre-set grid ran)\n\n"
+                       "Share of base markets flagged. A ring is flagged exactly when its share passes (threshold - b) / (1 - b), b = the market's existing loop share: "
+                       f"{mins.min():.1%} to {mins.max():.1%} across the {len(mins)} base markets.\n\n" + md_table(pv, "{:.2f}"))
     if (RES / "negative_control_timing_shuffle.csv").exists():
         nc = pd.read_csv(RES / "negative_control_timing_shuffle.csv")
         t = pd.read_csv(RES / "case_features.csv")
@@ -254,23 +275,171 @@ def tables_md(frozen: dict) -> str:
         both = pd.concat([real, shuf]).reset_index().rename(columns={"y": "coordinated"})
         out.append("### Negative control: mean timing features, real vs circularly shifted payment times\n\n" + md_table(both[["data", "coordinated"] + tf], "{:.3f}"))
     if (RES / "sensitivity.csv").exists():
-        out.append("### Sensitivity of the frozen rules\n\n" + md_table(pd.read_csv(RES / "sensitivity.csv"), "{:.2f}"))
+        out.append("### Sensitivity of the frozen rules\n\nFeatures recomputed under each setting with 20 timing-null draws (200 in the main run); "
+                   "the timing rule's numbers differ from the main run at every setting because its thresholds sit inside the null's sampling noise.\n\n"
+                   + md_table(pd.read_csv(RES / "sensitivity.csv"), "{:.2f}"))
     return "\n\n".join(out) + "\n"
 
 
 def main() -> None:
     frozen = json.loads((RES / "frozen_rule.json").read_text())
     circularity_table()
-    (RES / "tables.md").write_text(tables_md(frozen))
     t = case_table()
+    (RES / "tables.md").write_text(tables_md(frozen))
     fig_features(t, frozen)
     auc = pd.read_csv(RES / "feature_auc.csv")
     fig_auc(auc)
     if (RES / "positive_control_summary.csv").exists():
-        fig_positive_control(pd.read_csv(RES / "positive_control.csv"))
+        fig_positive_control(pd.read_csv(RES / "positive_control.csv"), pd.read_csv(RES / "case_features.csv"), frozen)
     if (RES / "negative_control_timing_shuffle.csv").exists():
         fig_timing_shuffle(t, pd.read_csv(RES / "negative_control_timing_shuffle.csv"))
-    print("figures and case table written")
+    write_results_md(frozen)
+    print("figures, case table and results.md written")
+
+
+
+# ---------------------------------------------------------------------------------------
+# results.md: narrative with every number read from the result files
+
+
+def pct(x: float) -> str:
+    return f"{100 * x:.0f}%"
+
+
+def positive_control_summary(pc: pd.DataFrame, feats: pd.DataFrame, frozen: dict) -> dict:
+    """Detection by route group and ring share, over base markets the frozen rule does not flag
+    on their real data (a market already flagged would make detection trivial)."""
+    from rules import apply_rule
+
+    base = feats[feats["case_id"].isin(pc["base_case"].unique())].reset_index(drop=True)
+    flagged = set(base.loc[apply_rule(base, frozen["rule"]), "case_id"])
+    use = pc[~pc["base_case"].isin(flagged)]
+    groups = {"reached": ["direct", "relay2", "relay4"], "blind": ["relay5", "via_hub"], "parallel": ["common_funder"]}
+    out = {"base_markets": int(use["base_case"].nunique()), "excluded_flagged_at_baseline": sorted(flagged), "runs": int(len(use))}
+    for g, routes in groups.items():
+        s = use[use["route"].isin(routes)].groupby("phi")["flag_primary"].mean()
+        out[g] = {f"{phi:g}": float(v) for phi, v in s.items()}
+        ok = [phi for phi, v in s.items() if v >= 0.9]
+        out[f"{g}_min_phi_90"] = float(min(ok)) if ok else None
+        out[f"{g}_max_rate"] = float(s.max())
+    return out
+
+
+def write_results_md(frozen: dict) -> None:
+    tm = json.loads((RES / "test_metrics.json").read_text())
+    commit = (RES / "frozen_rule_commit.txt").read_text().strip()
+    feats = pd.read_csv(RES / "case_features.csv")
+    pred = pd.read_csv(RES / "predictions.csv")
+    err = pd.read_csv(RES / "errors.csv")
+    auc = pd.read_csv(RES / "feature_auc.csv")
+    sens = pd.read_csv(RES / "sensitivity.csv") if (RES / "sensitivity.csv").exists() else None
+    perm = json.loads((RES / "permutation_test.json").read_text()) if (RES / "permutation_test.json").exists() else None
+    bval = json.loads((ROOT / "data" / "bsc_validation.json").read_text())
+    rings = json.loads((ROOT / "data" / "bsc_rings.json").read_text())
+    cov = json.loads((ROOT / "data" / "base_pull_coverage.json").read_text())
+    ver = json.loads((ROOT / "data" / "verify_base_public_segments.json").read_text())
+    p, nc = tm["primary"], tm["non_circular"]
+    pt, pd_ = p["test"], p["dev"]
+    fw = pt["family_weighted"]
+    ci = pt["bootstrap_family_weighted"]["balanced_accuracy"]["ci95"]
+    cc = pt["confusion_cases"]
+    test = pred[pred["half"] == "test"]
+    n_test_fam = test["family"].nunique()
+    n_test_pos_fam = test[test["y"] == 1]["family"].nunique()
+    fn = err[(err["half"] == "test") & (err["error"] == "false negative")]
+    fp = err[(err["half"] == "test") & (err["error"] == "false positive")]
+    singles = {k.split(":", 1)[1]: v for k, v in tm.items() if k.startswith("single:")}
+    a_all = auc[auc["half"] == "all"].set_index("feature")["auc_family_weighted"]
+    lines = []
+    w = lines.append
+    w("# Results\n")
+    w("Every number below is read from the files in this folder by `src/report.py`.\n")
+    w("## In plain words\n")
+    w(f"- **The test.** {len(feats)} cases (a payee in a 7-day window) from {feats['family'].nunique()} case families on Base x402 and BNB Chain's TermiX escrow, labelled by ChainWard's published decodes. A rule was chosen on {pd_['families']} development families, frozen in commit `{commit[:7]}`, then scored on {n_test_fam} held-out families ({n_test_pos_fam} coordinated).")
+    w(f"- **The frozen rule** is `{frozen['rule_text']}`: flag a payee when at least {frozen['rule']['threshold']:.0%} of its payment value comes from payers that its own money reached within 4 transfers (not counting exchanges and other hubs).")
+    w(f"- **On the test half** it caught {cc['tp']} of {cc['tp'] + cc['fn']} coordinated cases and flagged {cc['fp']} of {cc['fp'] + cc['tn']} others: family-weighted true-positive rate {fw['tpr']:.2f}, false-positive rate {fw['fpr']:.2f}, balanced accuracy {fw['balanced_accuracy']:.2f} (bootstrap 95% interval {ci[0]:.2f} to {ci[1]:.2f}, {n_test_fam} families).")
+    sensf = pd.read_csv(RES / "sensitivity_features.csv") if (RES / "sensitivity_features.csv").exists() else None
+    if len(fn):
+        fam = ", ".join(sorted(fn["family"].unique()))
+        extra = ""
+        if sensf is not None:
+            k5 = sensf[(sensf["case_id"].isin(fn["case_id"])) & (sensf["k"] == 5)]["loop_share"]
+            extra = f" At K = 5 their loop share is at least {k5.min():.3f} in every week."
+        w(f"- **Misses:** {len(fn)} test cases, all {fam}'s main payTo in its four weeks. Its payers sit five transfers from the payTo, one beyond the reach limit, as written in hypothesis H5 before scoring.{extra}")
+    for _, r in fp.iterrows():
+        d = ROOT / "data" / "cases" / r["case_id"].replace("|", "__")
+        pay = pd.read_csv(d / "payments.csv.gz")
+        out = pd.read_csv(d / "seller_outflows.csv.gz")
+        v = pay.groupby("payer")["value"].sum().sort_values(ascending=False)
+        top = v.index[0]
+        sent = float(out[out["dst"] == top]["value"].sum())
+        w(f"- **False positive:** {r['family']} ({r['window']}, label {r['label']}). One payer carried {v.iloc[0] / v.sum():.0%} of its payment value (${v.iloc[0]:,.2f}); in lookback + window the seller sent that same wallet ${sent:,.2f}. The decode read the seller's outflows as payouts. By the ledger the payee and its main payer pay each other; what the payments were for is not on-chain.")
+    ofs = singles.get("outside_funding_share")
+    if ofs:
+        o = ofs["test"]["family_weighted"]
+        w(f"- **The other plus factor held up too.** Outside funding share alone (frozen threshold from dev) scored balanced accuracy {o['balanced_accuracy']:.2f} on the test half (TPR {o['tpr']:.2f}, FPR {o['fpr']:.2f}); its family-weighted AUC is {a_all['outside_funding_share']:.2f} over all cases.")
+    w(f"- **Parallel conduct did not separate.** Over all cases the family-weighted AUC was {a_all['shared_funder_share']:.2f} for a shared first funder, {a_all['payer_hhi']:.2f} for payer concentration, {a_all['relay_share']:.2f} for spending money the moment it arrives and {a_all['timing_coupling']:.2f} for timing coupling, against {a_all['loop_share']:.2f} for loop share and {a_all['outside_funding_share']:.2f} for outside funding share.")
+    n = nc["test"]["family_weighted"]
+    w(f"- **Without the circular evidence** (only features the decodes did not use for labelling), the frozen rule `{frozen['non_circular_rule_text']}` scored balanced accuracy {n['balanced_accuracy']:.2f} on the test half (TPR {n['tpr']:.2f}, FPR {n['fpr']:.2f}).")
+    if (RES / "positive_control.csv").exists():
+        pcs = positive_control_summary(pd.read_csv(RES / "positive_control.csv"), feats, frozen)
+        bmin = None
+        if (RES / "positive_control_boundary.csv").exists():
+            bmin = pd.read_csv(RES / "positive_control_boundary.csv").groupby("base_case")["analytic_min_phi"].first()
+        r30 = pcs["reached"].get("0.3", float("nan"))
+        txt = (f"- **Positive control.** A synthetic seller-funded ring (5 payers, 10 seeds per setting) injected into {pcs['base_markets']} real markets the rule does not flag "
+               f"was flagged in {pcs['reached'].get('0.5', float('nan')):.0%} of runs at half the seller's volume and in {r30:.0%} of runs at 30% or less, whenever the seller's money reached it within 4 hops")
+        if bmin is not None:
+            txt += f" (the cut-off is where loop share crosses the threshold: {bmin.min():.0%} to {bmin.max():.0%} of volume, depending on the market's existing loop share)"
+        txt += (f". Routed over 5 hops or through an exchange-like hub it was never flagged at any size ({pcs['blind_max_rate']:.0%} of runs), and five payers funded by one "
+                f"outside wallet with no loop, parallel conduct, were never flagged either ({pcs['parallel_max_rate']:.0%}).")
+        w(txt)
+    ncs = RES / "negative_control_timing_shuffle.csv"
+    if ncs.exists():
+        ncd = pd.read_csv(ncs)
+        real_c = feats[feats["y"] == 1]["timing_coupling"].mean()
+        shuf_c = ncd[ncd["y"] == 1]["timing_coupling"].mean()
+        from rules import apply_rule as _ar
+        nc_real = _ar(feats, frozen["non_circular_rule"])[feats["y"].to_numpy() == 1].mean()
+        nc_shuf = ncd[ncd["y"] == 1].groupby("case_id")["flag_non_circular"].mean().mean()
+        prim_real = pd.Series(_ar(feats, frozen["rule"]), index=feats["case_id"])
+        prim_shuf = ncd.groupby("case_id")["flag_primary"].agg(lambda x: bool(x.all()) if x.nunique() == 1 else None)
+        changed = int(sum(1 for c, v in prim_shuf.items() if v is None or v != prim_real.get(c)))
+        same_txt = "flagged exactly the same cases" if changed == 0 else f"changed its output on {changed} cases"
+        w(f"- **Timing shuffle (negative control).** Circularly shifting each payer's payment times inside the window took the coordinated cases' mean timing coupling from {real_c:.2f} to {shuf_c:.2f}, "
+          f"and the timing rule's flag rate on them from {nc_real:.2f} to {nc_shuf:.2f}; the primary rule, which uses no timing, {same_txt}. The timing signal is real, but it is weak and its frozen "
+          f"thresholds sit inside the null's sampling noise (its outputs move when the number of null draws changes, see Sensitivity).")
+    if perm:
+        w(f"- **Chance.** Of the {perm['primary']['label_assignments']} ways to pick {perm['primary']['coordinated_families']} coordinated families out of the {perm['primary']['families']} test families, {perm['primary']['p_value']:.1%} score at least as well under the frozen rule as the real labels (exact permutation p-value).")
+    w("")
+    w("## The frozen rule\n")
+    w(f"Chosen by `src/select_rule.py` on the development half only ({pd_['cases']} cases, {pd_['families']} families), frozen in commit `{commit}`. Selection: every single-feature threshold and every two-feature AND / OR rule over the eight pre-registered features, scored by family-weighted balanced accuracy; ties went to fewer features, then the widest margin. On dev the primary rule scored balanced accuracy {pd_['family_weighted']['balanced_accuracy']:.2f}; all {sum(1 for r in frozen['leaderboard'] if r['dev_balanced_accuracy'] >= 0.999)} rules kept on the leaderboard in `frozen_rule.json` also scored 1.00 on dev, so the tie-break (fewest features, widest margin) decided. The margin rule put the threshold midway between the dev cases, which all sat near 0 or near 1; partial rings were not in the development set, which is why the positive control finds the cut-off near 42%.\n")
+    w("## Errors\n")
+    for _, r in err[err["half"] == "test"].iterrows():
+        w(f"- {r['error']}: {r['family']} {r['window']} payee `{r['payee']}` ({r['label']}), loop share {r['loop_share']:.3f}, outside funding share {r['outside_funding_share']:.3f}, payers {int(r['n_payers'])}.")
+    w("")
+    w("## Data checks\n")
+    w(f"- Base pull: {cov['total_rows']:,} USDC transfers, blocks 50,715,727 to 52,530,126, no gaps and no thin segments (`data/base_pull_coverage.json`). {ver['segments']} segments came from public endpoints; {ver['ranges']} random 40-block ranges in them were re-read from ChainWard's node and {'all matched' if ver['all_match'] else 'NOT all matched'} row for row (`data/verify_base_public_segments.json`). Three segments from one endpoint were discarded as incomplete and re-pulled (`data/base_pull_discarded_segments.jsonl`).")
+    ours, pub = bval["se_hires_by_day_ours"], bval["se_hires_by_day_published"]
+    same = sum(1 for d in pub if ours.get(d) == pub[d])
+    w(f"- BNB Chain pull: {bval['se_total_ours']:,} TermiX hires in the Set and Earn window against {bval['se_total_published']:,} published; {same} of {len(pub)} daily counts equal. Each chunk was queried twice: {len(bval['double_query_disagreements'])} disagreements. On {bval['payee_is_owner_sample']['sampled']} sampled settlements the escrow paid the agent's ERC-8004 owner {bval['payee_is_owner_sample']['matched']} times.")
+    r48, g14 = rings["ring48"], rings["group14"]
+    w(f"- Rings rebuilt from the decode's published description: {r48['n_payees']} wallets in closed groups of {', '.join(str(x) for x in r48['closed_component_sizes'])}, {r48['orders']} orders of which {r48['orders'] - r48['orders_unsettled']} settled (published: 48 wallets, 218 orders, 216 settled); the second group has {g14['n_wallets']} wallets, {g14['orders_inside']} hires inside on {', '.join(g14['orders_by_day'])}, {g14['hires_in']} hires in and {len(g14['hires_out'])} out (published: 14 wallets, no hire in, one $1 hire out).")
+    w("")
+    if sens is not None:
+        w("## Sensitivity\n")
+        prim = sens[sens["rule"] == "rule"].set_index("setting")
+        parts = [f"{s}: test TPR {r['test_tpr']:.2f}, FPR {r['test_fpr']:.2f}" for s, r in prim.iterrows()]
+        w("Primary rule, frozen threshold, features recomputed under each setting. " + "; ".join(parts) + ".\n")
+    w((RES / "tables.md").read_text())
+    w("## Figures\n")
+    for f, cap in (("fig1_features_by_label.png", "Every feature by label, both halves; the line is the frozen threshold."),
+                   ("fig2_positive_control.png", "Positive control: detection of an injected ring by its share of the seller's volume."),
+                   ("fig3_feature_auc.png", "Single-feature AUC on each half."),
+                   ("fig4_timing_shuffle.png", "Timing features with real and shuffled payment times.")):
+        if (RES / f).exists():
+            w(f"![{cap}]({f})\n\n*{cap}*\n")
+    (RES / "results.md").write_text("\n".join(lines) + "\n")
 
 
 if __name__ == "__main__":

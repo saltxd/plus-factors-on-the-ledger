@@ -178,6 +178,10 @@ def main() -> None:
     if "negative" in args.which:
         nc = negative_control(frozen, cases_dir, feats)
         nc.to_csv(out / "negative_control_timing_shuffle.csv", index=False, float_format="%.6g")
+    if "boundary" in args.which:
+        bc = boundary_check(frozen, cases_dir, feats)
+        bc.to_csv(out / "positive_control_boundary.csv", index=False, float_format="%.6g")
+        log.info("boundary:\n%s", bc.pivot_table(index="route", columns="phi", values="flag_primary", aggfunc="mean").to_string())
     if "permutation" in args.which:
         res = {
             "primary": permutation_test(frozen["rule"], feats, "test"),
@@ -185,6 +189,28 @@ def main() -> None:
         }
         (out / "permutation_test.json").write_text(json.dumps(res, indent=2) + "\n")
         log.info("permutation: %s", res)
+
+
+
+def boundary_check(frozen: dict, cases_dir: Path, feats: pd.DataFrame) -> pd.DataFrame:
+    """Supplement to the pre-set grid, added after it ran: the grid jumps from 30% to 50%, so the
+    loop share of an injected ring (direct and 4-hop routes) is computed on a fine grid around the
+    frozen threshold. Loop share is deterministic in the ring's share phi: phi + (1 - phi) * base."""
+    from features import loop_share
+
+    base = feats[(feats["y"] == 0) & (feats["label"].isin(["I", "N"])) & (feats["n_payers"] >= 5)].reset_index(drop=True)
+    base = base[~apply_rule(base, frozen["rule"])]
+    rows = []
+    for _, r in base.iterrows():
+        cd = load_case(cases_dir / r["case_id"].replace("|", "__"))
+        b = float(r["loop_share"])
+        for route in ("direct", "relay4"):
+            for phi in [0.30, 0.35, 0.38, 0.40, 0.41, 0.42, 0.43, 0.44, 0.45, 0.50]:
+                ls = loop_share(inject(cd, phi, route, seed=0))
+                rows.append({"base_case": r["case_id"], "route": route, "phi": phi, "base_loop_share": b, "loop_share": ls,
+                             "flag_primary": bool(apply_rule(pd.DataFrame([{"loop_share": ls}]), frozen["rule"])[0]),
+                             "analytic_min_phi": (frozen["rule"]["threshold"] - b) / (1 - b)})
+    return pd.DataFrame(rows)
 
 
 if __name__ == "__main__":

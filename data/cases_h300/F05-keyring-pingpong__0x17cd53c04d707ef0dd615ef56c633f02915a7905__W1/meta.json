@@ -1,0 +1,41 @@
+{
+  "case_id": "F05-keyring-pingpong|0x17cd53c04d707ef0dd615ef56c633f02915a7905|W1",
+  "family": "F05-keyring-pingpong",
+  "label": "C",
+  "y": 1,
+  "half": "dev",
+  "payee": "0x17cd53c04d707ef0dd615ef56c633f02915a7905",
+  "window": "W1",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1789430400,
+  "t1": 1790035200,
+  "window_blocks": [
+    51320527,
+    51622926
+  ],
+  "data_blocks": [
+    50715727,
+    51622926
+  ],
+  "hub_threshold": 300,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      51
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 5875,
+  "n_payers": 57,
+  "volume": 293.70099999999996,
+  "via_counts": {
+    "direct": 5875
+  }
+}

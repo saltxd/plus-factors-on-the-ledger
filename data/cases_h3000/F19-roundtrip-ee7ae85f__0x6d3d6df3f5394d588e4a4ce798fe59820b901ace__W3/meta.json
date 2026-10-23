@@ -1,0 +1,41 @@
+{
+  "case_id": "F19-roundtrip-ee7ae85f|0x6d3d6df3f5394d588e4a4ce798fe59820b901ace|W3",
+  "family": "F19-roundtrip-ee7ae85f",
+  "label": "L",
+  "y": 0,
+  "half": "dev",
+  "payee": "0x6d3d6df3f5394d588e4a4ce798fe59820b901ace",
+  "window": "W3",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1790640000,
+  "t1": 1791244800,
+  "window_blocks": [
+    51925327,
+    52227726
+  ],
+  "data_blocks": [
+    51320527,
+    52227726
+  ],
+  "hub_threshold": 3000,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 1,
+  "n_payers": 1,
+  "volume": 10000.0,
+  "via_counts": {
+    "direct": 1
+  }
+}

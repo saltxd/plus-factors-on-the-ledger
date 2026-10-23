@@ -1,0 +1,923 @@
+{
+  "primary": {
+    "rule": {
+      "type": "single",
+      "feature": "loop_share",
+      "direction": 1,
+      "threshold": 0.42352775000000004
+    },
+    "dev": {
+      "cases": 75,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 1.0,
+        "fpr": 0.0,
+        "balanced_accuracy": 1.0
+      },
+      "case_level": {
+        "tpr": 1.0,
+        "fpr": 0.0,
+        "balanced_accuracy": 1.0
+      },
+      "confusion_cases": {
+        "tp": 56,
+        "fn": 0,
+        "fp": 0,
+        "tn": 19
+      }
+    },
+    "test": {
+      "cases": 48,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.8399999999999999,
+        "fpr": 0.2,
+        "balanced_accuracy": 0.82
+      },
+      "case_level": {
+        "tpr": 0.9047619047619048,
+        "fpr": 0.16666666666666666,
+        "balanced_accuracy": 0.8690476190476191
+      },
+      "confusion_cases": {
+        "tp": 38,
+        "fn": 4,
+        "fp": 1,
+        "tn": 5
+      },
+      "bootstrap_family_weighted": {
+        "tpr": {
+          "ci95": [
+            0.5199999999999999,
+            1.0
+          ],
+          "sd": 0.14228452306558154
+        },
+        "fpr": {
+          "ci95": [
+            0.0,
+            0.6
+          ],
+          "sd": 0.17943290222252997
+        },
+        "balanced_accuracy": {
+          "ci95": [
+            0.56,
+            1.0
+          ],
+          "sd": 0.11494197186406713
+        }
+      }
+    },
+    "all": {
+      "cases": 123,
+      "families": 20,
+      "family_weighted": {
+        "tpr": 0.9111111111111112,
+        "fpr": 0.09090909090909091,
+        "balanced_accuracy": 0.9101010101010101
+      },
+      "case_level": {
+        "tpr": 0.9591836734693877,
+        "fpr": 0.04,
+        "balanced_accuracy": 0.9595918367346938
+      },
+      "confusion_cases": {
+        "tp": 94,
+        "fn": 4,
+        "fp": 1,
+        "tn": 24
+      }
+    }
+  },
+  "non_circular": {
+    "rule": {
+      "type": "and",
+      "terms": [
+        {
+          "type": "single",
+          "feature": "timing_coupling",
+          "direction": 1,
+          "threshold": -0.001938785
+        },
+        {
+          "type": "single",
+          "feature": "relay_share",
+          "direction": 1,
+          "threshold": 0.09578695
+        }
+      ]
+    },
+    "dev": {
+      "cases": 75,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.8750000000000001,
+        "fpr": 0.016666666666666666,
+        "balanced_accuracy": 0.9291666666666667
+      },
+      "case_level": {
+        "tpr": 0.5714285714285714,
+        "fpr": 0.05263157894736842,
+        "balanced_accuracy": 0.7593984962406015
+      },
+      "confusion_cases": {
+        "tp": 32,
+        "fn": 24,
+        "fp": 1,
+        "tn": 18
+      }
+    },
+    "test": {
+      "cases": 48,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.5365079365079366,
+        "fpr": 0.2,
+        "balanced_accuracy": 0.6682539682539683
+      },
+      "case_level": {
+        "tpr": 0.40476190476190477,
+        "fpr": 0.16666666666666666,
+        "balanced_accuracy": 0.6190476190476191
+      },
+      "confusion_cases": {
+        "tp": 17,
+        "fn": 25,
+        "fp": 1,
+        "tn": 5
+      },
+      "bootstrap_family_weighted": {
+        "tpr": {
+          "ci95": [
+            0.15873015873015872,
+            0.9142857142857143
+          ],
+          "sd": 0.188493172371943
+        },
+        "fpr": {
+          "ci95": [
+            0.0,
+            0.6
+          ],
+          "sd": 0.17943290222252997
+        },
+        "balanced_accuracy": {
+          "ci95": [
+            0.4,
+            0.9111111111111111
+          ],
+          "sd": 0.1299614168315066
+        }
+      }
+    },
+    "all": {
+      "cases": 123,
+      "families": 20,
+      "family_weighted": {
+        "tpr": 0.6869488536155204,
+        "fpr": 0.1,
+        "balanced_accuracy": 0.7934744268077603
+      },
+      "case_level": {
+        "tpr": 0.5,
+        "fpr": 0.08,
+        "balanced_accuracy": 0.71
+      },
+      "confusion_cases": {
+        "tp": 49,
+        "fn": 49,
+        "fp": 2,
+        "tn": 23
+      }
+    }
+  },
+  "single:loop_share": {
+    "rule": {
+      "type": "single",
+      "feature": "loop_share",
+      "direction": 1,
+      "threshold": 0.42352775000000004
+    },
+    "dev": {
+      "cases": 75,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 1.0,
+        "fpr": 0.0,
+        "balanced_accuracy": 1.0
+      },
+      "case_level": {
+        "tpr": 1.0,
+        "fpr": 0.0,
+        "balanced_accuracy": 1.0
+      },
+      "confusion_cases": {
+        "tp": 56,
+        "fn": 0,
+        "fp": 0,
+        "tn": 19
+      }
+    },
+    "test": {
+      "cases": 48,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.8399999999999999,
+        "fpr": 0.2,
+        "balanced_accuracy": 0.82
+      },
+      "case_level": {
+        "tpr": 0.9047619047619048,
+        "fpr": 0.16666666666666666,
+        "balanced_accuracy": 0.8690476190476191
+      },
+      "confusion_cases": {
+        "tp": 38,
+        "fn": 4,
+        "fp": 1,
+        "tn": 5
+      },
+      "bootstrap_family_weighted": {
+        "tpr": {
+          "ci95": [
+            0.5199999999999999,
+            1.0
+          ],
+          "sd": 0.14228452306558154
+        },
+        "fpr": {
+          "ci95": [
+            0.0,
+            0.6
+          ],
+          "sd": 0.17943290222252997
+        },
+        "balanced_accuracy": {
+          "ci95": [
+            0.56,
+            1.0
+          ],
+          "sd": 0.11494197186406713
+        }
+      }
+    },
+    "all": {
+      "cases": 123,
+      "families": 20,
+      "family_weighted": {
+        "tpr": 0.9111111111111112,
+        "fpr": 0.09090909090909091,
+        "balanced_accuracy": 0.9101010101010101
+      },
+      "case_level": {
+        "tpr": 0.9591836734693877,
+        "fpr": 0.04,
+        "balanced_accuracy": 0.9595918367346938
+      },
+      "confusion_cases": {
+        "tp": 94,
+        "fn": 4,
+        "fp": 1,
+        "tn": 24
+      }
+    }
+  },
+  "single:outside_funding_share": {
+    "rule": {
+      "type": "single",
+      "feature": "outside_funding_share",
+      "direction": -1,
+      "threshold": 0.7536995
+    },
+    "dev": {
+      "cases": 75,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 1.0,
+        "fpr": 0.0,
+        "balanced_accuracy": 1.0
+      },
+      "case_level": {
+        "tpr": 1.0,
+        "fpr": 0.0,
+        "balanced_accuracy": 1.0
+      },
+      "confusion_cases": {
+        "tp": 56,
+        "fn": 0,
+        "fp": 0,
+        "tn": 19
+      }
+    },
+    "test": {
+      "cases": 48,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 1.0,
+        "fpr": 0.2,
+        "balanced_accuracy": 0.9
+      },
+      "case_level": {
+        "tpr": 1.0,
+        "fpr": 0.16666666666666666,
+        "balanced_accuracy": 0.9166666666666667
+      },
+      "confusion_cases": {
+        "tp": 42,
+        "fn": 0,
+        "fp": 1,
+        "tn": 5
+      },
+      "bootstrap_family_weighted": {
+        "tpr": {
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "sd": 0.0
+        },
+        "fpr": {
+          "ci95": [
+            0.0,
+            0.6
+          ],
+          "sd": 0.17943290222252997
+        },
+        "balanced_accuracy": {
+          "ci95": [
+            0.7,
+            1.0
+          ],
+          "sd": 0.08971645111126499
+        }
+      }
+    },
+    "all": {
+      "cases": 123,
+      "families": 20,
+      "family_weighted": {
+        "tpr": 1.0,
+        "fpr": 0.09090909090909091,
+        "balanced_accuracy": 0.9545454545454546
+      },
+      "case_level": {
+        "tpr": 1.0,
+        "fpr": 0.04,
+        "balanced_accuracy": 0.98
+      },
+      "confusion_cases": {
+        "tp": 98,
+        "fn": 0,
+        "fp": 1,
+        "tn": 24
+      }
+    }
+  },
+  "single:loop_share_1hop": {
+    "rule": {
+      "type": "single",
+      "feature": "loop_share_1hop",
+      "direction": 1,
+      "threshold": 0.125
+    },
+    "dev": {
+      "cases": 75,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 1.0,
+        "fpr": 0.0,
+        "balanced_accuracy": 1.0
+      },
+      "case_level": {
+        "tpr": 1.0,
+        "fpr": 0.0,
+        "balanced_accuracy": 1.0
+      },
+      "confusion_cases": {
+        "tp": 56,
+        "fn": 0,
+        "fp": 0,
+        "tn": 19
+      }
+    },
+    "test": {
+      "cases": 48,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.5857142857142857,
+        "fpr": 0.2,
+        "balanced_accuracy": 0.6928571428571428
+      },
+      "case_level": {
+        "tpr": 0.7857142857142857,
+        "fpr": 0.16666666666666666,
+        "balanced_accuracy": 0.8095238095238095
+      },
+      "confusion_cases": {
+        "tp": 33,
+        "fn": 9,
+        "fp": 1,
+        "tn": 5
+      },
+      "bootstrap_family_weighted": {
+        "tpr": {
+          "ci95": [
+            0.1857142857142857,
+            0.9857142857142858
+          ],
+          "sd": 0.2170828671832252
+        },
+        "fpr": {
+          "ci95": [
+            0.0,
+            0.6
+          ],
+          "sd": 0.17943290222252997
+        },
+        "balanced_accuracy": {
+          "ci95": [
+            0.4,
+            0.9785714285714285
+          ],
+          "sd": 0.14128926905104858
+        }
+      }
+    },
+    "all": {
+      "cases": 123,
+      "families": 20,
+      "family_weighted": {
+        "tpr": 0.7698412698412698,
+        "fpr": 0.09090909090909091,
+        "balanced_accuracy": 0.8394660894660895
+      },
+      "case_level": {
+        "tpr": 0.9081632653061225,
+        "fpr": 0.04,
+        "balanced_accuracy": 0.9340816326530612
+      },
+      "confusion_cases": {
+        "tp": 89,
+        "fn": 9,
+        "fp": 1,
+        "tn": 24
+      }
+    }
+  },
+  "single:timing_coupling": {
+    "rule": {
+      "type": "single",
+      "feature": "timing_coupling",
+      "direction": 1,
+      "threshold": 0.04142855
+    },
+    "dev": {
+      "cases": 75,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.6875000000000001,
+        "fpr": 0.016666666666666666,
+        "balanced_accuracy": 0.8354166666666667
+      },
+      "case_level": {
+        "tpr": 0.5178571428571429,
+        "fpr": 0.05263157894736842,
+        "balanced_accuracy": 0.7326127819548873
+      },
+      "confusion_cases": {
+        "tp": 29,
+        "fn": 27,
+        "fp": 1,
+        "tn": 18
+      }
+    },
+    "test": {
+      "cases": 48,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.5920634920634921,
+        "fpr": 0.2,
+        "balanced_accuracy": 0.696031746031746
+      },
+      "case_level": {
+        "tpr": 0.40476190476190477,
+        "fpr": 0.16666666666666666,
+        "balanced_accuracy": 0.6190476190476191
+      },
+      "confusion_cases": {
+        "tp": 17,
+        "fn": 25,
+        "fp": 1,
+        "tn": 5
+      },
+      "bootstrap_family_weighted": {
+        "tpr": {
+          "ci95": [
+            0.2698412698412699,
+            0.9142857142857143
+          ],
+          "sd": 0.165665552035926
+        },
+        "fpr": {
+          "ci95": [
+            0.0,
+            0.6
+          ],
+          "sd": 0.17943290222252997
+        },
+        "balanced_accuracy": {
+          "ci95": [
+            0.4444444444444444,
+            0.9142857142857143
+          ],
+          "sd": 0.12191642016829214
+        }
+      }
+    },
+    "all": {
+      "cases": 123,
+      "families": 20,
+      "family_weighted": {
+        "tpr": 0.6344797178130511,
+        "fpr": 0.1,
+        "balanced_accuracy": 0.7672398589065256
+      },
+      "case_level": {
+        "tpr": 0.46938775510204084,
+        "fpr": 0.08,
+        "balanced_accuracy": 0.6946938775510204
+      },
+      "confusion_cases": {
+        "tp": 46,
+        "fn": 52,
+        "fp": 2,
+        "tn": 23
+      }
+    }
+  },
+  "single:shared_funder_share_nonhub": {
+    "rule": {
+      "type": "single",
+      "feature": "shared_funder_share_nonhub",
+      "direction": 1,
+      "threshold": 0.635367
+    },
+    "dev": {
+      "cases": 75,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.5000000000000002,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.7500000000000001
+      },
+      "case_level": {
+        "tpr": 0.08928571428571429,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.5446428571428571
+      },
+      "confusion_cases": {
+        "tp": 5,
+        "fn": 51,
+        "fp": 0,
+        "tn": 19
+      }
+    },
+    "test": {
+      "cases": 48,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.2,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.6
+      },
+      "case_level": {
+        "tpr": 0.047619047619047616,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.5238095238095238
+      },
+      "confusion_cases": {
+        "tp": 2,
+        "fn": 40,
+        "fp": 0,
+        "tn": 6
+      },
+      "bootstrap_family_weighted": {
+        "tpr": {
+          "ci95": [
+            0.0,
+            0.6
+          ],
+          "sd": 0.1788179811987598
+        },
+        "fpr": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "sd": 0.0
+        },
+        "balanced_accuracy": {
+          "ci95": [
+            0.5,
+            0.8
+          ],
+          "sd": 0.08940899059937987
+        }
+      }
+    },
+    "all": {
+      "cases": 123,
+      "families": 20,
+      "family_weighted": {
+        "tpr": 0.3333333333333334,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.6666666666666667
+      },
+      "case_level": {
+        "tpr": 0.07142857142857142,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.5357142857142857
+      },
+      "confusion_cases": {
+        "tp": 7,
+        "fn": 91,
+        "fp": 0,
+        "tn": 25
+      }
+    }
+  },
+  "single:shared_funder_share": {
+    "rule": {
+      "type": "single",
+      "feature": "shared_funder_share",
+      "direction": 1,
+      "threshold": 0.8571075
+    },
+    "dev": {
+      "cases": 75,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.5000000000000002,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.7500000000000001
+      },
+      "case_level": {
+        "tpr": 0.08928571428571429,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.5446428571428571
+      },
+      "confusion_cases": {
+        "tp": 5,
+        "fn": 51,
+        "fp": 0,
+        "tn": 19
+      }
+    },
+    "test": {
+      "cases": 48,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.2,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.6
+      },
+      "case_level": {
+        "tpr": 0.047619047619047616,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.5238095238095238
+      },
+      "confusion_cases": {
+        "tp": 2,
+        "fn": 40,
+        "fp": 0,
+        "tn": 6
+      },
+      "bootstrap_family_weighted": {
+        "tpr": {
+          "ci95": [
+            0.0,
+            0.6
+          ],
+          "sd": 0.1788179811987598
+        },
+        "fpr": {
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "sd": 0.0
+        },
+        "balanced_accuracy": {
+          "ci95": [
+            0.5,
+            0.8
+          ],
+          "sd": 0.08940899059937987
+        }
+      }
+    },
+    "all": {
+      "cases": 123,
+      "families": 20,
+      "family_weighted": {
+        "tpr": 0.3333333333333334,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.6666666666666667
+      },
+      "case_level": {
+        "tpr": 0.07142857142857142,
+        "fpr": 0.0,
+        "balanced_accuracy": 0.5357142857142857
+      },
+      "confusion_cases": {
+        "tp": 7,
+        "fn": 91,
+        "fp": 0,
+        "tn": 25
+      }
+    }
+  },
+  "single:payer_hhi": {
+    "rule": {
+      "type": "single",
+      "feature": "payer_hhi",
+      "direction": 1,
+      "threshold": 0.0195112
+    },
+    "dev": {
+      "cases": 75,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 1.0,
+        "fpr": 0.5,
+        "balanced_accuracy": 0.75
+      },
+      "case_level": {
+        "tpr": 1.0,
+        "fpr": 0.7894736842105263,
+        "balanced_accuracy": 0.6052631578947368
+      },
+      "confusion_cases": {
+        "tp": 56,
+        "fn": 0,
+        "fp": 15,
+        "tn": 4
+      }
+    },
+    "test": {
+      "cases": 48,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.58,
+        "fpr": 1.0,
+        "balanced_accuracy": 0.29
+      },
+      "case_level": {
+        "tpr": 0.8333333333333334,
+        "fpr": 1.0,
+        "balanced_accuracy": 0.4166666666666667
+      },
+      "confusion_cases": {
+        "tp": 35,
+        "fn": 7,
+        "fp": 6,
+        "tn": 0
+      },
+      "bootstrap_family_weighted": {
+        "tpr": {
+          "ci95": [
+            0.25999999999999995,
+            0.9
+          ],
+          "sd": 0.1726819759442195
+        },
+        "fpr": {
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "sd": 0.0
+        },
+        "balanced_accuracy": {
+          "ci95": [
+            0.12999999999999998,
+            0.45
+          ],
+          "sd": 0.08634098797210975
+        }
+      }
+    },
+    "all": {
+      "cases": 123,
+      "families": 20,
+      "family_weighted": {
+        "tpr": 0.7666666666666666,
+        "fpr": 0.7272727272727273,
+        "balanced_accuracy": 0.5196969696969697
+      },
+      "case_level": {
+        "tpr": 0.9285714285714286,
+        "fpr": 0.84,
+        "balanced_accuracy": 0.5442857142857143
+      },
+      "confusion_cases": {
+        "tp": 91,
+        "fn": 7,
+        "fp": 21,
+        "tn": 4
+      }
+    }
+  },
+  "single:relay_share": {
+    "rule": {
+      "type": "single",
+      "feature": "relay_share",
+      "direction": 1,
+      "threshold": 0.09578695
+    },
+    "dev": {
+      "cases": 75,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.8750000000000001,
+        "fpr": 0.4333333333333334,
+        "balanced_accuracy": 0.7208333333333334
+      },
+      "case_level": {
+        "tpr": 0.5714285714285714,
+        "fpr": 0.42105263157894735,
+        "balanced_accuracy": 0.575187969924812
+      },
+      "confusion_cases": {
+        "tp": 32,
+        "fn": 24,
+        "fp": 8,
+        "tn": 11
+      }
+    },
+    "test": {
+      "cases": 48,
+      "families": 10,
+      "family_weighted": {
+        "tpr": 0.6365079365079365,
+        "fpr": 0.4,
+        "balanced_accuracy": 0.6182539682539683
+      },
+      "case_level": {
+        "tpr": 0.6190476190476191,
+        "fpr": 0.3333333333333333,
+        "balanced_accuracy": 0.6428571428571429
+      },
+      "confusion_cases": {
+        "tp": 26,
+        "fn": 16,
+        "fp": 2,
+        "tn": 4
+      },
+      "bootstrap_family_weighted": {
+        "tpr": {
+          "ci95": [
+            0.3142857142857143,
+            0.9222222222222222
+          ],
+          "sd": 0.1635489720524419
+        },
+        "fpr": {
+          "ci95": [
+            0.0,
+            0.8
+          ],
+          "sd": 0.21907318959653643
+        },
+        "balanced_accuracy": {
+          "ci95": [
+            0.3284126984126985,
+            0.8753968253968254
+          ],
+          "sd": 0.13645569639680977
+        }
+      }
+    },
+    "all": {
+      "cases": 123,
+      "families": 20,
+      "family_weighted": {
+        "tpr": 0.7425044091710759,
+        "fpr": 0.4181818181818182,
+        "balanced_accuracy": 0.6621612954946288
+      },
+      "case_level": {
+        "tpr": 0.5918367346938775,
+        "fpr": 0.4,
+        "balanced_accuracy": 0.5959183673469388
+      },
+      "confusion_cases": {
+        "tp": 58,
+        "fn": 40,
+        "fp": 10,
+        "tn": 15
+      }
+    }
+  }
+}

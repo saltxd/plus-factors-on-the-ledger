@@ -1,0 +1,53 @@
+{
+  "case_id": "F14-surplusintelligence|0x0f99fc0cbd7a114b2da171fda5a0167858f7afc2|W4",
+  "family": "F14-surplusintelligence",
+  "label": "N",
+  "y": 0,
+  "half": "test",
+  "payee": "0x0f99fc0cbd7a114b2da171fda5a0167858f7afc2",
+  "window": "W4",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1791244800,
+  "t1": 1791849600,
+  "window_blocks": [
+    52227727,
+    52530126
+  ],
+  "data_blocks": [
+    51622927,
+    52530126
+  ],
+  "hub_threshold": 3000,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      248
+    ],
+    [
+      2,
+      619
+    ],
+    [
+      3,
+      79898
+    ],
+    [
+      4,
+      174292
+    ]
+  ],
+  "reach_capped": true,
+  "n_payments": 10525,
+  "n_payers": 7,
+  "volume": 4521.700337,
+  "via_counts": {
+    "direct": 10525
+  }
+}

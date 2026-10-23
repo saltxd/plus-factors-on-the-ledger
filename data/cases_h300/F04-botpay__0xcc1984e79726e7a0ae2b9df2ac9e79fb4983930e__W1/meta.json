@@ -1,0 +1,53 @@
+{
+  "case_id": "F04-botpay|0xcc1984e79726e7a0ae2b9df2ac9e79fb4983930e|W1",
+  "family": "F04-botpay",
+  "label": "C",
+  "y": 1,
+  "half": "test",
+  "payee": "0xcc1984e79726e7a0ae2b9df2ac9e79fb4983930e",
+  "window": "W1",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1789430400,
+  "t1": 1790035200,
+  "window_blocks": [
+    51320527,
+    51622926
+  ],
+  "data_blocks": [
+    50715727,
+    51622926
+  ],
+  "hub_threshold": 300,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      3,
+      18
+    ],
+    [
+      4,
+      344
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 6444,
+  "n_payers": 344,
+  "volume": 644.4000000000001,
+  "via_counts": {
+    "direct": 6444
+  }
+}

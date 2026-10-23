@@ -1,0 +1,18 @@
+{
+  "primary": {
+    "half": "test",
+    "families": 10,
+    "coordinated_families": 5,
+    "label_assignments": 252,
+    "observed_balanced_accuracy": 0.82,
+    "p_value": 0.023809523809523808
+  },
+  "non_circular": {
+    "half": "test",
+    "families": 10,
+    "coordinated_families": 5,
+    "label_assignments": 252,
+    "observed_balanced_accuracy": 0.6682539682539683,
+    "p_value": 0.14285714285714285
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "case_id": "F01-clusterprotocol|0x68396bd35874695ad86cd29410bd80a550991a2b|W2",
+  "family": "F01-clusterprotocol",
+  "label": "C",
+  "y": 1,
+  "half": "test",
+  "payee": "0x68396bd35874695ad86cd29410bd80a550991a2b",
+  "window": "W2",
+  "chain": "base",
+  "market": "x402",
+  "contested": false,
+  "t0": 1790035200,
+  "t1": 1790640000,
+  "window_blocks": [
+    51622927,
+    51925326
+  ],
+  "data_blocks": [
+    51018127,
+    51925326
+  ],
+  "hub_threshold": 300,
+  "k": 6,
+  "reach_by_hop": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      580
+    ]
+  ],
+  "reach_capped": false,
+  "n_payments": 27995,
+  "n_payers": 718,
+  "volume": 21929.818000000003,
+  "via_counts": {
+    "direct": 27995
+  }
+}
