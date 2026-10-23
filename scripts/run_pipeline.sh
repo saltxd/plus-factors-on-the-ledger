@@ -1,6 +1,9 @@
 #!/bin/bash
-# The order the analysis was run in. Steps 1-3 need the raw Base pull (data/raw/base_mac,
-# about 2.5 GB); everything after step 3 runs from the committed per-case tables.
+# The order the analysis was run in. Steps 1-3 and the hub-threshold extractions in step 6
+# need the raw Base pull (data/raw/base_mac, about 4.5 GB, i.e. 4.2 GiB, gzipped) and the
+# DuckDB file built from it; everything else runs from the committed per-case tables.
+# The BNB Chain per-case tables come from src/extract_bsc.py on a re-pulled raw BNB Chain pull,
+# which the repo does not include (README, Reproduce, step 3).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 PY=.venv/bin/python
@@ -20,9 +23,11 @@ $PY src/select_rule.py
 # 6. test-half evaluation, controls, sensitivity, report
 $PY src/evaluate.py
 $PY src/controls.py
+$PY src/controls.py --which boundary
 $PY src/extract_base.py --db data/base.duckdb --out data/cases_h300 --hub 300 --k 6 --memory 14GB --threads 10
 $PY src/extract_base.py --db data/base.duckdb --out data/cases_h3000 --hub 3000 --k 6 --memory 14GB --threads 10
 $PY src/sensitivity.py
-$PY src/extract_termix_base.py --db data/base.duckdb --raw $RAW --sample 300
-$PY src/market_check.py
+# Optional, and not run for the report: a market-level check on TermiX's Base escrow
+# $PY src/extract_termix_base.py --db data/base.duckdb --raw $RAW --sample 300
+# $PY src/market_check.py
 $PY src/report.py

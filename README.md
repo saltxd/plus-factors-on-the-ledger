@@ -14,11 +14,25 @@ question 2.3 ("What should count as convincing evidence of collusion?").
 
 Results: `results/results.md` (generated from the result files by `src/report.py`).
 In short: on 10 held-out case families the frozen rule `loop_share >= 0.4235`
-(chosen on 10 development families, commit `81c736c`) had a family-weighted
+(chosen on 10 development families, commit `f99f40e`) had a family-weighted
 true-positive rate of 0.84 and false-positive rate of 0.20 (balanced accuracy 0.82,
-bootstrap 95% interval 0.56 to 1.00, exact permutation p = 0.024). Closed loops and
-the absence of outside money separated coordinated from independent demand; a shared
-funder, payer concentration and timing did not.
+bootstrap 95% interval 0.56 to 1.00, exact permutation p = 0.024). Here, money
+returning to the seller and buyers without outside money separated coordinated from
+independent demand, and a shared funder, payer concentration and timing did not. The
+labels rest partly on the same funding evidence: a rule on the features they did not
+use scored 0.67 (p = 0.14).
+
+## History note
+
+On Oct 23, 2026, before publication, the history of this repository was rewritten
+twice: to replace 62 BNB Chain wallet addresses, the members of the two rebuilt rings,
+with the pseudonyms `ring48-01` to `ring48-48` and `group14-01` to `group14-14` (and
+one local home directory path with `$HOME`), and to remove from every commit the raw
+BNB Chain pull (`data/raw/bsc/`) and a draft of the submission form. The published
+decodes describe these rings without listing them, and the raw pull contains wallet
+lists our decodes chose not to publish. Commit times are unchanged; commit IDs changed,
+and the freeze commit is now `f99f40eb42b69b7d90dcf76305db08a6b42f92d2` (first
+`81c736c`, then `4037a54` between the two rewrites).
 
 ## Layout
 
@@ -28,9 +42,9 @@ funder, payer concentration and timing did not.
 | `cases/split.json` | Development / test assignment by case family (seeded, committed before any feature was computed) |
 | `pull/` | Data pulls from public chain endpoints |
 | `src/` | Extraction, features, rule search, evaluation, controls, report |
-| `tests/` | Unit tests for the features and the ring injection |
+| `tests/` | Unit tests for the features, the ring injection and the BNB Chain pseudonyms |
 | `data/cases/` | Per-case evidence tables (the input of every feature), committed |
-| `data/*.json` | Pull verification, BNB Chain validation against published counts, ring reconstruction |
+| `data/*.json`, `data/bsc_settle_sample.csv` | Pull verification, BNB Chain validation against published counts and on 30 sampled settlements, ring reconstruction (ring wallets under pseudonyms) |
 | `results/` | Case table, frozen rule, test metrics, controls, figures, `results.md` |
 
 ## Method
@@ -59,13 +73,17 @@ each feature can be checked.
   range, two public endpoints (Tenderly's Base gateway and Pocket's Base endpoint),
   at most 2 requests a second per endpoint. Each segment's source is in the pull
   manifests; a seeded sample of ranges is re-read from a second endpoint and compared
-  row by row (`data/verify_base_pull*.json`).
+  row by row (`data/verify_base_public_segments.json`).
 - **BNB Chain**: every log of TermiX's two escrows from 2026-09-17 to 2026-10-08
   (blocks 122,313,771 to 126,344,213), each chunk queried twice and merged, and
   ERC-8004 `ownerOf` for every agent hired. Daily hire counts are checked against the
   published decode (`data/bsc_validation.json`). Plain USDC/USDT transfers could not
   be pulled on BNB Chain at the allowed pace from keyless endpoints, so BNB Chain
-  evidence is the market's own hire graph.
+  evidence is the market's own hire graph. The raw BNB Chain pull is not included in
+  this repository: it contains wallet lists our decodes chose not to publish (the
+  members of the two rings). `pull/bsc_termix_pull.py` re-pulls it (Reproduce, step 3).
+  The per-case tables built from it are committed with the ring wallets under
+  pseudonyms, and `src/extract_bsc.py` assigns the same pseudonyms when it rebuilds them.
 
 ### Definitions (fixed before any case was scored)
 
@@ -122,12 +140,14 @@ Python 3.12, `pip install -r requirements.txt`.
 python pull/base_usdc_pull.py --rpc <URL> --start 50715727 --end 52530126 --out data/raw/base
 # 2. Base per-case tables (DuckDB; about 10 GB of disk)
 python src/extract_base.py --db base.duckdb --raw data/raw/base --load
-python src/extract_base.py --db base.duckdb --out data/cases
-# 3. BNB Chain pulls and per-case tables
+python src/extract_base.py --db base.duckdb --out data/cases --hub 1000 --k 6   # reach to 6 hops for the K = 5, 6 sensitivity
+# 3. BNB Chain pulls (not included in the repo, see Data) and per-case tables
 python pull/bsc_termix_pull.py anchors --start 122313771 --end 126344213 --seg 50000
 python pull/bsc_termix_pull.py escrow --start 122313771 --end 126344213
 python src/extract_bsc.py --stage orders
 python pull/bsc_termix_pull.py owners --ids data/raw/bsc/agents.txt --block 126344213
+tail -n +2 data/bsc_settle_sample.csv | cut -d, -f1 > data/raw/bsc/settle_sample.txt
+python pull/bsc_termix_pull.py receipts --txs data/raw/bsc/settle_sample.txt
 python src/extract_bsc.py --stage cases
 # 4. From the committed per-case tables onward (no chain access needed)
 python src/run_features.py --sensitivity
@@ -135,13 +155,20 @@ python src/select_rule.py      # development half only
 python src/evaluate.py
 python src/controls.py
 python src/controls.py --which boundary
-python src/sensitivity.py      # after extract_base.py --hub 300 / --hub 3000 into data/cases_h300, data/cases_h3000
+python src/sensitivity.py      # after extract_base.py --hub 300 --k 6 / --hub 3000 --k 6 into data/cases_h300, data/cases_h3000
 python src/report.py
 pytest tests/
 ```
 
 Steps 4 onward run from `data/cases/`, which is committed, so the results can be
-checked without re-pulling the chain.
+checked without re-pulling the chain. Re-run that way from the pseudonymized tables,
+they give the same frozen rules, figures, tables and numbers, with one exception: for one
+development case (F20-se-clear-outside, agent 352475) the exploratory
+`payer_synchrony`, which no rule uses, comes out -0.021 instead of -0.023, and timing
+values in the controls run on that case move by similar noise without changing any
+flag. The timing nulls give each payer its random shift in sorted order of the payer
+IDs, and one of that case's payers, a 14-wallet-group member, sorts in a different place than the
+address it replaced.
 
 ## Preexisting work
 
