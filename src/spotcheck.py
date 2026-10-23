@@ -60,6 +60,19 @@ def eligible(features: pd.DataFrame, pop: pd.DataFrame) -> pd.DataFrame:
 def draw(features_csv: Path, sealed: Path) -> None:
     pop = pd.read_csv(ROOT / "results" / "market_base_population.csv")
     feats = pd.read_csv(features_csv)
+    # data/decode_printed_hex.txt drops the four ring wallets one decode prints; that changes the
+    # exclusions only if a ring wallet is also a Base payee here, which is checked
+    import logging
+
+    import extract_bsc as xb
+
+    logging.disable(logging.INFO)
+    orders = xb.load_orders(xb.Clock())
+    owner = xb.load_owners()
+    ring = set(xb.ring_aliases({"ring48": xb.rebuild_ring48(orders, owner), "group14": xb.rebuild_group14(orders, owner)}))
+    logging.disable(logging.NOTSET)
+    if len(ring) != 62 or set(pop["payee"]) & ring:
+        raise SystemExit("ring wallets not rebuilt, or a ring wallet is a Base payee in the population")
     units = eligible(feats, pop)
     el = units[~units["examined"] & units["loop_share"].notna()]
     rng = np.random.default_rng(SEED)
