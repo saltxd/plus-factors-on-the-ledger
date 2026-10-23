@@ -22,6 +22,20 @@ independent demand, and a shared funder, payer concentration and timing did not.
 labels rest partly on the same funding evidence: a rule on the features they did not
 use scored 0.67 (p = 0.14).
 
+**Added after the freeze (Oct 23 to 24, 2026).** The frozen rule and its code are
+unchanged; the plan was committed before any of these values was computed
+(`cases/market_plan.md`). Run on every x402 payee on Base with at least $10 of x402
+payments in a week (750 payee-weeks, 431 payees, W1 to W4), the rule flags 258
+payee-weeks (34%) and 29.5% of the x402 volume; on every Set and Earn payee on BNB Chain
+(9,131), 1,276 payees and 14.6% of order budgets. In a blinded spot-check of 40 payees
+no decode had examined, two AI judges called 22 and 20 of the 25 flagged payees
+coordinated and 4 of the 15 unflagged ones; the three flagged payees both judges called
+independent had sent their payers small refunds. Post hoc, 48 of the 135 flagged payees
+are wallets of one ring, BotPay's. A synthetic ring written into the raw transfer data
+came out of the real extraction exactly as designed in 90 of 90 runs
+(`results/positive_control_e2e_summary.json`). Details in the last section of
+`results/results.md` and in Section 5 of the report.
+
 ## History note
 
 On Oct 23, 2026, before publication, the history of this repository was rewritten
@@ -29,8 +43,8 @@ twice: to replace 62 BNB Chain wallet addresses, the members of the two rebuilt 
 with the pseudonyms `ring48-01` to `ring48-48` and `group14-01` to `group14-14` (and
 one local home directory path with `$HOME`), and to remove from every commit the raw
 BNB Chain pull (`data/raw/bsc/`) and a draft of the submission form. The published
-decodes describe these rings without listing them, and the raw pull contains wallet
-lists our decodes chose not to publish. Commit times are unchanged; commit IDs changed,
+decodes describe these rings without listing them (one names four members as hiring
+examples), and the raw pull contains wallet lists our decodes chose not to publish. Commit times are unchanged; commit IDs changed,
 and the freeze commit is now `f99f40eb42b69b7d90dcf76305db08a6b42f92d2` (first
 `81c736c`, then `4037a54` between the two rewrites).
 
@@ -46,6 +60,14 @@ and the freeze commit is now `f99f40eb42b69b7d90dcf76305db08a6b42f92d2` (first
 | `data/cases/` | Per-case evidence tables (the input of every feature), committed |
 | `data/*.json`, `data/bsc_settle_sample.csv` | Pull verification, BNB Chain validation against published counts and on 30 sampled settlements, ring reconstruction (ring wallets under pseudonyms) |
 | `results/` | Case table, frozen rule, test metrics, controls, figures, `results.md` |
+| `cases/market_plan.md`, `cases/spotcheck_judge_*.md` | Added after the freeze: plan for the whole-market run, spot-check and end-to-end control; the judges' protocol and prompt |
+| `src/market_base.py`, `src/market_bsc.py`, `src/market_summary.py` | Added after the freeze: whole-market populations, the frozen extraction and features over them, prevalence |
+| `src/spotcheck.py`, `scripts/spotcheck_tools.py` | Added after the freeze: blinded spot-check draw and unblinding; the judges' read-only tools |
+| `src/positive_control_e2e.py`, `src/fig_reach_walk.py` | Added after the freeze: synthetic rings through the raw data and the real extraction; the reach-walk figure |
+| `pull/x402scan_facilitators.py`, `pull/base_tx_senders.py`, `pull/agent402_index.py` | Added after the freeze: x402scan's facilitator list at commit `f205fbe`, transaction senders from the node, Agent402's public index |
+| `results/market_*`, `results/spotcheck_*`, `results/positive_control_e2e*`, `results/fig_reach_walk.png` | Added after the freeze: outputs of the above |
+| `data/x402scan_facilitators_base.csv`, `data/agent402_board_2026-10-13.csv`, `data/decode_printed_hex.txt` | Added after the freeze: x402scan's Base facilitator list (commit `f205fbe`), Agent402's Oct 13 top ten as printed in the top-ten decode, and the hex tokens the published decodes print (spot-check exclusions) |
+| `scripts/diag_botpay_ring.py` | Added after unblinding: post hoc count of flagged payees paid by one ring |
 
 ## Method
 
@@ -129,7 +151,39 @@ Features, per case (code: `src/features.py`):
    fine grid near the threshold added afterwards), timing shuffle, exact permutation test.
 
 Deviations from this plan are listed in `results/results.md`. Hypotheses written before
-any feature was computed: `cases/hypotheses.md`.
+any feature was computed: `cases/hypotheses.md`. Commit times are local to this repository
+and not externally timestamped.
+
+### After the freeze (added Oct 23 to 24, 2026)
+
+Planned in `cases/market_plan.md` (commit `eae4f78`, amended once in `ee4f211` for node
+load, both before any market value was computed). Nothing here feeds back into the frozen
+rule.
+
+- **Whole market, Base.** An x402 payment is a payment as defined above whose transaction
+  was sent by an address on x402scan's public facilitator list (commit `f205fbe`, 128 Base
+  addresses, the list the decodes used); senders come from ChainWard's node. Every payee
+  with at least $10 of x402 payments in a window enters (floor set before any count:
+  below it, payees are mostly developer tests and dust); facilitators are excluded and a
+  proxy that forwards a payment in the same transaction credits its final recipient. The
+  frozen extraction and features run unchanged.
+- **Whole market, BNB Chain.** Every owner of an agent hired on TermiX in the Set and Earn
+  window, no floor, built exactly as the case tables (`src/market_bsc.py` reproduces the
+  loop, funding and concentration features of the 64 committed BNB Chain cases exactly).
+  Ring wallets appear only as `ring48-NN` / `group14-NN`; no agent or order ids are written.
+- **Blinded spot-check.** 25 flagged and 15 unflagged Base payees the decodes did not
+  examine (not printed in a decode, not a case, never in a week's top 30), drawn with seed
+  20261024 and shuffled; two separate AI agent sessions judged each from on-chain evidence
+  with read-only tools (`scripts/spotcheck_tools.py`), without seeing features, flags, the
+  rule or the stratum. Verdicts were committed before the key was joined.
+- **Public labels ChainWard did not write.** Agent402's seller index (read Oct 23) marks
+  some Base sellers `settlement_self_funded`; the rule is compared with it on the payees
+  both cover (`results/market_agent402_comparison.csv`). The full index stays out of the
+  repository.
+- **End-to-end positive control.** Synthetic transfers and EIP-3009 authorisations for a
+  seller-funded ring are written into the data the extraction reads (a scratch database
+  over the base data, opened read-only) for three benign markets, six routes and five ring
+  shares, and `src/extract_base.py` and `src/features.py` run unchanged.
 
 ## Reproduce
 
@@ -158,6 +212,22 @@ python src/controls.py --which boundary
 python src/sensitivity.py      # after extract_base.py --hub 300 --k 6 / --hub 3000 --k 6 into data/cases_h300, data/cases_h3000
 python src/report.py
 pytest tests/
+# 5. Added after the freeze (needs the DuckDB file, ChainWard's node or another Base archive
+#    endpoint for transaction senders, and the raw BNB Chain pull)
+python pull/x402scan_facilitators.py
+python src/market_base.py candidates
+python pull/base_tx_senders.py --pairs data/raw/base_senders/pairs_candidates.txt.gz --rpc <URL> --start 51320527 --end 52530126
+python src/market_base.py population
+python src/market_base.py extract
+python src/market_base.py features --csv results/market_base_features.csv
+python src/market_bsc.py
+python -I pull/agent402_index.py --raw data/raw/agent402 --out data/raw/agent402/base_verdicts.csv
+python src/market_summary.py
+python src/spotcheck.py unblind --features results/market_base_features.csv --key results/spotcheck_key.csv
+python scripts/diag_botpay_ring.py   # post hoc, after unblinding
+python src/positive_control_e2e.py
+python src/fig_reach_walk.py
+python src/report.py
 ```
 
 Steps 4 onward run from `data/cases/`, which is committed, so the results can be
@@ -188,6 +258,10 @@ re-created:
   source; any Base archive endpoint returns the same logs.
 
 Nothing here uses private label sets, tip clusters or the paid wallet lists that
-accompany some decodes. Cases are wallets and contracts only.
+accompany some decodes. Cases are wallets and contracts only. Third-party public data used
+after the freeze: x402scan's facilitator list (github.com/Merit-Systems/x402scan at
+commit `f205fbe`) and Agent402's public seller index (agent402.tools, read Oct 23, 2026).
+One BNB Chain decode (`set-and-earn-week-one`) prints four of the 62 ring wallets as hiring
+examples; the repository still names all 62 only by pseudonym.
 
 AI assistance: the code and analysis in this repo were written with an AI coding agent.

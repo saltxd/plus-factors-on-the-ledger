@@ -55,10 +55,10 @@ def arrow(ax, x0: float, x1: float, y: float, color: str) -> None:
 
 def back(ax, x0: float, y: float, color: str, label: str) -> None:
     """Dashed return path under the lane: from the payers' node back to the payee."""
-    yb = y - 0.47
+    yb = y - 0.42
     ax.plot([x0, x0, 0, 0], [y - 0.2, yb, yb, y - 0.24], color=color, lw=1.0, ls=(0, (3, 2)), zorder=2, solid_capstyle="round")
     ax.add_patch(FancyArrowPatch((0, yb + 0.02), (0, y - 0.21), arrowstyle="-|>", mutation_scale=8, color=color, lw=1.0, zorder=3))
-    ax.text(x0 / 2, yb - 0.12, label, ha="center", va="center", fontsize=6.2, color=color)
+    ax.text(x0 / 2, yb + 0.1, label, ha="center", va="center", fontsize=6.2, color=color)
 
 
 def pct(x: float) -> str:
@@ -66,15 +66,13 @@ def pct(x: float) -> str:
 
 
 def main() -> None:
-    fig, ax = plt.subplots(figsize=(7.6, 4.9), dpi=200, facecolor=SURFACE)
+    fig, ax = plt.subplots(figsize=(7.6, 4.05), dpi=200, facecolor=SURFACE)
     ax.set_facecolor(SURFACE)
     ax.axvspan(0.55, 4.5, color=BLUE, alpha=0.06, lw=0)
     ax.axvline(4.5, color=INK2, lw=0.9, ls=(0, (4, 3)))
-    ax.text(0.62, 4.82, "reach set, K = 4: wallets the payee's money reached in at most 4 transfers", ha="left", fontsize=6.6, color=BLUE)
-    ax.text(0.62, 4.65, "through non-hub wallets, in lookback + window", ha="left", fontsize=6.6, color=BLUE)
-    ax.text(4.56, 4.82, "beyond the", ha="left", fontsize=6.6, color=INK2)
-    ax.text(4.56, 4.65, "reach limit", ha="left", fontsize=6.6, color=INK2)
-    lanes = [3.95, 2.75, 1.55]
+    ax.text(0.62, 4.42, "reach set, K = 4: wallets the payee's money reached in at most 4 transfers through non-hub wallets", ha="left", fontsize=6.6, color=BLUE)
+    ax.text(4.56, 4.42, "beyond the reach limit", ha="left", fontsize=6.6, color=INK2)
+    lanes = [3.6, 2.5, 1.4]
     for (title, cid, labels, _), y in zip(EXAMPLES, lanes):
         f = case_facts(cid)
         rb = f["reach_by_hop"]
@@ -87,11 +85,11 @@ def main() -> None:
         node(ax, f["hop"], y, f"{f['payers_at_hop']} of {f['n_payers']} payers\n{pct(f['share_at_hop'])} of value", color, fill)
         for h in range(f["hop"]):
             arrow(ax, h, h + 1, y, INK2)
-        back(ax, f["hop"], y, color, "their x402 payments to the payTo")
+        back(ax, f["hop"], y, color, "their x402 payments")
         verdict = (f"loop share {f['ls4']:.2f}, flagged" if flagged else f"loop share {f['ls4']:.2f} at K = 4, missed ({f['ls5']:.2f} at K = 5)")
         ax.text(-0.45, y + 0.36, title, ha="left", fontsize=7.4, color=INK, weight="bold")
         ax.text(0.95, y + 0.36, verdict, ha="left", fontsize=6.8, color=color)
-    y = 0.2
+    y = 0.18
     node(ax, 0, y, "seller", INK, "#ffffff")
     node(ax, 1.05, y, "exchange-like hub\n(1,000+ counterparties)", INK2, "#f1f0ec")
     node(ax, 2.25, y, "ring payer", INK2, "#ffffff")
@@ -99,10 +97,10 @@ def main() -> None:
     ax.add_patch(FancyArrowPatch((1.62, y), (1.92, y), arrowstyle="-|>", mutation_scale=8, color=MUTED, lw=1.0, ls=(0, (2, 2)), zorder=3))
     ax.text(-0.45, y + 0.36, "Hub blind spot", ha="left", fontsize=7.4, color=INK, weight="bold")
     ax.text(0.95, y + 0.36, "the walk stops at hubs: a ring funded this way is never reached (positive control)", ha="left", fontsize=6.8, color=INK2)
-    ax.text(-0.45, -0.45, "A transfer that a contract forwards in the same transaction (a facilitator proxy) is passed through, not counted as a hop.",
+    ax.text(-0.45, -0.38, "A transfer that a contract forwards in the same transaction (a facilitator proxy) is passed through, not counted as a hop.",
             ha="left", fontsize=6.0, color=MUTED)
     ax.set_xlim(-0.55, 5.6)
-    ax.set_ylim(-0.6, 5.0)
+    ax.set_ylim(-0.5, 4.55)
     ax.set_xticks(range(6), ["payee\n(hop 0)", "hop 1", "hop 2", "hop 3", "hop 4", "hop 5"], fontsize=7, color=INK2)
     ax.tick_params(length=0)
     ax.set_yticks([])
