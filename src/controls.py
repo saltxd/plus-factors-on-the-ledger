@@ -92,18 +92,30 @@ def shuffle_times(cd: CaseData, seed: int) -> CaseData:
     return CaseData(cd.case_id, p, cd.payer_inflows, cd.seller_outflows, cd.payer_reach, cd.t0, cd.t1, cd.meta)
 
 
-def positive_control(frozen: dict, cases_dir: Path, feats: pd.DataFrame) -> pd.DataFrame:
-    base = feats[(feats["y"] == 0) & (feats["label"].isin(["I", "N"])) & (feats["n_payers"] >= 5) & (feats["chain"] == "base")]
+def _inject_one_case(args: tuple) -> list[dict]:
+    case_dir, case_id, label, half = args
+    cd = load_case(case_dir)
     rows = []
-    for _, r in base.iterrows():
-        cd = load_case(cases_dir / r["case_id"].replace("|", "__"))
-        for route in ROUTES:
-            for phi in PHIS:
-                for seed in SEEDS:
-                    f = compute_features(inject(cd, phi, route, seed), n_null=30)
-                    row = {"base_case": r["case_id"], "base_label": r["label"], "half": r["half"], "route": route, "phi": phi, "seed": seed, **f}
-                    rows.append(row)
-        log.info("positive control done for %s", r["case_id"])
+    for route in ROUTES:
+        for phi in PHIS:
+            for seed in SEEDS:
+                f = compute_features(inject(cd, phi, route, seed), n_null=20)
+                rows.append({"base_case": case_id, "base_label": label, "half": half, "route": route, "phi": phi, "seed": seed, **f})
+    return rows
+
+
+def positive_control(frozen: dict, cases_dir: Path, feats: pd.DataFrame) -> pd.DataFrame:
+    """Base markets: every Base case the decodes did not label coordinated or linked (I, N)
+    with at least 5 payers, from both halves (the rule is frozen; this measures sensitivity)."""
+    from multiprocessing import Pool
+
+    base = feats[(feats["y"] == 0) & (feats["label"].isin(["I", "N"])) & (feats["n_payers"] >= 5) & (feats["chain"] == "base")]
+    jobs = [(cases_dir / r["case_id"].replace("|", "__"), r["case_id"], r["label"], r["half"]) for _, r in base.iterrows()]
+    rows: list[dict] = []
+    with Pool(min(8, max(1, len(jobs)))) as pool:
+        for part in pool.imap_unordered(_inject_one_case, jobs):
+            rows.extend(part)
+            log.info("positive control done for %s", part[0]["base_case"] if part else "?")
     df = pd.DataFrame(rows)
     df["flag_primary"] = apply_rule(df, frozen["rule"])
     df["flag_non_circular"] = apply_rule(df, frozen["non_circular_rule"])
