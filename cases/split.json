@@ -1,0 +1,36 @@
+{
+  "seed": 20261023,
+  "method": "stratified by (coordinated, chain); seeded shuffle; alternate deal starting with a seeded coin flip",
+  "assignment": {
+    "F01-clusterprotocol": "test",
+    "F02-meridian-six": "test",
+    "F03-meridian-seventh": "dev",
+    "F04-botpay": "test",
+    "F05-keyring-pingpong": "dev",
+    "F06-xpay": "test",
+    "F07-payback-ed9fcd0d": "dev",
+    "F08-se-ring48": "dev",
+    "F09-se-group14": "test",
+    "F10-clashofcoins": "dev",
+    "F11-blockrun": "dev",
+    "F12-stableenrich": "test",
+    "F13-claw402": "test",
+    "F14-surplusintelligence": "test",
+    "F15-losbeto": "test",
+    "F16-cheaptokens": "test",
+    "F17-ax1": "dev",
+    "F18-korus": "dev",
+    "F19-roundtrip-ee7ae85f": "dev",
+    "F20-se-clear-outside": "dev"
+  },
+  "counts": {
+    "dev": {
+      "families": 10,
+      "coordinated_families": 4
+    },
+    "test": {
+      "families": 10,
+      "coordinated_families": 5
+    }
+  }
+}

@@ -1,0 +1,336 @@
+# Case registry for the on-chain collusion-evidence benchmark.
+#
+# Written Oct 23, 2026 (sprint day 1), BEFORE any feature was computed.
+# Labels come only from ChainWard's PUBLISHED decodes (chainward.ai/decodes/<slug>),
+# which were written before the sprint (preexisting work, see README).
+# No private label sets, tip clusters or paid wallet lists are used.
+#
+# Unit of analysis: one payee address (a seller / hired agent) in one window.
+# The question asked of each case: is the payee's measured demand coordinated
+# with the payee itself (self-funded, or money circulating in a closed group),
+# or does it come from independent payers?
+#
+# Label codes
+#   C  coordinated: the decode reports a loop, a closed ring, or buyers funded by the seller.
+#   I  independent: the decode reports positive evidence of independent buying
+#      (many distinct funders, buyers who also pay other sellers, no seller funding).
+#   N  no loop found: the decode traced the seller and found no loop, and says this is
+#      not a clearance. Weak negative.
+#   L  linked, no loop: the decode found a strong common link (one funder seeding many
+#      buyers, a shared high-throughput account, an on-ramp) but explicitly did not
+#      count it as a loop. These are the "similar behaviour from common
+#      infrastructure or incentives" cases of research question 2.3.
+# Binary target for detection: coordinated = 1 for C, 0 for I, N and L.
+#
+# Windows (UTC, end exclusive). Base blocks are 2 s apart; block 50,715,727 = 2026-09-01 00:00:01.
+#   W1  2026-09-15 .. 2026-09-22   Base blocks 51,320,527 .. 51,622,926   (x402-on-base)
+#   W2  2026-09-22 .. 2026-09-29   Base blocks 51,622,927 .. 51,925,326   (x402-on-base-two-weeks-later)
+#   W3  2026-09-29 .. 2026-10-06   Base blocks 51,925,327 .. 52,227,726   (x402-on-base-two-weeks-later)
+#   W4  2026-10-06 .. 2026-10-13   Base blocks 52,227,727 .. 52,530,126   (x402-top-ten-self-funded, board of Oct 13 01:19)
+#   SE  2026-10-01 .. 2026-10-08   BSC blocks 125,000,755 .. 126,344,213  (set-and-earn-week-one-closed)
+#
+# Inclusion rules (fixed before data was read):
+#   - A (payee, window) is included only if a decode makes a statement about that payee
+#     that covers that window: a week-specific statement, or a statement over a longer
+#     window that holds for every sub-period (e.g. "not one payment came in from outside").
+#   - A case with zero payments in its window is dropped and reported as dropped.
+#   - Excluded on purpose: Bankr (bankr-on-chain checks reported revenue against fee
+#     receipts and says it did not test wash trading, so it carries no label about payer
+#     independence; its fees are also not USDC payments); Storm Station 247 (decode: "not
+#     traced"); the Polymer settler (buyer = seller, no counterparty); clashofcoins'
+#     second payTo and any seller the decodes mention without a finding.
+#   - Addresses the decodes print truncated are resolved on-chain by unique prefix among
+#     the window's payees; the resolution is logged in data/.
+
+windows:
+  W1: {chain: base, start: "2026-09-15T00:00:00Z", end: "2026-09-22T00:00:00Z", first_block: 51320527, last_block: 51622926}
+  W2: {chain: base, start: "2026-09-22T00:00:00Z", end: "2026-09-29T00:00:00Z", first_block: 51622927, last_block: 51925326}
+  W3: {chain: base, start: "2026-09-29T00:00:00Z", end: "2026-10-06T00:00:00Z", first_block: 51925327, last_block: 52227726}
+  W4: {chain: base, start: "2026-10-06T00:00:00Z", end: "2026-10-13T00:00:00Z", first_block: 52227727, last_block: 52530126}
+  SE: {chain: bsc, start: "2026-10-01T00:00:00Z", end: "2026-10-08T00:00:00Z", first_block: 125000755, last_block: 126344213}
+
+families:
+
+  # ---------------- coordinated (C) ----------------
+
+  - family: F01-clusterprotocol
+    chain: base
+    market: x402
+    label: C
+    payees: ["0x68396bd35874695ad86cd29410bd80a550991a2b"]
+    windows: [W1, W2, W3]
+    source: [x402-on-base, x402-on-base-two-weeks-later]
+    quote: >-
+      "At least 675 of the seller's 715 buyers were funded by those three distributors,
+      and they account for at least 97.0% of its volume." (W1); weekly table: buyers funded
+      by its three distributors carried 99.9% of its volume in W1, W2 and W3.
+    label_basis: [seller_to_buyer_funding_path, seller_outflows_to_one_hub]
+
+  - family: F02-meridian-six
+    chain: base
+    market: x402
+    label: C
+    payees:
+      - "0x1cec447da1915f018bd74006ff6d695468b68dd4"
+      - "0xfe8f511d8542f687cf70b798c388ef4c3265794d"
+      - "0xa6a90366a307080bccb859642d3378121fe8809d"
+      - "0x475436ef0a97286081d0fc2a762ad6296949327b"
+      - "0x13db4caf175f23f1429c2df6b333350c24705192"
+      - "0xe55eb84c37e90dfb7304969e5c6bff02c600f748"
+    windows: [W1, W2, W3]
+    source: [x402-on-base, x402-on-base-two-weeks-later, x402-closed-six]
+    quote: >-
+      "Six wallets paid only each other through the Meridian facilitator" (W1); weekly
+      table W1-W3 with "x402 payments in from outside: $0"; closed-six: "In the 30 days to
+      Oct 9 the six made 3,554 payments to each other ... and not one payment came in from outside."
+    label_basis: [closure_of_payment_set, pair_matrix, no_outside_payments]
+
+  - family: F03-meridian-seventh
+    chain: base
+    market: x402
+    label: C
+    payees: ["0xc2204317799b521cd1ff1f7c6cab84d3ac5f774e"]
+    windows: [W1, W2, W3]
+    source: [x402-on-base-two-weeks-later, x402-closed-six]
+    quote: >-
+      "A seventh seller works the same way with one payer. 0xc2204317 took $2,648, $3,416 and
+      $3,201 through Meridian, all from 0x1cfffac9. In each 30-day window we read, 74-80% of
+      that payer's USDC came from 0xc2204317."
+    label_basis: [seller_to_buyer_funding_path]
+
+  - family: F04-botpay
+    chain: base
+    market: x402
+    label: C
+    payees: ["0x159be9e316bc5fac8ce05aec4eaae46e8f8a4908", "0xcc1984e79726e7a0ae2b9df2ac9e79fb4983930e"]
+    windows: [W1, W2, W3, W4]
+    source: [x402-on-base, x402-on-base-two-weeks-later, x402-top-ten-self-funded]
+    quote: >-
+      W1: "every one of those buyers traces to one root wallet ... The root is funded by the
+      seller"; W2-W3: "345 of its 346 buyers trace back through x402 payments to one root wallet
+      whose only USDC funder was the seller"; W4: "In the 30 days to Oct 11, 284 of BotPay's 347
+      payers were those wallets" (the ring its payTo funds).
+    label_basis: [seller_to_buyer_funding_path, payment_tree]
+    note: >-
+      x402-on-base names "the two payTo addresses x402scan lists for botpay.network" without
+      printing them; the top-ten decode prints 0x159be9e3 as BotPay's payTo and 0xcc1984e7 as the
+      contract that funds the root. Both are registered; a (payee, window) with no payments is dropped.
+
+  - family: F05-keyring-pingpong
+    chain: base
+    market: x402
+    label: C
+    payees: ["0x17cd53c04d707ef0dd615ef56c633f02915a7905"]
+    windows: [W1, W2, W3, W4]
+    source: [x402-on-base, x402-on-base-two-weeks-later, x402-top-ten-self-funded]
+    quote: >-
+      W1: "received 5,874 payments of $0.05 ... and sent 5,860 transfers of $0.05 to 51 of them";
+      W2-W3: "still sends a buyer $0.05 and gets $0.05 back 38 seconds later ... and funded all 30
+      buyers we checked each week"; W4 (#5): "ping-pongs with itself".
+    label_basis: [direct_reciprocity, seller_funds_buyers]
+
+  - family: F06-xpay
+    chain: base
+    market: x402
+    label: C
+    payees: ["0x589a2314a2e05f45e40c4823da3ba58d421db3d8"]
+    windows: [W3, W4]
+    source: [x402-on-base-two-weeks-later, x402-top-ten-self-funded]
+    quote: >-
+      W3: "took $959 and sent 32 of its 37 buyers $992 in the latest week ... its buyers paid it
+      nothing on net"; W4 (#1): "seeds its own buyers ... 169 wallets whose first USDC ever came
+      from X Pay. 159 of them paid it back."
+    label_basis: [seller_funds_buyers, first_funder_is_seller]
+
+  - family: F07-payback-ed9fcd0d
+    chain: base
+    market: x402
+    label: C
+    contested: true
+    payees: ["prefix:0xed9fcd0d"]
+    windows: [W1]
+    source: [x402-on-base, x402-on-base-two-weeks-later]
+    quote: >-
+      "0xed9fcd0d took $2,656.43 from 12 buyers and sent $2,415.15 (91%) back to 11 of them ...
+      That fits a game or betting loop. It may be the product working as designed, but it is not
+      net buying." Counted in the "money loops back" tier.
+    label_basis: [direct_reciprocity]
+    note: Contested label. A refund or payout loop by design is not collusion between agents; kept as C because the decodes count it as a loop, and reported separately.
+
+  - family: F08-se-ring48
+    chain: bsc
+    market: termix-bsc
+    label: C
+    payees: ["reconstruct:ring48"]
+    windows: [SE]
+    source: [set-and-earn-week-one, set-and-earn-week-one-closed]
+    quote: >-
+      "48 TermiX agents, IDs between REDACTED and REDACTED, all registered on Sep 4 between 07:27
+      and 08:47 UTC. Since Oct 1, each has been hired exactly 3 times, every time by one of the
+      other 47 owners. No outside wallet hired a ring agent, and no ring wallet hired an agent
+      outside the ring." Week two: "full rounds on Oct 1, 3, 4 and 6".
+    label_basis: [closure_of_hiring_set, shared_funder]
+    reconstruction: >-
+      Ring members are rebuilt from the public chain exactly as the decode describes them: TermiX
+      BSC agents with ids REDACTED..REDACTED hired in SE by owners of other agents in that id range.
+      The decode publishes the id range, the registration window and the round structure, but not
+      the 48 wallets; a reconstruction that does not give 48 agents is reported, not forced.
+
+  - family: F09-se-group14
+    chain: bsc
+    market: termix-bsc
+    label: C
+    payees: ["reconstruct:group14"]
+    windows: [SE]
+    source: [set-and-earn-week-one-closed]
+    quote: >-
+      "14 wallets hired each other on Oct 1, 4 and 6 for $20 to $30 (example
+      REDACTED), with no hire in and
+      one $1 hire out ... The 14's hirers and payees share funders that aren't exchange-style hot wallets."
+    label_basis: [closure_of_hiring_set, shared_funder]
+    reconstruction: >-
+      The group is rebuilt as the set of wallets connected to the example transaction's hirer
+      through SE hires with $20-$30 budgets on Oct 1, 4 and 6; a result that is not 14 wallets is reported.
+
+  # ---------------- not coordinated (I, N, L) ----------------
+
+  - family: F10-clashofcoins
+    chain: base
+    market: x402
+    label: I
+    payees: ["0x93862e5b2b1fa10a01772e7e9ca7cdc7deb5ca25"]
+    windows: [W1]
+    source: [x402-on-base]
+    quote: '"clashofcoins: $10,969.79 from 132 buyers, whose top 40 had 112 different funders: bridges, DEX routers and others."'
+    label_basis: [many_distinct_funders]
+
+  - family: F11-blockrun
+    chain: base
+    market: x402
+    label: I
+    payees: ["0xe9030014f5dae217d0a152f02a043567b16c1abf"]
+    windows: [W1, W3, W4]
+    window_labels: {W1: I, W3: I, W4: N}
+    source: [x402-on-base, x402-on-base-two-weeks-later, x402-top-ten-self-funded]
+    quote: >-
+      W1: "118 buyers paying 2,745 different amounts ... 43% of its buyers also pay other sellers";
+      W3: "None of the 22 we checked was funded by the seller and no wallet funded more than two of
+      them"; W4: "No loop found".
+    label_basis: [buyers_pay_other_sellers, amount_diversity, no_seller_funding]
+
+  - family: F12-stableenrich
+    chain: base
+    market: x402
+    label: I
+    payees: ["0x325bdf6f7efab24a2210c48c1b64cab2eae1d430"]
+    windows: [W1, W4]
+    window_labels: {W1: I, W4: N}
+    source: [x402-on-base, x402-top-ten-self-funded]
+    quote: '"stableenrich.dev: 121 buyers, 63% of whom also pay other services" (W1); W4 (#6): "No loop found".'
+    label_basis: [buyers_pay_other_sellers]
+    note: The W1 decode does not print the payTo; the W4 decode prints 0x325bdf6f for StableEnrich. Its W1 payer count is checked against "121 buyers" before use.
+
+  - family: F13-claw402
+    chain: base
+    market: x402
+    label: I
+    payees: ["0xa9dd7cc9cbf0e05551332209289f04be36bc2315"]
+    windows: [W1]
+    source: [x402-on-base]
+    quote: '"claw402.ai: 94,386 payments of about $0.002 from 44 diversely funded buyers at machine cadence. Heavy automated use, not a loop."'
+    label_basis: [many_distinct_funders]
+
+  - family: F14-surplusintelligence
+    chain: base
+    market: x402
+    label: N
+    payees: ["0x0f99fc0cbd7a114b2da171fda5a0167858f7afc2"]
+    windows: [W4]
+    source: [x402-top-ten-self-funded]
+    quote: '"$2,487 from eight payers is the most concentrated demand in the top ten, and its outgoing USDC goes to wallets that never pay it. Not a loop; a handful of payers."'
+    label_basis: [no_loop_in_seller_outflow_trace]
+
+  - family: F15-losbeto
+    chain: base
+    market: x402
+    label: N
+    payees: ["0xd5ba9711a3d052846a3695c70e7fcb8b3168fe7d"]
+    windows: [W4]
+    source: [x402-top-ten-self-funded]
+    quote: '"Losbeto (#8), CheapTokens (#9): their outflows look like payouts to people, not seeds. No loop."'
+    label_basis: [no_loop_in_seller_outflow_trace]
+
+  - family: F16-cheaptokens
+    chain: base
+    market: x402
+    label: N
+    payees: ["0x213c8d7434e2ae7aa1c392767c5120778d413215"]
+    windows: [W4]
+    source: [x402-top-ten-self-funded]
+    quote: '"Losbeto (#8), CheapTokens (#9): their outflows look like payouts to people, not seeds. No loop."'
+    label_basis: [no_loop_in_seller_outflow_trace]
+
+  - family: F17-ax1
+    chain: base
+    market: x402
+    label: L
+    payees: ["0x7284d41b5b852f2bd4c99bdf95043d84452d299c"]
+    windows: [W1, W4]
+    window_labels: {W1: L, W4: N}
+    source: [x402-on-base, x402-top-ten-self-funded]
+    quote: >-
+      W1: "At least 378 of those buyers were funded by one wallet, 0x3dd6f35c ... We found no path
+      from the seller back to that wallet ... This reads like an app seeding embedded wallets for its
+      users ... We counted it as ambiguous, not as a loop." W4 (#3): "No loop found".
+    label_basis: [shared_funder_without_seller_path]
+
+  - family: F18-korus
+    chain: base
+    market: x402
+    label: L
+    payees: ["0x8a12157b27c22fb239e558dc3cb43c7d1a8c0881"]
+    windows: [W3]
+    source: [x402-on-base-two-weeks-later]
+    quote: >-
+      "2,256 buyers paid it once each, in 14 active hours; only one paid any other seller. All 30
+      trails we checked stopped at high-throughput wallets our method can't see past ... One-off
+      checkout wallets funded through an on-ramp would look like this."
+    label_basis: [shared_high_throughput_funder]
+
+  - family: F19-roundtrip-ee7ae85f
+    chain: base
+    market: x402
+    label: L
+    payees:
+      - {address: "0xfa02300b1a598daba1b27b2bf79f9775355dac82", windows: [W1, W2]}
+      - {address: "0x1f9fd037b19a20e4f36790c4e4d992c54fccd61a", windows: [W2]}
+      - {address: "0xce2646d8b6ab269987f3c8823022ed4a0ce31318", windows: [W2]}
+      - {address: "0x6d3d6df3f5394d588e4a4ce798fe59820b901ace", windows: [W3]}
+      - {address: "0x1a199cd404b4eea21678fe6713c8bc807f9dacf4", windows: [W3]}
+      - {address: "0x63f103304ed9f0f1b47b90b10b30e47b639c46c9", windows: [W3]}
+      - {address: "0xe0f54e20ecd4829a8a80526173531132c1e48873", windows: [W3]}
+      - {address: "0xba6018c96b41761a3a48b6d371445ddf912bce48", windows: [W3]}
+      - {address: "0xe2768dfdb47fb0237c6079b967fbbbd10cb16723", windows: [W3]}
+    windows: [W1, W2, W3]
+    source: [x402-on-base, x402-on-base-two-weeks-later]
+    quote: >-
+      "That account may be one service used by both sides, so we count it separately" (W1);
+      "The chain can't show whether 0xee7ae85f is one party or a service both sides use, so none of
+      it counts as a loop" (W2-W3).
+    label_basis: [money_returns_through_high_throughput_account]
+
+  - family: F20-se-clear-outside
+    chain: bsc
+    market: termix-bsc
+    label: N
+    payees:
+      - {address: "0xe7ee2a3fcd936fd148ed563144beeeb3e46bd80b", agent_id: 352475}
+      - {address: "0xf8a14ce6d8c1d09397f7f10b22a73e94e8c61a7a", agent_id: 355860}
+    windows: [SE]
+    source: [set-and-earn-week-one, set-and-earn-week-one-closed]
+    quote: >-
+      "Outside both groups, four agents clear it: TermiX 352475 (11 hires at $1 from 11 wallets),
+      TermiX 355860 (7 at $1)" — clearing means 3+ completed hires from 3+ wallets with no funding
+      link found within 4 hops. "One of 352475's hirers is in the 14-wallet group."
+    label_basis: [no_funding_link_pairwise]
+    note: The two testnet agents that also clear the check are left out (testnet, tBNB-only trails).

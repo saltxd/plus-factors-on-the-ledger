@@ -1,0 +1,7 @@
+# Event topics, transaction hashes and addresses are public chain data, not secrets.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "public chain identifiers"
+regexes = ['''0x[0-9a-fA-F]{64}''', '''0x[0-9a-fA-F]{40}''']
