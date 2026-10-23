@@ -12,6 +12,8 @@ injected into a real market) and negative controls.
 Entry to the Apart AI Collusion Research Sprint (Oct 23 to 25, 2026), research
 question 2.3 ("What should count as convincing evidence of collusion?").
 
+Code and data: https://github.com/saltxd/plus-factors-on-the-ledger
+
 Results: `results/results.md` (generated from the result files by `src/report.py`).
 In short: on 10 held-out case families the frozen rule `loop_share >= 0.4235`
 (chosen on 10 development families, commit `f99f40e`) had a family-weighted
@@ -38,15 +40,18 @@ came out of the real extraction exactly as designed in 90 of 90 runs
 
 ## History note
 
-On Oct 23, 2026 the history of this repository was rewritten three times, the first
-two before it was first published and the third after: to replace 62 BNB Chain wallet addresses, the
+On Oct 23, 2026 the history of this repository was rewritten four times, the last two
+after an earlier copy had been public under another name: to replace 62 BNB Chain wallet addresses, the
 members of the two rebuilt rings, with the pseudonyms `ring48-01` to `ring48-48` and
 `group14-01` to `group14-14` (and local home-directory paths with `$HOME`); to remove
 from every commit the raw BNB Chain pull (`data/raw/bsc/`) and a draft of the
-submission form; and to remove from every commit the per-transaction tables of the
+submission form; to remove from every commit the per-transaction tables of the
 cases that contain a ring wallet and redact, everywhere else, the ring wallets' agent
 ids, order ids and transaction hashes, any of which finds a ring wallet on the public
-ERC-8004 registry or an explorer. The published decodes describe these rings without
+ERC-8004 registry or an explorer; and to redact the hired agent and the amount of the
+14-wallet group's one hire outside the group (`data/bsc_rings.json`) and the pseudonym
+of the group member this README named among the payers of that hired agent's owner,
+which together let anyone find that wallet. The published decodes describe these rings without
 listing them (one names four members as hiring examples), and the raw pull contains
 wallet lists our decodes chose not to publish. The third rewrite dropped the tables of
 63 cases (the 62 ring cases and one F20 case with a ring wallet among its payers; 315
@@ -57,7 +62,7 @@ sampled settlements (`data/bsc_settle_sample.csv`, `data/bsc_validation.json`), 
 the agent-id range and the example transaction the decodes print (`cases/cases.yaml`,
 `src/extract_bsc.py`). Commit times are unchanged; commit IDs changed, and the freeze
 commit is now `f99f40eb42b69b7d90dcf76305db08a6b42f92d2` (first `81c736c`, then
-`4037a54` and `b28bded` between the rewrites).
+`4037a54`, `b28bded` and `f922f65` between the rewrites).
 
 ## Layout
 

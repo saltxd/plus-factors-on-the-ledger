@@ -1,6 +1,6 @@
 # Results
 
-Every number below is read from the files in this folder by `src/report.py`.
+Every number below is read from the files in this folder by `src/report.py`. Code and data: https://github.com/saltxd/plus-factors-on-the-ledger
 
 ## In plain words
 

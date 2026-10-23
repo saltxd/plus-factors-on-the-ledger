@@ -1,7 +1,8 @@
 f99f40eb42b69b7d90dcf76305db08a6b42f92d2
 The rules were frozen in this commit (Oct 23, 2026, 11:10 UTC). Its ID was
-81c736c503c333311cb03b2ef4ef29a7b7149548 at first, then 4037a540e0e9fb2126d5538e8054b21eba3617f9 and
-b28bded302570df485c3e5553fe1a06a21cf966c between the three history rewrites of Oct 23, 2026: the
-first replaced 62 BNB Chain wallet addresses with pseudonyms, the second removed the raw BNB Chain
-pull, and the third removed the ring cases' transaction tables and redacted the ring wallets' agent
-ids, order ids and transaction hashes. Commit times did not change.
+81c736c503c333311cb03b2ef4ef29a7b7149548 at first, then 4037a540e0e9fb2126d5538e8054b21eba3617f9,
+b28bded302570df485c3e5553fe1a06a21cf966c and f922f65f723d3ce3404ecd8a1eb2faf5108e656e between the four
+history rewrites of Oct 23, 2026: the first replaced 62 BNB Chain wallet addresses with pseudonyms,
+the second removed the raw BNB Chain pull, the third removed the ring cases' transaction tables and
+redacted the ring wallets' agent ids, order ids and transaction hashes, and the fourth redacted the
+agent and amount of the 14-wallet group's one hire outside the group. Commit times did not change.

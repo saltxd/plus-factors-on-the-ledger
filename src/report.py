@@ -358,7 +358,7 @@ def write_results_md(frozen: dict) -> None:
     lines = []
     w = lines.append
     w("# Results\n")
-    w("Every number below is read from the files in this folder by `src/report.py`.\n")
+    w("Every number below is read from the files in this folder by `src/report.py`. Code and data: https://github.com/saltxd/plus-factors-on-the-ledger\n")
     w("## In plain words\n")
     w(f"- **The test.** {len(feats)} cases (a payee in a 7-day window) from {feats['family'].nunique()} case families on Base x402 and BNB Chain's TermiX escrow, labelled by ChainWard's published decodes. A rule was chosen on {pd_['families']} development families, frozen in commit `{commit[:7]}`, then scored on {n_test_fam} held-out families ({n_test_pos_fam} coordinated).")
     w(f"- **The frozen rule** is `{frozen['rule_text']}`: flag a payee when at least {frozen['rule']['threshold']:.0%} of its payment value comes from payers that its own money reached within 4 transfers (not counting exchanges and other hubs).")
