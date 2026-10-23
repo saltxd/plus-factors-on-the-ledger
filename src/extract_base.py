@@ -95,7 +95,10 @@ def resolve_prefix(con: duckdb.DuckDBPyConnection, prefix: str, w0: int, w1: int
     return rows[0][0]
 
 
-def extract_window(con: duckdb.DuckDBPyConnection, w: str, payees: list[str], hub: int, k: int, override: dict | None = None) -> dict:
+def extract_window(con: duckdb.DuckDBPyConnection, w: str, payees: list[str], hub: int, k: int, override: dict | None = None,
+                   payments_builder=None) -> dict:
+    """payments_builder(con, w0, w1), when given, creates TEMP TABLE payments(payee, payer, val, block,
+    txi, li, via) itself (used for markets whose payments are not EIP-3009 transfers)."""
     if override:
         t0, t1, w0, w1, d0, d1 = (override[x] for x in ("t0", "t1", "w0", "w1", "d0", "d1"))
     else:
@@ -109,6 +112,19 @@ def extract_window(con: duckdb.DuckDBPyConnection, w: str, payees: list[str], hu
 
     # ---- payments
     t = time.time()
+    if payments_builder is not None:
+        payments_builder(con, w0, w1)
+    else:
+        _x402_payments(con, w0, w1)
+    con.execute("DELETE FROM payments WHERE payer = payee")
+    npay = con.execute("SELECT payee, count(*), sum(val)/1e6, count(DISTINCT payer) FROM payments GROUP BY payee").fetchall()
+    log.info("%s payments (%.0fs): %d payees", w, time.time() - t, len(npay))
+    if len(npay) <= 60:
+        log.info("%s payments: %s", w, npay)
+    return _reach_and_flows(con, w, k, t0, t1, w0, w1, d0, d1)
+
+
+def _x402_payments(con: duckdb.DuckDBPyConnection, w0: int, w1: int) -> None:
     con.execute(
         f"""
         CREATE OR REPLACE TEMP TABLE cand AS
@@ -143,10 +159,9 @@ def extract_window(con: duckdb.DuckDBPyConnection, w: str, payees: list[str], hu
         SELECT * FROM pay_direct UNION ALL SELECT * FROM pay_pass
         """
     )
-    con.execute("DELETE FROM payments WHERE payer = payee")
-    npay = con.execute("SELECT payee, count(*), sum(val)/1e6, count(DISTINCT payer) FROM payments GROUP BY payee").fetchall()
-    log.info("%s payments (%.0fs): %s", w, time.time() - t, npay)
 
+
+def _reach_and_flows(con: duckdb.DuckDBPyConnection, w: str, k: int, t0: int, t1: int, w0: int, w1: int, d0: int, d1: int) -> dict:
     # ---- forward reach from each payee (batched BFS)
     t = time.time()
     con.execute("CREATE OR REPLACE TEMP TABLE visited AS SELECT payee AS ck, payee AS node, 0 AS hop FROM payees")
@@ -254,7 +269,7 @@ def write_case(con: duckdb.DuckDBPyConnection, case, payee: str, out: Path, boun
         return {"case_id": case.case_id, "payee": payee, "dropped": "no payments in window"}
     reach = con.execute(
         "SELECT cp.payer, min(v.hop) AS hops FROM case_payers cp LEFT JOIN visited v ON v.ck = cp.ck AND v.node = cp.payer "
-        "WHERE cp.ck = ? GROUP BY cp.payer",
+        "WHERE cp.ck = ? GROUP BY cp.payer ORDER BY cp.payer",
         [payee],
     ).df()
     inflows = con.execute(
